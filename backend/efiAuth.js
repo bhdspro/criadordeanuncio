@@ -14,8 +14,9 @@ const {
     // EFI_SANDBOX não é mais necessário
 } = process.env;
 
-// URL de PRODUÇÃO da Efí.
-const EFI_BASE_URL = `https://api-pix.efipay.com.br`;
+// URL de AUTENTICAÇÃO de PRODUÇÃO da Efí.
+// (Este é o domínio correto para /oauth/token)
+const EFI_AUTH_URL = `https://api.efipay.com.br`;
 
 // Agente para autenticação (Basic Auth)
 const authAgent = new https.Agent({
@@ -39,13 +40,13 @@ export async function getEfiToken() {
         throw new Error('Credenciais da Efí não encontradas.');
     }
 
-    console.log(`Gerando novo token de acesso Efí para: ${EFI_BASE_URL}`);
+    console.log(`Gerando novo token de acesso Efí para: ${EFI_AUTH_URL}`);
     const credentials = Buffer.from(`${EFI_CLIENT_ID}:${EFI_CLIENT_SECRET}`).toString('base64');
 
     try {
         const response = await axios({
             method: 'POST',
-            url: `${EFI_BASE_URL}/oauth/token`,
+            url: `${EFI_AUTH_URL}/oauth/token`, // Usa a URL de autenticação
             https: authAgent,
             headers: {
                 'Authorization': `Basic ${credentials}`,

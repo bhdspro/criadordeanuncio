@@ -18,8 +18,8 @@ const {
     SETUP_SECRET
 } = process.env;
 
-// URL de PRODUÇÃO da Efí.
-const EFI_BASE_URL = `https://api-pix.efipay.com.br`;
+// URL de OPERAÇÕES PIX de PRODUÇÃO da Efí.
+const EFI_PIX_URL = `https://api-pix.efipay.com.br`;
 
 // Validação de configuração
 if (!EFI_PIX_KEY) {
@@ -55,7 +55,7 @@ app.post('/create-charge', async (req, res) => {
         
         const cobResponse = await axios({
             method: 'POST',
-            url: `${EFI_BASE_URL}/v2/cob`,
+            url: `${EFI_PIX_URL}/v2/cob`, // Usa a URL do PIX
             https: apiAgent,
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -71,7 +71,7 @@ app.post('/create-charge', async (req, res) => {
 
         const qrResponse = await axios({
             method: 'GET',
-            url: `${EFI_BASE_URL}/v2/loc/${locId}/qrcode`,
+            url: `${EFI_PIX_URL}/v2/loc/${locId}/qrcode`, // Usa a URL do PIX
             https: apiAgent,
             headers: {
                 'Authorization': `Bearer ${token}`
@@ -142,14 +142,14 @@ app.get('/configure-webhook/:secret', async (req, res) => {
     const WEBHOOK_URL_COMPLETA = `https://criadordeanuncio.onrender.com/webhook`;
 
     try {
-        // 2. Obter token
+        // 2. Obter token (isso vai usar api.efipay.com.br)
         const token = await getEfiToken();
 
         // 3. Definir o payload e a URL
         const payload = {
             webhookUrl: WEBHOOK_URL_COMPLETA
         };
-        const url = `${EFI_BASE_URL}/v2/webhook/${EFI_PIX_KEY}`;
+        const url = `${EFI_PIX_URL}/v2/webhook/${EFI_PIX_KEY}`; // Usa a URL do PIX
 
         console.log(`Registrando Webhook para a chave ${EFI_PIX_KEY}...`);
         console.log(`URL: ${WEBHOOK_URL_COMPLETA}`);
@@ -194,6 +194,6 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor backend rodando na porta ${PORT}`);
     console.log(`Modo Efí: producao`);
-    console.log(`URL Base da API Efí: ${EFI_BASE_URL}`);
+    console.log(`URL Base da API PIX: ${EFI_PIX_URL}`); // URL de PIX
 });
 

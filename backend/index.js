@@ -1,15 +1,15 @@
 // ===================================================================
 // SERVIDOR BACKEND (PARA DEPLOY NO RENDER)
 // ===================================================================
-// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - LIMPA - DIAGNÓSTICO AVANÇADO 2)
+// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - COM CERTIFICADOS)
 // ===================================================================
 
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import https from 'https';
+// import https from 'https'; // Não precisamos mais importar https aqui
 import axios from 'axios';
-import { getEfiToken } from './efiAuth.js';
+import { getEfiToken, apiAgentWithCerts } from './efiAuth.js'; // Importa token e o AGENTE configurado
 
 // --- Configuração das Variáveis de Ambiente ---
 const {
@@ -17,7 +17,7 @@ const {
 } = process.env;
 
 // URL de OPERAÇÕES PIX de PRODUÇÃO da Efí.
-const EFI_PIX_URL = `https://api.efipay.com.br`;
+const EFI_PIX_URL = `https://api.efipay.com.br`; // URL correta para PIX em produção
 console.log(`URL Base da API PIX: ${EFI_PIX_URL}`);
 
 // Validação de configuração
@@ -26,10 +26,8 @@ if (!EFI_PIX_KEY) {
     process.exit(1);
 }
 
-// Agente para as chamadas de API (Necessário para certificados da Efí)
-const apiAgent = new https.Agent({
-    rejectUnauthorized: false
-});
+// NÃO precisamos mais do apiAgent simples aqui, vamos usar o importado
+// const apiAgent = new https.Agent({ rejectUnauthorized: false });
 
 // Armazenamento Simples de Pagamentos
 const paymentStatus = new Map();
@@ -57,11 +55,11 @@ app.post('/create-charge', async (req, res) => {
         const cobResponse = await axios({
             method: 'POST',
             url: createChargeUrl,
-            httpsAgent: apiAgent,
+            httpsAgent: apiAgentWithCerts, // USA O AGENTE COM CERTIFICADOS
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
-                'Accept': 'application/json' // Adicionado: Indica que esperamos JSON
+                'Accept': 'application/json'
             },
             data: cobPayload
         });
@@ -71,10 +69,8 @@ app.post('/create-charge', async (req, res) => {
         // Verifica se a resposta é um objeto JSON esperado e contém loc.id
         if (typeof cobData !== 'object' || cobData === null || !cobData.loc || !cobData.loc.id) {
              console.error('Erro em /create-charge: Resposta da Efí não contém loc.id esperado.');
-             // Aumentado o tamanho do preview da resposta
              const responsePreview = typeof cobData === 'string' ? cobData.substring(0, 2000) + '...' : JSON.stringify(cobData, null, 2);
              console.error('Preview da Resposta recebida:', responsePreview);
-             // Loga também os cabeçalhos da resposta, pode dar pistas
              if (cobResponse && cobResponse.headers) {
                 console.error('Cabeçalhos da Resposta Recebida:', JSON.stringify(cobResponse.headers, null, 2));
              }
@@ -91,10 +87,10 @@ app.post('/create-charge', async (req, res) => {
         const qrResponse = await axios({
             method: 'GET',
             url: qrUrl,
-            httpsAgent: apiAgent,
+            httpsAgent: apiAgentWithCerts, // USA O AGENTE COM CERTIFICADOS
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Accept': 'application/json' // Adicionado aqui também por consistência
+                'Accept': 'application/json'
             }
         });
 
@@ -118,18 +114,21 @@ app.post('/create-charge', async (req, res) => {
         console.error('Erro detalhado em /create-charge:');
         if (error.response) {
             console.error('Status:', error.response.status);
-            // Aumentado o tamanho do preview da resposta de erro
              const responseDataPreview = typeof error.response.data === 'string'
                 ? error.response.data.substring(0, 2000) + '...'
                 : JSON.stringify(error.response.data, null, 2);
             console.error('Data:', responseDataPreview);
-            console.error('Cabeçalhos da Resposta de Erro:', JSON.stringify(error.response.headers, null, 2)); // Loga cabeçalhos do erro
+            console.error('Cabeçalhos da Resposta de Erro:', JSON.stringify(error.response.headers, null, 2));
             console.error('URL da requisição com erro:', error.config?.url);
         } else if (error.request) {
             console.error('Nenhuma resposta recebida da Efí.');
             console.error('URL da requisição sem resposta:', error.config?.url);
         } else {
             console.error('Erro ao configurar request:', error.message);
+        }
+        // Adiciona log específico para erros de certificado
+        if (error.message && (error.message.includes('certificate') || error.message.includes('SSL'))) {
+             console.error('Possível erro relacionado aos certificados. Verifique os caminhos e a senha (se houver) no Render.');
         }
         res.status(500).json({ error: 'Não foi possível gerar a cobrança PIX.' });
     }

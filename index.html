@@ -4,21 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Criador de Anúncio de Veículo | Anúncios Profissionais</title>
-    <meta name="description" content="Crie anúncios de veículos profissionais em segundos. Carregue as fotos, preencha os dados e baixe a imagem de venda gratuitamente. Ideal para concessionárias e vendedores.">
+    <meta name="description" content="Crie anúncios de veículos profissionais em segundos. Carregue as fotos, preencha os dados e baixe a imagem de venda. Ideal para concessionárias e vendedores.">
     <meta name="keywords" content="criador de anúncio, anúncio de veículo, gerador de anúncio, venda de carro, anúncio profissional, marketing automotivo">
-    <link rel="canonical" href="https://criadordeanuncio.com/">
+    <link rel="canonical" href="https://criadordeanuncio.onrender.com/"> <!-- Atualize se tiver domínio próprio -->
     <link rel="icon" type="image/png" href="https://criadordeanuncio.com/images/favicon.png">
 
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://criadordeanuncio.com/">
+    <meta property="og:url" content="https://criadordeanuncio.onrender.com/"> <!-- Atualize se tiver domínio próprio -->
     <meta property="og:title" content="Criador de Anúncio de Veículo">
     <meta property="og:description" content="Transforme fotos comuns em anúncios de veículos profissionais e atraentes em segundos.">
     <meta property="og:image" content="https://criadordeanuncio.com/images/logo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://criadordeanuncio.com/">
+    <meta property="twitter:url" content="https://criadordeanuncio.onrender.com/"> <!-- Atualize se tiver domínio próprio -->
     <meta property="twitter:title" content="Criador de Anúncio de Veículo">
     <meta property="twitter:description" content="Transforme fotos comuns em anúncios de veículos profissionais e atraentes em segundos.">
     <meta property="twitter:image" content="https://criadordeanuncio.com/images/logo.png">
@@ -42,16 +42,42 @@
             @apply bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg cursor-pointer transition-colors duration-300;
         }
         .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #db2777;
+            border: 4px solid #f3f3f3; /* Light grey */
+            border-top: 4px solid #db2777; /* Pink */
             border-radius: 50%;
             width: 20px;
             height: 20px;
             animation: spin 1s linear infinite;
         }
+        .pix-loader { /* Loader maior para o modal */
+            border: 6px solid #f3f3f3; /* Light grey */
+            border-top: 6px solid #10b981; /* Emerald */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1.5s linear infinite;
+        }
+
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
+        }
+        /* Estilos para o Modal */
+        #pixModal {
+            transition: opacity 0.3s ease-in-out;
+        }
+        #pixModal > div { /* Animação de entrada do conteúdo do modal */
+             transition: transform 0.3s ease-in-out;
+        }
+        #pixModal.hidden > div {
+            transform: scale(0.95);
+        }
+         /* Força a quebra de linha no PIX Copia e Cola */
+        #pixCopyPaste {
+             word-break: break-all;
+             white-space: normal; /* Garante quebras de linha automáticas */
+             overflow-wrap: break-word; /* Alternativa moderna */
+             line-height: 1.4; /* Melhora a legibilidade */
         }
     </style>
      <!-- Schema Markup - JSON-LD -->
@@ -62,10 +88,11 @@
       "name": "Criador de Anúncio de Veículo",
       "applicationCategory": "DesignApplication",
       "operatingSystem": "Any",
-      "description": "Ferramenta online gratuita para criar anúncios de veículos profissionais a partir de fotos. Os usuários podem adicionar informações como marca, modelo, preço e contato para gerar uma imagem de venda personalizada.",
+      "description": "Ferramenta online para criar anúncios de veículos profissionais a partir de fotos. Requer pagamento de R$ 1,00 via PIX para download.",
       "offers": {
         "@type": "Offer",
-        "price": "0"
+        "price": "1.00",
+        "priceCurrency": "BRL"
       }
     }
     </script>
@@ -75,7 +102,7 @@
     <div class="container mx-auto p-4 md:p-8 max-w-6xl">
         <header class="text-center mb-8">
             <h1 class="text-4xl md:text-5xl font-bold text-red-500">Criador de Anúncio de Veículo</h1>
-            <p class="text-gray-400 mt-2">Preencha os dados, anexe uma ou mais fotos e crie suas imagens de venda.</p>
+            <p class="text-gray-400 mt-2">Preencha os dados, anexe fotos e baixe seu anúncio por R$ 1,00.</p>
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -85,7 +112,7 @@
                         <label for="vehiclePhoto" class="block text-lg font-semibold text-gray-200 mb-2">1. Fotos do Veículo</label>
                         <input type="file" id="vehiclePhoto" accept="image/*" required multiple class="block w-full text-sm text-gray-400 file:mr-4 file:border-0 rounded-lg">
                         <div id="thumbnails" class="mt-4 flex flex-wrap gap-4"></div>
-                        <div class="mt-6 text-center">
+                         <div class="mt-6 text-center">
                             <a href="https://api.whatsapp.com/send?phone=5543991228540&text=Ol%C3%A1%2C%20quero%20usar%20minha%20logo%20e%20meu%20endere%C3%A7o%20no%20Criador%20de%20An%C3%BAncio%20de%20Ve%C3%ADculo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-500 text-sm font-medium transition-colors group">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
@@ -169,63 +196,802 @@
                     </button>
                 </div>
                 <div id="imageCounter" class="text-gray-400 mt-2 text-sm font-medium hidden"></div>
-                <button id="downloadButton" class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors text-lg flex items-center gap-3">
+
+                <!-- Botão de Download/Pagamento -->
+                <button id="paymentButton" class="hidden mt-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-6 rounded-lg transition-colors text-lg flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed">
+                    <!-- Conteúdo inicial do botão (será alterado pelo JS) -->
+                    <span>Pagar R$ 1,00 para Baixar</span>
                 </button>
             </div>
         </main>
     </div>
 
+    <!-- Modal PIX -->
+    <div id="pixModal" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50 hidden opacity-0">
+        <div class="bg-gray-800 p-8 rounded-lg shadow-xl w-full max-w-md transform scale-100">
+             <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-emerald-400">Pagamento PIX</h2>
+                <button id="closePixModal" class="text-gray-400 hover:text-white transition-colors">&times;</button>
+            </div>
+
+            <!-- Área de Conteúdo do Modal -->
+            <div id="pixModalContent" class="text-center">
+                <!-- Loader enquanto carrega -->
+                <div id="pixLoading" class="flex flex-col items-center justify-center py-10">
+                    <div class="pix-loader mb-4"></div>
+                    <p class="text-gray-400">Gerando PIX...</p>
+                </div>
+
+                <!-- Conteúdo PIX (inicialmente oculto) -->
+                <div id="pixDetails" class="hidden">
+                    <p class="text-gray-300 mb-2">Escaneie o QR Code ou copie o código abaixo:</p>
+                    <p class="text-3xl font-bold text-white mb-4">R$ 1,00</p>
+                    <img id="pixQrCodeImg" src="" alt="PIX QR Code" class="mx-auto mb-4 border-4 border-white rounded-lg w-48 h-48">
+
+                    <div class="bg-gray-700 p-3 rounded-lg mb-4 text-left">
+                        <label for="pixCopyPaste" class="text-xs text-gray-400 mb-1 block">PIX Copia e Cola:</label>
+                        <textarea id="pixCopyPaste" readonly rows="3" class="w-full bg-gray-600 text-gray-200 text-xs p-2 rounded border border-gray-500 resize-none focus:outline-none focus:ring-1 focus:ring-emerald-500"></textarea>
+                    </div>
+
+                    <button id="copyPixCode" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg transition-colors mb-4 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        <span id="copyButtonText">Copiar Código</span>
+                    </button>
+
+                    <p id="paymentStatusMessage" class="text-yellow-400 font-medium">Aguardando pagamento...</p>
+                    <p class="text-xs text-gray-500 mt-2">(A janela fechará automaticamente após a confirmação)</p>
+                </div>
+
+                 <!-- Mensagem de Erro (inicialmente oculta) -->
+                <div id="pixError" class="hidden text-red-500 bg-red-900 bg-opacity-50 p-4 rounded-lg">
+                    <p class="font-bold mb-2">Erro ao gerar o PIX</p>
+                    <p id="pixErrorMessage" class="text-sm">Não foi possível gerar a cobrança. Por favor, tente novamente mais tarde.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Principal -->
     <script>
+        // ===================================================================
+        // VARIÁVEIS GLOBAIS E CONFIGURAÇÃO
+        // ===================================================================
+        // !! IMPORTANTE: Substitua pela URL do seu backend no Render !!
+        const BACKEND_URL = 'https://criadordeanuncio.onrender.com';
+
+        let uploadedImages = [];
+        let currentPreviewIndex = 0;
+        let isProcessing = false; // Para evitar cliques múltiplos no download original
+        let isPaying = false; // Para evitar cliques múltiplos no botão de pagamento
+        let paymentTxid = null; // Armazena o TXID da transação PIX atual
+        let paymentCheckInterval = null; // Armazena o ID do setInterval
+        const adColor = '#ce191f';
+        const fixedAddress = "Av. Joubert de Carvalho";
+
+        // Imagens pré-carregadas
+        const fixedLogo = new Image();
+        fixedLogo.src = "https://criadordeanuncio.com/images/logo.png";
+        fixedLogo.crossOrigin = "Anonymous";
+
+        const phoneIcon = new Image();
+        phoneIcon.src = "https://criadordeanuncio.com/images/logo-zap.png";
+        phoneIcon.crossOrigin = "Anonymous";
+
+        const mapsIcon = new Image();
+        mapsIcon.src = "https://criadordeanuncio.com/images/logo-maps.png";
+        mapsIcon.crossOrigin = "Anonymous";
+
+        const toolsIcon = new Image();
+        toolsIcon.src = "https://criadordeanuncio.com/images/logo-tools.png";
+        toolsIcon.crossOrigin = "Anonymous";
+
+        // ===================================================================
+        // REFERÊNCIAS AOS ELEMENTOS DO DOM
+        // ===================================================================
+        const form = document.getElementById('vehicleForm');
+        const fileInput = document.getElementById('vehiclePhoto');
+        const thumbnailsContainer = document.getElementById('thumbnails');
+        const telefoneInput = document.getElementById('telefone');
+        const precoInput = document.getElementById('preco');
+        const kmInput = document.getElementById('km');
+        const previewArea = document.getElementById('previewArea');
+        const previewPlaceholder = document.getElementById('previewPlaceholder');
+        const paymentButton = document.getElementById('paymentButton'); // Botão que inicia o pagamento
+        const prevButton = document.getElementById('prevButton');
+        const nextButton = document.getElementById('nextButton');
+        const imageCounter = document.getElementById('imageCounter');
+
+        // Elementos do Modal PIX
+        const pixModal = document.getElementById('pixModal');
+        const closePixModal = document.getElementById('closePixModal');
+        const pixModalContent = document.getElementById('pixModalContent');
+        const pixLoading = document.getElementById('pixLoading');
+        const pixDetails = document.getElementById('pixDetails');
+        const pixQrCodeImg = document.getElementById('pixQrCodeImg');
+        const pixCopyPaste = document.getElementById('pixCopyPaste');
+        const copyPixCode = document.getElementById('copyPixCode');
+        const copyButtonText = document.getElementById('copyButtonText');
+        const paymentStatusMessage = document.getElementById('paymentStatusMessage');
+        const pixError = document.getElementById('pixError');
+        const pixErrorMessage = document.getElementById('pixErrorMessage');
+
+
+        // ===================================================================
+        // FUNÇÕES DE UTILIDADE E FORMATAÇÃO (Máscaras, etc.)
+        // ===================================================================
+        function saveData() {
+            localStorage.setItem('savedTelefone', telefoneInput.value);
+        }
+
+        function loadSavedData() {
+            telefoneInput.value = localStorage.getItem('savedTelefone') || '';
+            if (telefoneInput.value) telefoneInput.value = maskPhone(telefoneInput.value);
+        }
+
+        function maskPhone(value) {
+            value = value.replace(/\D/g, '');
+            value = value.replace(/^(\d{2})(\d)/, '($1) $2');
+            value = value.replace(/(\d{4,5})(\d{4})$/, '$1-$2');
+            return value.slice(0, 15); // Limita o tamanho
+        }
+
+        function formatNumericInput(value) {
+            return value.replace(/\D/g, '');
+        }
+
+        function formatPriceDisplay(price) {
+            const number = parseFloat(price);
+            if (isNaN(number)) return "";
+            return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        }
+
+        function formatKmDisplay(km) {
+            const number = parseInt(km, 10);
+            if (isNaN(number)) return "";
+            return `${number.toLocaleString('pt-BR')} KM`;
+        }
+
+        // ===================================================================
+        // LÓGICA DE UPLOAD E PRÉ-VISUALIZAÇÃO DE IMAGENS
+        // ===================================================================
+        function renderThumbnails() {
+            thumbnailsContainer.innerHTML = '';
+            uploadedImages.forEach((img, index) => {
+                const thumbContainer = document.createElement('div');
+                thumbContainer.className = 'relative flex-shrink-0';
+
+                const thumbImage = document.createElement('img');
+                thumbImage.src = img.src;
+                thumbImage.className = "w-20 h-20 object-cover rounded-md border-2 border-gray-600";
+                thumbContainer.appendChild(thumbImage);
+
+                const deleteButton = document.createElement('button');
+                deleteButton.type = 'button';
+                deleteButton.innerHTML = '&times;';
+                deleteButton.className = "absolute top-0 right-0 -mt-2 -mr-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-lg font-bold leading-none focus:outline-none hover:bg-red-700 transition-transform transform hover:scale-110";
+                deleteButton.dataset.index = index;
+
+                deleteButton.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    const indexToRemove = parseInt(e.currentTarget.dataset.index, 10);
+                    removeImage(indexToRemove);
+                });
+
+                thumbContainer.appendChild(deleteButton);
+                thumbnailsContainer.appendChild(thumbContainer);
+            });
+        }
+
+        function removeImage(index) {
+            uploadedImages.splice(index, 1);
+            if (currentPreviewIndex >= uploadedImages.length) {
+                currentPreviewIndex = Math.max(0, uploadedImages.length - 1);
+            }
+            renderThumbnails();
+            updatePreviewUI();
+        }
+
+        function handleImageUpload(e) {
+            const files = e.target.files;
+            uploadedImages = [];
+            currentPreviewIndex = 0;
+
+            if (files.length === 0) {
+                renderThumbnails();
+                updatePreviewUI();
+                return;
+            }
+
+            const filePromises = Array.from(files).map(file => {
+                return new Promise((resolve, reject) => {
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (event) => {
+                            const img = new Image();
+                            img.onload = () => {
+                                uploadedImages.push(img);
+                                resolve();
+                            };
+                            img.onerror = reject;
+                            img.src = event.target.result;
+                        };
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    } else {
+                        resolve(); // Ignora arquivos não-imagem
+                    }
+                });
+            });
+
+            Promise.all(filePromises).then(() => {
+                renderThumbnails();
+                updatePreviewUI();
+            });
+        }
+
+        async function updatePreviewUI() {
+            previewArea.innerHTML = ''; // Limpa a área
+
+            if (uploadedImages.length === 0) {
+                previewArea.appendChild(previewPlaceholder);
+                paymentButton.classList.add('hidden'); // Esconde botão de pagamento
+                prevButton.classList.add('hidden');
+                nextButton.classList.add('hidden');
+                imageCounter.classList.add('hidden');
+                return;
+            }
+
+            // Mostra a prévia
+            const currentImage = uploadedImages[currentPreviewIndex];
+            const canvas = await createAdCanvas(currentImage);
+            canvas.className = "rounded-md shadow-lg w-full h-auto";
+            previewArea.appendChild(canvas);
+
+            // Atualiza e mostra o botão de pagamento
+            if (uploadedImages.length === 1) {
+                paymentButton.innerHTML = '<span>Pagar R$ 1,00 para Baixar Anúncio (.png)</span>';
+            } else {
+                paymentButton.innerHTML = `<span>Pagar R$ 1,00 para Baixar Anúncios (.zip)</span>`;
+            }
+            paymentButton.classList.remove('hidden');
+
+            // Atualiza botões de navegação e contador
+            if (uploadedImages.length > 1) {
+                prevButton.classList.remove('hidden');
+                nextButton.classList.remove('hidden');
+                imageCounter.classList.remove('hidden');
+                imageCounter.textContent = `Imagem ${currentPreviewIndex + 1} de ${uploadedImages.length}`;
+                prevButton.disabled = currentPreviewIndex === 0;
+                nextButton.disabled = currentPreviewIndex === uploadedImages.length - 1;
+            } else {
+                prevButton.classList.add('hidden');
+                nextButton.classList.add('hidden');
+                imageCounter.classList.add('hidden');
+            }
+        }
+
+        // ===================================================================
+        // LÓGICA DE CRIAÇÃO DO CANVAS (Anúncio)
+        // ===================================================================
+        function getFormData() { /* ... (código original sem alterações) ... */
+             return {
+                marca: document.getElementById('marca').value.trim(),
+                modelo: document.getElementById('modelo').value.trim(),
+                ano: document.getElementById('ano').value.trim(),
+                km: document.getElementById('km').value.trim(),
+                preco: document.getElementById('preco').value.trim(),
+                cilindrada: document.getElementById('cilindrada').value.trim(),
+                cambio: document.getElementById('cambio').checked ? 'Automático' : 'Manual',
+                observacao: document.getElementById('observacao').value.trim(),
+                telefone: document.getElementById('telefone').value.trim(),
+                endereco: fixedAddress,
+            };
+        }
+
+        const adjustTextToFit = (ctx, text, icon, iconSize, iconGap, availableWidth, initialFontSize) => { /* ... (código original sem alterações) ... */
+            let fontSize = initialFontSize;
+            let textMetrics;
+            let totalWidth;
+            
+            do {
+                ctx.font = `700 ${fontSize}px 'Inter'`;
+                textMetrics = ctx.measureText(text);
+                totalWidth = (icon ? iconSize + iconGap : 0) + textMetrics.width;
+                if (totalWidth > availableWidth) {
+                    fontSize -= 1;
+                }
+            } while (totalWidth > availableWidth && fontSize > 8);
+            
+            return { fontSize, totalWidth };
+        };
+
+        async function createAdCanvas(image) { /* ... (código original sem alterações) ... */
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            const data = getFormData();
+            const padding = image.width * 0.03;
+            
+            const headerHeight = image.height * 0.15;
+            let baseFooterHeight = image.height * 0.18;
+            let obsBarHeight = 0;
+            let hasExtraObsBar = false;
+
+            // Lógica para verificar se a barra de observação extra é necessária
+             if (data.observacao && fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
+                const tempCanvas = document.createElement('canvas');
+                const tempCtx = tempCanvas.getContext('2d');
+                const logoMaxHeight = baseFooterHeight * 1.1;
+                const logoMaxWidth = image.width * 0.4;
+                const scale = Math.min(logoMaxWidth / fixedLogo.width, logoMaxHeight / fixedLogo.height);
+                const logoW = fixedLogo.width * scale;
+                const logoRightBoundary = padding + logoW;
+                const availableInfoWidth = image.width - logoRightBoundary - padding * 2;
+
+                const infoTextWithObs = `${data.cambio.toUpperCase()}   |   ${data.cilindrada}   |   ${formatKmDisplay(data.km)}   |   ${data.observacao.toUpperCase()}`;
+                const tempFontSize = (baseFooterHeight * 0.4) * 0.5;
+                tempCtx.font = `700 ${tempFontSize}px 'Inter'`;
+                const textMetrics = tempCtx.measureText(infoTextWithObs);
+
+                if (textMetrics.width > availableInfoWidth) {
+                    hasExtraObsBar = true;
+                    obsBarHeight = baseFooterHeight * 0.4;
+                }
+            }
+            
+            const footerHeight = baseFooterHeight + obsBarHeight;
+
+            canvas.width = image.width;
+            canvas.height = image.height + headerHeight + footerHeight;
+            
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(image, 0, headerHeight, image.width, image.height);
+
+            drawOverlays(ctx, canvas.width, image.height, headerHeight, footerHeight, data, hasExtraObsBar, obsBarHeight);
+            return canvas;
+        }
+
+        function drawOverlays(ctx, width, imgHeight, headerHeight, footerHeight, data, hasExtraObsBar, obsBarHeight) { /* ... (código original sem alterações) ... */
+             const padding = width * 0.03;
+            
+            // Header Background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+            ctx.fillRect(0, 0, width, headerHeight);
+
+            // Preço (Caixa vermelha inclinada)
+            ctx.textAlign = 'right';
+            ctx.font = `900 ${headerHeight * 0.4}px 'Inter'`;
+            const priceText = formatPriceDisplay(data.preco);
+            const priceMetrics = ctx.measureText(priceText);
+            const priceBoxPadding = headerHeight * 0.2;
+            
+            const minPriceBoxWidth = width * 0.35;
+            const requiredPriceBoxWidth = priceMetrics.width + priceBoxPadding * 2;
+            const priceBoxWidth = Math.max(minPriceBoxWidth, requiredPriceBoxWidth);
+
+            const priceShapeStartX = width - priceBoxWidth;
+
+            ctx.fillStyle = adColor;
+            ctx.beginPath();
+            ctx.moveTo(priceShapeStartX - (headerHeight*0.25), 0); // Ponto superior esquerdo (inclinado)
+            ctx.lineTo(width, 0); // Canto superior direito
+            ctx.lineTo(width, headerHeight); // Canto inferior direito
+            ctx.lineTo(priceShapeStartX, headerHeight); // Ponto inferior esquerdo (reto)
+            ctx.closePath();
+            ctx.fill();
+
+            // Texto do Preço
+            ctx.fillStyle = 'white';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(priceText, width - padding, headerHeight / 2);
+
+
+            // Marca e Modelo
+            ctx.textAlign = 'left';
+            const marcaY = headerHeight * 0.3;
+            ctx.font = `900 ${headerHeight * 0.3}px 'Inter'`;
+            ctx.fillText(data.marca.toUpperCase(), padding, marcaY);
+            
+            const modeloY = headerHeight * 0.65;
+            ctx.font = `700 ${headerHeight * 0.23}px 'Inter'`;
+            ctx.fillText(data.modelo.toUpperCase(), padding, modeloY);
+            
+            // Ano (com fundo vermelho)
+            const modeloMetrics = ctx.measureText(data.modelo.toUpperCase());
+            const anoX = padding + modeloMetrics.width + width * 0.02;
+            
+            ctx.font = `700 ${headerHeight * 0.18}px 'Inter'`;
+            const anoMetrics = ctx.measureText(data.ano);
+            
+            ctx.fillStyle = adColor;
+            // Ajusta o retângulo para ficar centralizado verticalmente com o texto do ano
+             const anoRectHeight = headerHeight * 0.22 + 5;
+            ctx.fillRect(anoX - 5, modeloY - anoRectHeight/2 , anoMetrics.width + 10, anoRectHeight); 
+            
+            ctx.fillStyle = 'white';
+            ctx.fillText(data.ano, anoX, modeloY);
+
+            // --- Footer ---
+            const footerStartY = imgHeight + headerHeight;
+            const infoBarHeight = (footerHeight - obsBarHeight) * 0.4;
+            const contactBarStartY = footerStartY + infoBarHeight + obsBarHeight;
+            const contactBarHeight = footerHeight - infoBarHeight - obsBarHeight;
+            
+            // Logo (cálculo da largura)
+            let logoW = 0;
+            if (fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
+                const logoMaxHeight = footerHeight * 1.1; // Permite um pouco de overflow
+                const logoMaxWidth = width * 0.4;
+                const scale = Math.min(logoMaxWidth / fixedLogo.width, logoMaxHeight / fixedLogo.height);
+                logoW = fixedLogo.width * scale;
+            }
+            const logoRightBoundary = padding + logoW;
+
+            // Barra de Informações (Câmbio, Motor, KM)
+            ctx.fillStyle = adColor;
+            ctx.fillRect(0, footerStartY, width, infoBarHeight);
+
+            let centralText = `${data.cambio.toUpperCase()}   |   ${data.cilindrada}   |   ${formatKmDisplay(data.km)}`;
+            if (!hasExtraObsBar && data.observacao) {
+                centralText += `   |   ${data.observacao.toUpperCase()}`;
+            }
+
+            const centralY = footerStartY + infoBarHeight / 2;
+            const availableCentralWidth = width - padding - logoRightBoundary - padding; // Espaço disponível
+            
+            const vehicleInfoFit = adjustTextToFit(ctx, centralText, toolsIcon, infoBarHeight * 0.5, infoBarHeight * 0.2, availableCentralWidth, infoBarHeight * 0.5);
+            ctx.font = `700 ${vehicleInfoFit.fontSize}px 'Inter'`;
+            const centralIconSize = infoBarHeight * 0.5 * (vehicleInfoFit.fontSize / (infoBarHeight * 0.5));
+            const centralIconGap = infoBarHeight * 0.2 * (vehicleInfoFit.fontSize / (infoBarHeight * 0.5));
+            
+            const centralStartX = width - padding - vehicleInfoFit.totalWidth; // Alinha à direita
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'left'; // Mudança aqui para desenhar ícone + texto
+            if (toolsIcon.complete && toolsIcon.naturalWidth !== 0) {
+                ctx.drawImage(toolsIcon, centralStartX, centralY - centralIconSize / 2, centralIconSize, centralIconSize);
+            }
+            ctx.fillText(centralText, centralStartX + centralIconSize + centralIconGap, centralY);
+
+
+            // Barra de Observação Extra (se necessária)
+             if (hasExtraObsBar) {
+                const obsBarStartY = footerStartY + infoBarHeight;
+                ctx.fillStyle = adColor; // Mantém a cor da barra acima
+                ctx.fillRect(0, obsBarStartY, width, obsBarHeight);
+                const obsY = obsBarStartY + obsBarHeight / 2;
+                const availableObsWidth = width - padding - logoRightBoundary - padding;
+                
+                const obsFit = adjustTextToFit(ctx, data.observacao.toUpperCase(), null, 0, 0, availableObsWidth, infoBarHeight * 0.5); // Usa a mesma base de fonte
+                ctx.fillStyle = 'white';
+                ctx.textAlign = 'right'; // Alinha à direita
+                ctx.font = `700 ${obsFit.fontSize}px 'Inter'`;
+                ctx.fillText(data.observacao.toUpperCase(), width - padding, obsY);
+            }
+            
+            // Barra de Contato (Telefone, Endereço)
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.85)';
+            ctx.fillRect(0, contactBarStartY, width, contactBarHeight);
+
+            const items = [
+                { icon: phoneIcon, text: data.telefone },
+                { icon: mapsIcon, text: data.endereco }
+            ];
+
+            const contactY = contactBarStartY + contactBarHeight / 2;
+            const itemGap = width * 0.03; // Espaço entre telefone e endereço
+            const contactAreaWidth = width - logoRightBoundary - padding - itemGap; // Área total para os contatos
+            
+            // Ajusta o tamanho da fonte dos contatos para caberem
+            const initialContactFontSize = contactBarHeight * 0.45;
+            let contactFontSize = initialContactFontSize;
+            let totalContactWidth;
+            
+            do {
+                 ctx.font = `700 ${contactFontSize}px 'Inter'`;
+                 const iconSize = contactBarHeight * 0.5 * (contactFontSize / initialContactFontSize);
+                 const textIconGap = iconSize * 0.4;
+                 totalContactWidth = items.reduce((acc, item) => {
+                     // Adiciona largura do ícone, gap e texto
+                     return acc + iconSize + textIconGap + ctx.measureText(item.text.toUpperCase()).width;
+                 }, 0) + (items.length > 1 ? itemGap : 0); // Adiciona gap entre itens se houver mais de um
+                 
+                 if (totalContactWidth > contactAreaWidth) {
+                     contactFontSize--;
+                 }
+            } while(totalContactWidth > contactAreaWidth && contactFontSize > 8); // Diminui até caber ou atingir tamanho mínimo
+            
+            
+            // Desenha os itens de contato centralizados na área disponível
+            const iconSize = contactBarHeight * 0.5 * (contactFontSize / initialContactFontSize);
+            const textIconGap = iconSize * 0.4;
+            let currentX = logoRightBoundary + itemGap + (contactAreaWidth - totalContactWidth) / 2; // Posição inicial centralizada
+            
+            ctx.fillStyle = 'white';
+            ctx.textAlign = 'left';
+            items.forEach((item) => {
+                const itemWidth = iconSize + textIconGap + ctx.measureText(item.text.toUpperCase()).width;
+                if (item.icon.complete && item.icon.naturalWidth !== 0) {
+                    ctx.drawImage(item.icon, currentX, contactY - iconSize / 2, iconSize, iconSize);
+                }
+                ctx.fillText(item.text.toUpperCase(), currentX + iconSize + textIconGap, contactY);
+                currentX += itemWidth + itemGap; // Move para o próximo item
+            });
+            
+
+            // Desenha a Logo por último (sobrepõe as barras)
+            if (fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
+                const logoH = fixedLogo.height * (logoW / fixedLogo.width);
+                const logoY = footerStartY - (logoH - footerHeight) / 2; // Centraliza verticalmente no rodapé
+                ctx.drawImage(fixedLogo, padding, logoY, logoW, logoH);
+            }
+        }
+
+        // ===================================================================
+        // LÓGICA DE PAGAMENTO PIX
+        // ===================================================================
+
+        /**
+         * Inicia o processo de pagamento PIX.
+         */
+        async function startPaymentProcess() {
+            if (isPaying || uploadedImages.length === 0) return;
+            isPaying = true;
+
+            // Mostra o loader no botão
+            const originalButtonText = paymentButton.innerHTML;
+            paymentButton.innerHTML = '<div class="loader"></div><span>Gerando PIX...</span>';
+            paymentButton.disabled = true;
+
+            // Reseta o estado do modal
+            pixLoading.classList.remove('hidden');
+            pixDetails.classList.add('hidden');
+            pixError.classList.add('hidden');
+            paymentStatusMessage.textContent = "Aguardando pagamento...";
+            paymentStatusMessage.className = "text-yellow-400 font-medium"; // Reset color
+            copyButtonText.textContent = "Copiar Código"; // Reset texto do botão de copiar
+
+            // Mostra o modal (ainda com o loader)
+            pixModal.classList.remove('hidden');
+            requestAnimationFrame(() => { // Garante que a transição ocorra
+                 pixModal.classList.remove('opacity-0');
+            });
+
+
+            try {
+                // Chama o backend para criar a cobrança
+                const response = await fetch(`${BACKEND_URL}/create-charge`, {
+                    method: 'POST'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`Erro ${response.status} ao criar cobrança.`);
+                }
+
+                const data = await response.json();
+
+                // Armazena o TXID
+                paymentTxid = data.txid;
+
+                // Preenche os detalhes do PIX no modal
+                pixQrCodeImg.src = data.imagemQrcode; // Data URL da imagem
+                pixCopyPaste.value = data.pixCopiaECola;
+
+                // Esconde o loader e mostra os detalhes do PIX
+                pixLoading.classList.add('hidden');
+                pixDetails.classList.remove('hidden');
+
+                // Inicia a verificação do status do pagamento
+                startPaymentPolling();
+
+            } catch (error) {
+                console.error("Erro ao iniciar pagamento:", error);
+                // Mostra a mensagem de erro no modal
+                pixErrorMessage.textContent = error.message || "Não foi possível gerar a cobrança PIX. Por favor, tente novamente.";
+                pixLoading.classList.add('hidden');
+                pixDetails.classList.add('hidden');
+                pixError.classList.remove('hidden');
+                 // Não inicia o polling se deu erro
+                 stopPaymentPolling(); // Garante que qualquer polling anterior seja parado
+                 paymentTxid = null; // Reseta o txid
+            } finally {
+                 // Restaura o botão de pagamento apenas se NÃO houve sucesso em mostrar o PIX
+                 if(pixError.classList.contains('hidden')) {
+                    // Se o PIX foi mostrado com sucesso, não restauramos o botão ainda
+                    // O botão só será restaurado/alterado quando o modal for fechado
+                 } else {
+                    paymentButton.innerHTML = originalButtonText;
+                    paymentButton.disabled = false;
+                    isPaying = false;
+                 }
+                 // Se o erro foi mostrado, o usuário pode fechar o modal
+            }
+        }
+
+        /**
+         * Inicia a verificação periódica do status do pagamento.
+         */
+        function startPaymentPolling() {
+            stopPaymentPolling(); // Garante que não haja múltiplos intervalos rodando
+
+            if (!paymentTxid) return;
+
+            console.log(`Iniciando polling para TXID: ${paymentTxid}`);
+            paymentStatusMessage.textContent = "Aguardando pagamento...";
+            paymentStatusMessage.className = "text-yellow-400 font-medium"; // Amarelo
+
+            paymentCheckInterval = setInterval(async () => {
+                try {
+                    const response = await fetch(`${BACKEND_URL}/check-payment/${paymentTxid}`);
+                    if (!response.ok) {
+                        console.warn(`Polling: Erro ${response.status} ao verificar pagamento.`);
+                        // Poderia adicionar uma lógica para parar após X falhas
+                        return;
+                    }
+                    const data = await response.json();
+
+                    console.log(`Polling status para ${paymentTxid}: ${data.status}`);
+
+                    if (data.status === 'PAID') {
+                        console.log('Pagamento confirmado!');
+                        stopPaymentPolling();
+                        paymentStatusMessage.textContent = "Pagamento Confirmado!";
+                        paymentStatusMessage.className = "text-green-400 font-bold"; // Verde
+
+                        // Aguarda um pouco para o usuário ver a confirmação e fecha o modal
+                        setTimeout(() => {
+                            closeModalAndDownload();
+                        }, 1500); // 1.5 segundos
+
+                    } else if (data.status === 'PENDING') {
+                        // Continua aguardando
+                        paymentStatusMessage.textContent = "Aguardando pagamento...";
+                        paymentStatusMessage.className = "text-yellow-400 font-medium"; // Amarelo
+                    } else { // NOT_FOUND ou outro status inesperado
+                        console.error(`Polling: Status inesperado ou não encontrado: ${data.status}`);
+                        stopPaymentPolling();
+                        paymentStatusMessage.textContent = "Erro ao verificar. Tente novamente.";
+                         paymentStatusMessage.className = "text-red-400 font-medium"; // Vermelho
+                         // Poderia mostrar o erro no modal
+                    }
+
+                } catch (error) {
+                    console.error("Erro durante o polling:", error);
+                    stopPaymentPolling(); // Para em caso de erro de rede, etc.
+                    paymentStatusMessage.textContent = "Erro de conexão. Verifique e tente de novo.";
+                    paymentStatusMessage.className = "text-red-400 font-medium"; // Vermelho
+                }
+            }, 3000); // Verifica a cada 3 segundos
+        }
+
+        /**
+         * Para a verificação periódica do status do pagamento.
+         */
+        function stopPaymentPolling() {
+            if (paymentCheckInterval) {
+                console.log(`Parando polling para TXID: ${paymentTxid}`);
+                clearInterval(paymentCheckInterval);
+                paymentCheckInterval = null;
+            }
+        }
+
+        /**
+         * Fecha o modal PIX e inicia o processo de download original.
+         */
+        function closeModalAndDownload() {
+             hidePixModal(); // Fecha o modal visualmente
+             handleDownloadOriginal(); // Chama a função original de download
+        }
+
+        /** Esconde o Modal PIX */
+        function hidePixModal() {
+            stopPaymentPolling(); // Garante que o polling pare ao fechar
+            pixModal.classList.add('opacity-0');
+            setTimeout(() => { // Espera a transição de opacidade terminar
+                pixModal.classList.add('hidden');
+                // Restaura o botão principal após fechar o modal
+                paymentButton.disabled = false;
+                isPaying = false;
+                 if (uploadedImages.length === 1) {
+                    paymentButton.innerHTML = '<span>Pagar R$ 1,00 para Baixar Anúncio (.png)</span>';
+                } else {
+                    paymentButton.innerHTML = `<span>Pagar R$ 1,00 para Baixar Anúncios (.zip)</span>`;
+                }
+            }, 300); // Tempo da transição de opacidade
+        }
+
+
+        /** Copia o código PIX para a área de transferência */
+        function copyPixToClipboard() {
+            pixCopyPaste.select();
+            pixCopyPaste.setSelectionRange(0, 99999); // Para mobile
+
+            try {
+                // document.execCommand é considerado legado, mas é mais compatível em iframes
+                const successful = document.execCommand('copy');
+                if (successful) {
+                    copyButtonText.textContent = "Copiado!";
+                    setTimeout(() => { copyButtonText.textContent = "Copiar Código"; }, 2000); // Volta ao normal
+                } else {
+                     copyButtonText.textContent = "Falha ao copiar";
+                     console.error('Fallback: Falha ao usar document.execCommand');
+                }
+            } catch (err) {
+                copyButtonText.textContent = "Falha ao copiar";
+                console.error('Erro ao copiar:', err);
+            }
+             // Desseleciona o texto
+            window.getSelection().removeAllRanges();
+        }
+
+        // ===================================================================
+        // LÓGICA ORIGINAL DE DOWNLOAD (Renomeada)
+        // ===================================================================
+        async function handleDownloadOriginal() {
+            if (isProcessing || uploadedImages.length === 0) return;
+            isProcessing = true;
+
+            // Loader no botão de pagamento (agora usado para download real)
+            const originalText = paymentButton.innerHTML; // Pega o texto atual (pode ser Pagar ou Baixar)
+             paymentButton.innerHTML = '<div class="loader"></div><span>Preparando Download...</span>';
+             paymentButton.disabled = true;
+
+
+            try {
+                if (uploadedImages.length === 1) {
+                    const canvas = await createAdCanvas(uploadedImages[0]);
+                    const link = document.createElement('a');
+                    link.download = `anuncio-${getFormData().marca}-${getFormData().modelo}.png`.toLowerCase().replace(/\s+/g, '-');
+                    link.href = canvas.toDataURL('image/png');
+                    link.click();
+                } else {
+                    const zip = new JSZip();
+                    const baseFilename = `anuncios-${getFormData().marca}-${getFormData().modelo}`.toLowerCase().replace(/\s+/g, '-');
+                    for (let i = 0; i < uploadedImages.length; i++) {
+                        const canvas = await createAdCanvas(uploadedImages[i]);
+                        const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+                        zip.file(`${baseFilename}-${i + 1}.png`, blob);
+                    }
+                    const zipBlob = await zip.generateAsync({ type: 'blob' });
+                    const link = document.createElement('a');
+                    link.download = `${baseFilename}.zip`;
+                    link.href = URL.createObjectURL(zipBlob);
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                }
+            } catch (error) {
+                console.error("Erro ao gerar arquivo para download:", error);
+                // Usar um modal customizado em vez de alert
+                showCustomAlert("Ocorreu um erro ao gerar o arquivo. Tente novamente.");
+            } finally {
+                isProcessing = false;
+                // Restaura o botão para o estado de "Pagar" após download
+                 paymentButton.innerHTML = originalText; // Usa o texto que estava antes de iniciar o download
+                 paymentButton.disabled = false;
+            }
+        }
+
+        // Função placeholder para alerta customizado (implementar se desejar)
+        function showCustomAlert(message) {
+            console.warn("Alerta:", message); // No console por enquanto
+            // Aqui você poderia criar e mostrar um modal de alerta
+            // Ex: document.getElementById('myCustomAlertText').textContent = message;
+            //     document.getElementById('myCustomAlertModal').classList.remove('hidden');
+        }
+
+
+        // ===================================================================
+        // EVENT LISTENERS (Adiciona listeners aos elementos)
+        // ===================================================================
         window.addEventListener('load', function() {
-            const form = document.getElementById('vehicleForm');
-            const fileInput = document.getElementById('vehiclePhoto');
-            const thumbnailsContainer = document.getElementById('thumbnails');
-            const telefoneInput = document.getElementById('telefone');
-            const precoInput = document.getElementById('preco');
-            const kmInput = document.getElementById('km');
-            const previewArea = document.getElementById('previewArea');
-            const previewPlaceholder = document.getElementById('previewPlaceholder');
-            const downloadButton = document.getElementById('downloadButton');
-            const prevButton = document.getElementById('prevButton');
-            const nextButton = document.getElementById('nextButton');
-            const imageCounter = document.getElementById('imageCounter');
-
-            let uploadedImages = [];
-            let currentPreviewIndex = 0;
-            let isProcessing = false;
-            const adColor = '#ce191f';
-            const fixedAddress = "Av. Joubert de Carvalho";
-            
-            const fixedLogo = new Image();
-            fixedLogo.src = "https://criadordeanuncio.com/images/logo.png";
-            fixedLogo.crossOrigin = "Anonymous";
-
-            const phoneIcon = new Image();
-            phoneIcon.src = "https://criadordeanuncio.com/images/logo-zap.png";
-            phoneIcon.crossOrigin = "Anonymous";
-
-            const mapsIcon = new Image();
-            mapsIcon.src = "https://criadordeanuncio.com/images/logo-maps.png";
-            mapsIcon.crossOrigin = "Anonymous";
-            
-            const toolsIcon = new Image();
-            toolsIcon.src = "https://criadordeanuncio.com/images/logo-tools.png";
-            toolsIcon.crossOrigin = "Anonymous";
-
-            function saveData() {
-                localStorage.setItem('savedTelefone', telefoneInput.value);
-            }
-
-            function loadSavedData() {
-                telefoneInput.value = localStorage.getItem('savedTelefone') || '';
-                if (telefoneInput.value) telefoneInput.value = maskPhone(telefoneInput.value);
-            }
-            
-            loadSavedData();
+            loadSavedData(); // Carrega telefone salvo
 
             fileInput.addEventListener('change', handleImageUpload);
-            form.addEventListener('input', () => setTimeout(updatePreviewUI, 50));
-            downloadButton.addEventListener('click', handleDownload);
+            form.addEventListener('input', () => setTimeout(updatePreviewUI, 50)); // Atualiza preview com delay
+            paymentButton.addEventListener('click', startPaymentProcess); // Botão principal agora inicia o pagamento
+
+            // Listeners da navegação de preview
             prevButton.addEventListener('click', () => {
                 if (currentPreviewIndex > 0) {
                     currentPreviewIndex--;
@@ -238,6 +1004,8 @@
                     updatePreviewUI();
                 }
             });
+
+            // Listeners das máscaras e save
             telefoneInput.addEventListener('input', () => {
                 telefoneInput.value = maskPhone(telefoneInput.value);
                 saveData();
@@ -249,419 +1017,18 @@
                 e.target.value = formatNumericInput(e.target.value);
             });
 
-            function maskPhone(value) {
-                value = value.replace(/\D/g, '');
-                value = value.replace(/^(\d{2})(\d)/, '($1) $2');
-                value = value.replace(/(\d{4,5})(\d{4})$/, '$1-$2');
-                return value;
-            }
-            
-            function formatNumericInput(value) {
-                return value.replace(/\D/g, '');
-            }
+            // Listeners do Modal PIX
+            closePixModal.addEventListener('click', hidePixModal);
+            copyPixCode.addEventListener('click', copyPixToClipboard);
 
-            function formatPriceDisplay(price) {
-                const number = parseFloat(price);
-                if (isNaN(number)) return "";
-                return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-            }
-
-            function formatKmDisplay(km) {
-                const number = parseInt(km, 10);
-                if (isNaN(number)) return "";
-                return `${number.toLocaleString('pt-BR')} KM`;
-            }
-
-            function renderThumbnails() {
-                thumbnailsContainer.innerHTML = '';
-                uploadedImages.forEach((img, index) => {
-                    const thumbContainer = document.createElement('div');
-                    thumbContainer.className = 'relative flex-shrink-0';
-
-                    const thumbImage = document.createElement('img');
-                    thumbImage.src = img.src;
-                    thumbImage.className = "w-20 h-20 object-cover rounded-md border-2 border-gray-600";
-                    thumbContainer.appendChild(thumbImage);
-
-                    const deleteButton = document.createElement('button');
-                    deleteButton.type = 'button';
-                    deleteButton.innerHTML = '&times;';
-                    deleteButton.className = "absolute top-0 right-0 -mt-2 -mr-2 bg-red-600 text-white rounded-full w-5 h-5 flex items-center justify-center text-lg font-bold leading-none focus:outline-none hover:bg-red-700 transition-transform transform hover:scale-110";
-                    deleteButton.dataset.index = index;
-
-                    deleteButton.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const indexToRemove = parseInt(e.currentTarget.dataset.index, 10);
-                        removeImage(indexToRemove);
-                    });
-
-                    thumbContainer.appendChild(deleteButton);
-                    thumbnailsContainer.appendChild(thumbContainer);
-                });
-            }
-
-            function removeImage(index) {
-                uploadedImages.splice(index, 1);
-                if (currentPreviewIndex >= uploadedImages.length) {
-                    currentPreviewIndex = Math.max(0, uploadedImages.length - 1);
+             // Fechar modal clicando fora (no backdrop)
+            pixModal.addEventListener('click', (event) => {
+                if (event.target === pixModal) {
+                    hidePixModal();
                 }
-                renderThumbnails();
-                updatePreviewUI();
-            }
-
-            function handleImageUpload(e) {
-                const files = e.target.files;
-                uploadedImages = [];
-                currentPreviewIndex = 0;
-
-                if (files.length === 0) {
-                    renderThumbnails();
-                    updatePreviewUI();
-                    return;
-                }
-
-                const filePromises = Array.from(files).map(file => {
-                    return new Promise((resolve, reject) => {
-                        if (file.type.startsWith('image/')) {
-                            const reader = new FileReader();
-                            reader.onload = (event) => {
-                                const img = new Image();
-                                img.onload = () => {
-                                    uploadedImages.push(img);
-                                    resolve();
-                                };
-                                img.onerror = reject;
-                                img.src = event.target.result;
-                            };
-                            reader.onerror = reject;
-                            reader.readAsDataURL(file);
-                        } else {
-                            resolve();
-                        }
-                    });
-                });
-
-                Promise.all(filePromises).then(() => {
-                    renderThumbnails();
-                    updatePreviewUI();
-                });
-            }
-            
-            async function updatePreviewUI() {
-                previewArea.innerHTML = '';
-
-                if (uploadedImages.length === 0) {
-                    previewArea.appendChild(previewPlaceholder);
-                    downloadButton.classList.add('hidden');
-                    prevButton.classList.add('hidden');
-                    nextButton.classList.add('hidden');
-                    imageCounter.classList.add('hidden');
-                    return;
-                }
-                
-                const currentImage = uploadedImages[currentPreviewIndex];
-                const canvas = await createAdCanvas(currentImage);
-                canvas.className = "rounded-md shadow-lg w-full h-auto";
-                previewArea.appendChild(canvas);
-
-                if (uploadedImages.length === 1) {
-                    downloadButton.innerHTML = '<span>Baixar Anúncio (.png)</span>';
-                } else {
-                    downloadButton.innerHTML = `<span>Baixar Anúncios (.zip)</span>`;
-                }
-                downloadButton.classList.remove('hidden');
-
-                if (uploadedImages.length > 1) {
-                    prevButton.classList.remove('hidden');
-                    nextButton.classList.remove('hidden');
-                    imageCounter.classList.remove('hidden');
-
-                    imageCounter.textContent = `Imagem ${currentPreviewIndex + 1} de ${uploadedImages.length}`;
-
-                    prevButton.disabled = currentPreviewIndex === 0;
-                    
-                    nextButton.disabled = currentPreviewIndex === uploadedImages.length - 1;
-                } else {
-                    prevButton.classList.add('hidden');
-                    nextButton.classList.add('hidden');
-                    imageCounter.classList.add('hidden');
-                }
-            }
-            
-            function getFormData() {
-                return {
-                    marca: document.getElementById('marca').value.trim(),
-                    modelo: document.getElementById('modelo').value.trim(),
-                    ano: document.getElementById('ano').value.trim(),
-                    km: document.getElementById('km').value.trim(),
-                    preco: document.getElementById('preco').value.trim(),
-                    cilindrada: document.getElementById('cilindrada').value.trim(),
-                    cambio: document.getElementById('cambio').checked ? 'Automático' : 'Manual',
-                    observacao: document.getElementById('observacao').value.trim(),
-                    telefone: document.getElementById('telefone').value.trim(),
-                    endereco: fixedAddress,
-                };
-            }
-
-            const adjustTextToFit = (ctx, text, icon, iconSize, iconGap, availableWidth, initialFontSize) => {
-                let fontSize = initialFontSize;
-                let textMetrics;
-                let totalWidth;
-                
-                do {
-                    ctx.font = `700 ${fontSize}px 'Inter'`;
-                    textMetrics = ctx.measureText(text);
-                    totalWidth = (icon ? iconSize + iconGap : 0) + textMetrics.width;
-                    if (totalWidth > availableWidth) {
-                        fontSize -= 1;
-                    }
-                } while (totalWidth > availableWidth && fontSize > 8);
-                
-                return { fontSize, totalWidth };
-            };
-
-            async function createAdCanvas(image) {
-                const canvas = document.createElement('canvas');
-                const ctx = canvas.getContext('2d');
-                const data = getFormData();
-                const padding = image.width * 0.03;
-                
-                const headerHeight = image.height * 0.15;
-                let baseFooterHeight = image.height * 0.18;
-                let obsBarHeight = 0;
-                let hasExtraObsBar = false;
-
-                if (data.observacao && fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
-                    const tempCanvas = document.createElement('canvas');
-                    const tempCtx = tempCanvas.getContext('2d');
-                    const logoMaxHeight = baseFooterHeight * 1.1;
-                    const logoMaxWidth = image.width * 0.4;
-                    const scale = Math.min(logoMaxWidth / fixedLogo.width, logoMaxHeight / fixedLogo.height);
-                    const logoW = fixedLogo.width * scale;
-                    const logoRightBoundary = padding + logoW;
-                    const availableInfoWidth = image.width - logoRightBoundary - padding * 2;
-
-                    const infoTextWithObs = `${data.cambio.toUpperCase()}   |   ${data.cilindrada}   |   ${formatKmDisplay(data.km)}   |   ${data.observacao.toUpperCase()}`;
-                    const tempFontSize = (baseFooterHeight * 0.4) * 0.5;
-                    tempCtx.font = `700 ${tempFontSize}px 'Inter'`;
-                    const textMetrics = tempCtx.measureText(infoTextWithObs);
-
-                    if (textMetrics.width > availableInfoWidth) {
-                        hasExtraObsBar = true;
-                        obsBarHeight = baseFooterHeight * 0.4;
-                    }
-                }
-                
-                const footerHeight = baseFooterHeight + obsBarHeight;
-
-                canvas.width = image.width;
-                canvas.height = image.height + headerHeight + footerHeight;
-                
-                ctx.fillStyle = 'black';
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(image, 0, headerHeight, image.width, image.height);
-
-                drawOverlays(ctx, canvas.width, image.height, headerHeight, footerHeight, data, hasExtraObsBar, obsBarHeight);
-                return canvas;
-            }
-
-            function drawOverlays(ctx, width, imgHeight, headerHeight, footerHeight, data, hasExtraObsBar, obsBarHeight) {
-                const padding = width * 0.03;
-                
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
-                ctx.fillRect(0, 0, width, headerHeight);
-
-                ctx.textAlign = 'right';
-                ctx.font = `900 ${headerHeight * 0.4}px 'Inter'`;
-                const priceText = formatPriceDisplay(data.preco);
-                const priceMetrics = ctx.measureText(priceText);
-                const priceBoxPadding = headerHeight * 0.2;
-                
-                const minPriceBoxWidth = width * 0.35;
-                const requiredPriceBoxWidth = priceMetrics.width + priceBoxPadding * 2;
-                const priceBoxWidth = Math.max(minPriceBoxWidth, requiredPriceBoxWidth);
-
-                const priceShapeStartX = width - priceBoxWidth;
-
-                ctx.fillStyle = adColor;
-                ctx.beginPath();
-                ctx.moveTo(priceShapeStartX - (headerHeight*0.25), 0);
-                ctx.lineTo(width, 0);
-                ctx.lineTo(width, headerHeight);
-                ctx.lineTo(priceShapeStartX, headerHeight);
-                ctx.closePath();
-                ctx.fill();
-
-                ctx.fillStyle = 'white';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(priceText, width - padding, headerHeight / 2);
-
-
-                ctx.textAlign = 'left';
-                const marcaY = headerHeight * 0.3;
-                ctx.font = `900 ${headerHeight * 0.3}px 'Inter'`;
-                ctx.fillText(data.marca.toUpperCase(), padding, marcaY);
-                
-                const modeloY = headerHeight * 0.65;
-                ctx.font = `700 ${headerHeight * 0.23}px 'Inter'`;
-                ctx.fillText(data.modelo.toUpperCase(), padding, modeloY);
-                
-                const modeloMetrics = ctx.measureText(data.modelo.toUpperCase());
-                const anoX = padding + modeloMetrics.width + width * 0.02;
-                
-                ctx.font = `700 ${headerHeight * 0.18}px 'Inter'`;
-                const anoMetrics = ctx.measureText(data.ano);
-                
-                ctx.fillStyle = adColor;
-                ctx.fillRect(anoX - 5, modeloY - (headerHeight * 0.18)/2 - 5, anoMetrics.width + 10, headerHeight * 0.22 + 5);
-                
-                ctx.fillStyle = 'white';
-                ctx.fillText(data.ano, anoX, modeloY);
-
-                const footerStartY = imgHeight + headerHeight;
-                const infoBarHeight = (footerHeight - obsBarHeight) * 0.4;
-                const contactBarStartY = footerStartY + infoBarHeight + obsBarHeight;
-                const contactBarHeight = footerHeight - infoBarHeight - obsBarHeight;
-                
-                let logoW = 0;
-                if (fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
-                    const logoMaxHeight = footerHeight * 1.1;
-                    const logoMaxWidth = width * 0.4;
-                    const scale = Math.min(logoMaxWidth / fixedLogo.width, logoMaxHeight / fixedLogo.height);
-                    logoW = fixedLogo.width * scale;
-                }
-                const logoRightBoundary = padding + logoW;
-
-                ctx.fillStyle = adColor;
-                ctx.fillRect(0, footerStartY, width, infoBarHeight);
-
-                let centralText = `${data.cambio.toUpperCase()}   |   ${data.cilindrada}   |   ${formatKmDisplay(data.km)}`;
-                if (!hasExtraObsBar && data.observacao) {
-                    centralText += `   |   ${data.observacao.toUpperCase()}`;
-                }
-
-                const centralY = footerStartY + infoBarHeight / 2;
-                const availableCentralWidth = width - padding - logoRightBoundary - padding;
-                
-                const vehicleInfoFit = adjustTextToFit(ctx, centralText, toolsIcon, infoBarHeight * 0.5, infoBarHeight * 0.2, availableCentralWidth, infoBarHeight * 0.5);
-                ctx.font = `700 ${vehicleInfoFit.fontSize}px 'Inter'`;
-                const centralIconSize = infoBarHeight * 0.5 * (vehicleInfoFit.fontSize / (infoBarHeight * 0.5));
-                const centralIconGap = infoBarHeight * 0.2 * (vehicleInfoFit.fontSize / (infoBarHeight * 0.5));
-                
-                const centralStartX = width - padding - vehicleInfoFit.totalWidth;
-                ctx.fillStyle = 'white';
-                ctx.textAlign = 'left';
-                if (toolsIcon.complete && toolsIcon.naturalWidth !== 0) {
-                    ctx.drawImage(toolsIcon, centralStartX, centralY - centralIconSize / 2, centralIconSize, centralIconSize);
-                }
-                ctx.fillText(centralText, centralStartX + centralIconSize + centralIconGap, centralY);
-
-                if (hasExtraObsBar) {
-                    const obsBarStartY = footerStartY + infoBarHeight;
-                    ctx.fillStyle = adColor;
-                    ctx.fillRect(0, obsBarStartY, width, obsBarHeight);
-                    const obsY = obsBarStartY + obsBarHeight / 2;
-                    const availableObsWidth = width - padding - logoRightBoundary - padding;
-                    
-                    const obsFit = adjustTextToFit(ctx, data.observacao.toUpperCase(), null, 0, 0, availableObsWidth, infoBarHeight * 0.5);
-                    ctx.fillStyle = 'white';
-                    ctx.textAlign = 'right';
-                    ctx.font = `700 ${obsFit.fontSize}px 'Inter'`;
-                    ctx.fillText(data.observacao.toUpperCase(), width - padding, obsY);
-                }
-                
-                ctx.fillStyle = 'rgba(10, 10, 10, 0.85)';
-                ctx.fillRect(0, contactBarStartY, width, contactBarHeight);
-
-                const items = [
-                    { icon: phoneIcon, text: data.telefone },
-                    { icon: mapsIcon, text: data.endereco }
-                ];
-
-                const contactY = contactBarStartY + contactBarHeight / 2;
-                const itemGap = width * 0.03;
-                const contactAreaWidth = width - logoRightBoundary - padding - itemGap;
-                
-                const initialContactFontSize = contactBarHeight * 0.45;
-                let contactFontSize = initialContactFontSize;
-                let totalContactWidth;
-                
-                do {
-                    ctx.font = `700 ${contactFontSize}px 'Inter'`;
-                    const iconSize = contactBarHeight * 0.5 * (contactFontSize / initialContactFontSize);
-                    const textIconGap = iconSize * 0.4;
-                    totalContactWidth = items.reduce((acc, item) => {
-                        return acc + iconSize + textIconGap + ctx.measureText(item.text.toUpperCase()).width;
-                    }, 0) + (items.length > 1 ? itemGap : 0);
-                    
-                    if (totalContactWidth > contactAreaWidth) {
-                        contactFontSize--;
-                    }
-                } while(totalContactWidth > contactAreaWidth && contactFontSize > 8);
-                
-                
-                const iconSize = contactBarHeight * 0.5 * (contactFontSize / initialContactFontSize);
-                const textIconGap = iconSize * 0.4;
-                let currentX = logoRightBoundary + itemGap + (contactAreaWidth - totalContactWidth) / 2;
-                
-                ctx.fillStyle = 'white';
-                ctx.textAlign = 'left';
-                items.forEach((item) => {
-                    const itemWidth = iconSize + textIconGap + ctx.measureText(item.text.toUpperCase()).width;
-                    if (item.icon.complete && item.icon.naturalWidth !== 0) {
-                        ctx.drawImage(item.icon, currentX, contactY - iconSize / 2, iconSize, iconSize);
-                    }
-                    ctx.fillText(item.text.toUpperCase(), currentX + iconSize + textIconGap, contactY);
-                    currentX += itemWidth + itemGap;
-                });
-                
-
-                if (fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
-                    const logoH = fixedLogo.height * (logoW / fixedLogo.width);
-                    const logoY = footerStartY - (logoH - footerHeight) / 2;
-                    ctx.drawImage(fixedLogo, padding, logoY, logoW, logoH);
-                }
-            }
-
-            async function handleDownload() {
-                if (isProcessing || uploadedImages.length === 0) return;
-                isProcessing = true;
-                
-                const originalText = downloadButton.innerHTML;
-                downloadButton.innerHTML = '<div class="loader"></div><span>Processando...</span>';
-                downloadButton.disabled = true;
-
-                try {
-                    if (uploadedImages.length === 1) {
-                        const canvas = await createAdCanvas(uploadedImages[0]);
-                        const link = document.createElement('a');
-                        link.download = 'anuncio-veiculo.png';
-                        link.href = canvas.toDataURL('image/png');
-                        link.click();
-                    } else {
-                        const zip = new JSZip();
-                        for (let i = 0; i < uploadedImages.length; i++) {
-                            const canvas = await createAdCanvas(uploadedImages[i]);
-                            const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
-                            zip.file(`anuncio-${i + 1}.png`, blob);
-                        }
-                        const zipBlob = await zip.generateAsync({ type: 'blob' });
-                        const link = document.createElement('a');
-                        link.download = 'anuncios-veiculos.zip';
-                        link.href = URL.createObjectURL(zipBlob);
-                        link.click();
-                        URL.revokeObjectURL(link.href);
-                    }
-                } catch (error) {
-                    console.error("Erro ao gerar arquivo:", error);
-                    alert("Ocorreu um erro ao gerar o arquivo. Tente novamente.");
-                } finally {
-                    isProcessing = false;
-                    downloadButton.innerHTML = originalText;
-                    downloadButton.disabled = false;
-                }
-            }
+            });
         });
+
     </script>
 </body>
 </html>

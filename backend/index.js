@@ -155,9 +155,9 @@ app.get('/configure-webhook/:secret', async (req, res) => {
         console.log(`Registrando Webhook para a chave ${EFI_PIX_KEY}...`);
         console.log(`URL: ${WEBHOOK_URL_COMPLETA}`);
 
-        // 4. Fazer a chamada PUT para registrar o webhook
+        // 4. Fazer a chamada POST para registrar o webhook (CORREÇÃO AQUI)
         await axios({
-            method: 'PUT',
+            method: 'POST', // <-- CORRIGIDO DE 'PUT' PARA 'POST'
             url: url,
             httpsAgent: apiAgent,
             headers: {

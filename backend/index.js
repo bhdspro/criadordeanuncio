@@ -1,13 +1,13 @@
 // ===================================================================
 // SERVIDOR BACKEND (PARA DEPLOY NO RENDER)
 // ===================================================================
-// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - LIMPA - REMOVENDO HTTPS AGENT)
+// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - LIMPA - REINTRODUZINDO HTTPS AGENT)
 // ===================================================================
 
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-// import https from 'https'; // Não precisamos mais do https agent aqui
+import https from 'https'; // Reintroduzido para o https agent
 import axios from 'axios';
 import { getEfiToken } from './efiAuth.js';
 
@@ -26,10 +26,10 @@ if (!EFI_PIX_KEY) {
     process.exit(1);
 }
 
-// // Agente para as chamadas de API - REMOVIDO PARA TESTE
-// const apiAgent = new https.Agent({
-//     rejectUnauthorized: false
-// });
+// Agente para as chamadas de API - REINTRODUZIDO
+const apiAgent = new https.Agent({
+    rejectUnauthorized: false // Importante para certificados da Efí
+});
 
 // Armazenamento Simples de Pagamentos
 const paymentStatus = new Map();
@@ -57,7 +57,7 @@ app.post('/create-charge', async (req, res) => {
         const cobResponse = await axios({
             method: 'POST',
             url: `${EFI_PIX_URL}/v2/cob`,
-            // https: apiAgent, // REMOVIDO PARA TESTE
+            https: apiAgent, // REINTRODUZIDO
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -80,7 +80,7 @@ app.post('/create-charge', async (req, res) => {
         const qrResponse = await axios({
             method: 'GET',
             url: `${EFI_PIX_URL}/v2/loc/${locId}/qrcode`,
-            // https: apiAgent, // REMOVIDO PARA TESTE
+            https: apiAgent, // REINTRODUZIDO
             headers: {
                 'Authorization': `Bearer ${token}`
             }

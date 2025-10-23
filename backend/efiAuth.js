@@ -44,6 +44,33 @@ export async function getEfiToken() {
 
     try {
         const response = await axios({
-// ... (O restante do arquivo continua igual ao que você tem) ...
-// ... (catch (error) ...) ...
+            method: 'POST',
+            url: `${EFI_BASE_URL}/oauth/token`,
+            https: authAgent,
+            headers: {
+                'Authorization': `Basic ${credentials}`,
+                'Content-Type': 'application/json'
+            },
+            data: {
+                grant_type: 'client_credentials'
+            }
+        });
+
+        efiAccessToken = response.data.access_token;
+        tokenExpires = Date.now() + (response.data.expires_in * 1000);
+        console.log('Token Efí gerado com sucesso.');
+        return efiAccessToken;
+
+    } catch (error) {
+        // Log mais detalhado
+        console.error('Erro ao obter token da Efí:');
+        if (error.response) {
+            console.error('Status:', error.response.status);
+            console.error('Detalhes:', JSON.stringify(error.response.data, null, 2));
+        } else {
+            console.error('Mensagem:', error.message);
+        }
+        throw new Error('Falha na autenticação com a Efí.');
+    }
+}
 

@@ -4,20 +4,21 @@
 // Arquivo: configurarWebhook.js
 // ===================================================================
 
-import 'dotenv/config'; // Carrega variáveis de .env
+import 'dotenv/config'; // Carrega variáveis do .env local
 import https from 'https';
 import axios from 'axios';
 import { getEfiToken } from './efiAuth.js'; // Importa a função de auth
 
 // --- Configuração das Variáveis de Ambiente ---
 const {
-    EFI_PIX_KEY, // Sua chave PIX
-    EFI_SANDBOX, // 'true' para testes, 'false' para produção
-    WEBHOOK_URL // A URL do seu backend no Render
+    EFI_PIX_KEY, // Chave PIX
+    EFI_SANDBOX, // 'true' ou 'false'
+    WEBHOOK_URL  // URL completa do seu backend (Ex: https://...onrender.com/webhook)
 } = process.env;
 
 const EFI_ENV = EFI_SANDBOX === 'true' ? 'sandbox' : 'producao';
-const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.eﬁ.com.br`;
+// CORREÇÃO: Domínio correto 'efi.com.br'
+const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efi.com.br`;
 
 // Agente para as chamadas de API
 const apiAgent = new https.Agent({
@@ -25,62 +26,61 @@ const apiAgent = new https.Agent({
 });
 
 /**
- * Função principal para configurar o Webhook
+ * Função principal para configurar o webhook.
  */
 async function configurarWebhook() {
     console.log('Iniciando configuração do Webhook na Efí...');
 
+    // Validação
     if (!EFI_PIX_KEY || !WEBHOOK_URL) {
-        console.error('ERRO: As variáveis EFI_PIX_KEY e WEBHOOK_URL precisam estar no seu arquivo .env');
+        console.error('❌ ERRO: Verifique se EFI_PIX_KEY e WEBHOOK_URL estão definidos no arquivo .env');
         return;
     }
 
     try {
+        // 1. Obter token de acesso
         const token = await getEfiToken();
 
-        // A URL do webhook DEVE ter o sufixo "?ignorar="
-        // A Efí adiciona "/pix" ao final, e isso faz com que a query string seja ignorada.
-        const urlParaRegistrar = `${WEBHOOK_URL}?ignorar=`;
-
+        // 2. Definir o payload e a URL
         const payload = {
-            webhookUrl: urlParaRegistrar
+            webhookUrl: WEBHOOK_URL
         };
+        const url = `${EFI_BASE_URL}/v2/webhook/${EFI_PIX_KEY}`;
 
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-            // IMPORTANTE: Isso desabilita a verificação mTLS,
-            // que é necessária para o plano gratuito do Render.
-            'x-skip-mtls-checking': 'true'
-        };
-        
-        // A chave pix vai na URL da chamada PUT
-        const urlApi = `${EFI_BASE_URL}/v2/webhook/${encodeURIComponent(EFI_PIX_KEY)}`;
+        console.log(`Registrando Webhook para a chave ${EFI_PIX_KEY}...`);
+        console.log(`URL: ${WEBHOOK_URL}`);
 
-        console.log(`Enviando configuração para a chave ${EFI_PIX_KEY}...`);
-        console.log(`URL a ser registrada: ${urlParaRegistrar}`);
-
+        // 3. Fazer a chamada PUT para registrar o webhook
         await axios({
             method: 'PUT',
-            url: urlApi,
-            https: apiAgent,
-            headers: headers,
+            url: url,
+            httpsAgent: apiAgent,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                // IMPORTANTE: Isso pula a verificação mTLS que o Render não suporta
+                'x-skip-mtls-checking': 'true' 
+            },
             data: payload
         });
 
-        console.log('\n✅ SUCESSO! Webhook configurado com sucesso na Efí.');
-        console.log('Seu backend agora está pronto para receber notificações de pagamento.');
+        console.log('✅ SUCESSO! Webhook configurado com sucesso na Efí.');
+        console.log('O seu backend no Render agora será notificado sobre pagamentos.');
 
     } catch (error) {
         console.error('\n❌ ERRO AO CONFIGURAR O WEBHOOK:');
-        if (error.response) {
+        
+        if (error.message.includes('Falha na autenticação')) {
+            console.error(error.message); // Erro do getEfiToken
+        } else if (error.response) {
+            // Erros da chamada PUT
             console.error('Status:', error.response.status);
-            console.error('Data:', JSON.stringify(error.response.data, null, 2));
+            console.error('Detalhes:', JSON.stringify(error.response.data, null, 2));
         } else {
-            console.error(error.message);
+            console.error('Erro desconhecido:', error.message);
         }
-        // Mensagem de ajuda corrigida (webhook.write)
-        console.log('\nVerifique se suas credenciais (CLIENT_ID, CLIENT_SECRET, EFI_PIX_KEY) estão corretas no arquivo .env e se o escopo "Alterar Webhooks" (webhook.write) está ativo na sua Aplicação Efí.');
+
+        console.error('\nVerifique se suas credenciais (CLIENT_ID, CLIENT_SECRET, EFI_PIX_KEY) estão corretas no arquivo .env e se o escopo "Alterar Webhooks" (webhook.write) está ativo na sua Aplicação Efí.');
     }
 }
 

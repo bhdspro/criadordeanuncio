@@ -1,7 +1,7 @@
 // ===================================================================
 // SERVIDOR BACKEND (PARA DEPLOY NO RENDER)
 // ===================================================================
-// Arquivo: index.js
+// Arquivo: index.js (VERSÃO COMPLETA E CORRIGIDA)
 // ===================================================================
 
 import 'dotenv/config'; // Carrega variáveis de .env
@@ -9,73 +9,29 @@ import express from 'express';
 import cors from 'cors';
 import https from 'https';
 import axios from 'axios';
-import crypto from 'crypto';
+import { getEfiToken } from './efiAuth.js'; // Importa a função de auth
 
 // --- Configuração das Variáveis de Ambiente ---
-// Você DEVE configurar estas variáveis no Render
 const {
-    EFI_CLIENT_ID,
-    EFI_CLIENT_SECRET,
     EFI_PIX_KEY, // Sua chave PIX (CPF, CNPJ, e-mail, etc.) cadastrada na Efí
     EFI_SANDBOX // 'true' para testes, 'false' para produção
 } = process.env;
 
 const EFI_ENV = EFI_SANDBOX === 'true' ? 'sandbox' : 'producao';
-const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.eﬁ.com.br`;
+// CORREÇÃO: Domínio correto 'efi.com.br'
+const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efi.com.br`;
 
 // Validação de configuração
-if (!EFI_CLIENT_ID || !EFI_CLIENT_SECRET || !EFI_PIX_KEY) {
-    console.error('ERRO: Variáveis de ambiente da Efí (CLIENT_ID, CLIENT_SECRET, PIX_KEY) não estão definidas!');
+if (!EFI_PIX_KEY) {
+    console.error('ERRO: Variável de ambiente EFI_PIX_KEY não está definida!');
     process.exit(1);
 }
 
-// --- Autenticação Efí (OAuth2) ---
-// Agente para autenticação (Basic Auth)
-const authAgent = new https.Agent({
-    rejectUnauthorized: false // Necessário para os certificados da Efí em alguns ambientes
+// Agente para as chamadas de API
+const apiAgent = new https.Agent({
+    rejectUnauthorized: false
 });
 
-// Cache do token de acesso
-let efiAccessToken = null;
-let tokenExpires = 0;
-
-/**
- * Obtém um token de acesso da Efí, usando cache.
- */
-async function getEfiToken() {
-    // Se o token existe e ainda é válido (com 60s de margem)
-    if (efiAccessToken && Date.now() < tokenExpires - 60000) {
-        return efiAccessToken;
-    }
-
-    console.log('Gerando novo token de acesso Efí...');
-    const credentials = Buffer.from(`${EFI_CLIENT_ID}:${EFI_CLIENT_SECRET}`).toString('base64');
-
-    try {
-        const response = await axios({
-            method: 'POST',
-            url: `${EFI_BASE_URL}/oauth/token`,
-            https://: authAgent,
-            headers: {
-                'Authorization': `Basic ${credentials}`,
-                'Content-Type': 'application/json'
-            },
-            data: {
-                grant_type: 'client_credentials'
-            }
-        });
-
-        efiAccessToken = response.data.access_token;
-        // Define a expiração (em milissegundos)
-        tokenExpires = Date.now() + (response.data.expires_in * 1000);
-        console.log('Token Efí gerado com sucesso.');
-        return efiAccessToken;
-
-    } catch (error) {
-        console.error('Erro ao obter token da Efí:', error.response?.data || error.message);
-        throw new Error('Falha na autenticação com a Efí.');
-    }
-}
 
 // --- Armazenamento Simples de Pagamentos ---
 // Em produção, use um banco de dados (Redis, Firestore, etc.)
@@ -91,7 +47,7 @@ app.use(express.json()); // Habilita o parsing de JSON no body
 app.post('/create-charge', async (req, res) => {
     console.log('Recebida requisição para /create-charge');
     try {
-        const token = await getEfiToken();
+        const token = await getEfiToken(); // Usa a função importada
 
         // 1. Criar a cobrança (COB)
         const cobPayload = {
@@ -109,7 +65,7 @@ app.post('/create-charge', async (req, res) => {
         const cobResponse = await axios({
             method: 'POST',
             url: `${EFI_BASE_URL}/v2/cob`,
-            https: authAgent,
+            https: apiAgent,
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -126,7 +82,7 @@ app.post('/create-charge', async (req, res) => {
         const qrResponse = await axios({
             method: 'GET',
             url: `${EFI_BASE_URL}/v2/loc/${locId}/qrcode`,
-            https: authAgent,
+            https: apiAgent,
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -164,8 +120,7 @@ app.get('/check-payment/:txid', (req, res) => {
 });
 
 // --- Endpoint 3: Webhook da Efí ---
-// IMPORTANTE: Configure esta URL no seu dashboard da Efí
-// URL: https://seu-site.onrender.com/webhook
+// ESTA É A URL QUE VAMOS REGISTRAR COM O SCRIPT
 app.post('/webhook', (req, res) => {
     console.log('Webhook da Efí recebido!');
     
@@ -197,3 +152,4 @@ app.listen(PORT, () => {
     console.log(`Webhook URL esperada: /webhook`);
     console.log(`Modo Efí: ${EFI_ENV}`);
 });
+

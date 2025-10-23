@@ -15,7 +15,7 @@ const {
 } = process.env;
 
 const EFI_ENV = EFI_SANDBOX === 'true' ? 'sandbox' : 'producao';
-// CORREÇÃO: Trocado 'eﬁ.com.br' (com caractere especial) por 'efi.com.br' (letras normais)
+// CORREÇÃO: Domínio correto 'efi.com.br'
 const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efi.com.br`;
 
 // Agente para autenticação (Basic Auth)

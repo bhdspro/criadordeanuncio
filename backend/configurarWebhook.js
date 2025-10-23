@@ -18,7 +18,7 @@ const {
 
 const EFI_ENV = EFI_SANDBOX === 'true' ? 'sandbox' : 'producao';
 // CORREÇÃO: Domínio correto 'efi.com.br'
-const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efi.com.br`;
+const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efipay.com.br`;
 
 // Agente para as chamadas de API
 const apiAgent = new https.Agent({

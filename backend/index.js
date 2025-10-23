@@ -15,12 +15,13 @@ import { getEfiToken } from './efiAuth.js';
 const {
     EFI_PIX_KEY,
     EFI_SANDBOX,
-    SETUP_SECRET // Nova variável para o setup
+    SETUP_SECRET
 } = process.env;
 
-const EFI_ENV = EFI_SANDBOX === 'true' ? 'sandbox' : 'producao';
-// CORREÇÃO: O domínio correto é efipay.com.br
-const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efipay.com.br`;
+// CORREÇÃO LÓGICA DA URL:
+// Sandbox usa '.sandbox.', Produção não usa nada.
+const EFI_ENV_SUBDOMAIN = EFI_SANDBOX === 'true' ? 'sandbox.' : '';
+const EFI_BASE_URL = `https://api-pix.${EFI_ENV_SUBDOMAIN}efipay.com.br`;
 
 // Validação de configuração
 if (!EFI_PIX_KEY) {
@@ -127,7 +128,7 @@ app.post('/webhook', (req, res) => {
 });
 
 // ===================================================================
-// !! NOVO ENDPOINT DE CONFIGURAÇÃO !!
+// !! ENDPOINT DE CONFIGURAÇÃO !!
 // ===================================================================
 app.get('/configure-webhook/:secret', async (req, res) => {
     const { secret } = req.params;
@@ -142,7 +143,7 @@ app.get('/configure-webhook/:secret', async (req, res) => {
     const WEBHOOK_URL_COMPLETA = `https://criadordeanuncio.onrender.com/webhook`;
 
     try {
-        // 2. Obter token (a mesma lógica do script)
+        // 2. Obter token
         const token = await getEfiToken();
 
         // 3. Definir o payload e a URL
@@ -184,6 +185,6 @@ app.get('/configure-webhook/:secret', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor backend rodando na porta ${PORT}`);
-    console.log(`Modo Efí: ${EFI_ENV}`);
+    console.log(`Modo Efí: ${EFI_SANDBOX === 'true' ? 'sandbox' : 'producao'}`);
 });
 

@@ -14,13 +14,14 @@ const {
     EFI_SANDBOX
 } = process.env;
 
-const EFI_ENV = EFI_SANDBOX === 'true' ? 'sandbox' : 'producao';
-// CORREÇÃO: Domínio correto 'efi.com.br'
-const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efipay.com.br`;
+// CORREÇÃO LÓGICA DA URL:
+// Sandbox usa '.sandbox.', Produção não usa nada.
+const EFI_ENV_SUBDOMAIN = EFI_SANDBOX === 'true' ? 'sandbox.' : '';
+const EFI_BASE_URL = `https://api-pix.${EFI_ENV_SUBDOMAIN}efipay.com.br`;
 
 // Agente para autenticação (Basic Auth)
 const authAgent = new https.Agent({
-    rejectUnauthorized: false // Necessário para os certificados da Efí
+    rejectUnauthorized: false
 });
 
 // Cache do token de acesso
@@ -31,18 +32,16 @@ let tokenExpires = 0;
  * Obtém um token de acesso da Efí, usando cache.
  */
 export async function getEfiToken() {
-    // Se o token existe e ainda é válido (com 60s de margem)
     if (efiAccessToken && Date.now() < tokenExpires - 60000) {
         return efiAccessToken;
     }
 
-    // Validação de configuração
     if (!EFI_CLIENT_ID || !EFI_CLIENT_SECRET) {
         console.error('ERRO: Variáveis de ambiente da Efí (CLIENT_ID, CLIENT_SECRET) não estão definidas!');
         throw new Error('Credenciais da Efí não encontradas.');
     }
 
-    console.log('Gerando novo token de acesso Efí...');
+    console.log(`Gerando novo token de acesso Efí para: ${EFI_BASE_URL}`);
     const credentials = Buffer.from(`${EFI_CLIENT_ID}:${EFI_CLIENT_SECRET}`).toString('base64');
 
     try {
@@ -60,7 +59,6 @@ export async function getEfiToken() {
         });
 
         efiAccessToken = response.data.access_token;
-        // Define a expiração (em milissegundos)
         tokenExpires = Date.now() + (response.data.expires_in * 1000);
         console.log('Token Efí gerado com sucesso.');
         return efiAccessToken;

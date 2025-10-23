@@ -19,7 +19,8 @@ const {
 } = process.env;
 
 // URL de OPERAÇÕES PIX de PRODUÇÃO da Efí.
-const EFI_PIX_URL = `https://api-pix.efipay.com.br`;
+// (Esta é a correção final. Não há 'api-pix' em produção.)
+const EFI_PIX_URL = `https://api.efipay.com.br`;
 
 // Validação de configuração
 if (!EFI_PIX_KEY) {

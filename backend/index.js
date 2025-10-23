@@ -1,7 +1,7 @@
 // ===================================================================
 // SERVIDOR BACKEND (PARA DEPLOY NO RENDER)
 // ===================================================================
-// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY + CONFIGURADOR)
+// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - LIMPA)
 // ===================================================================
 
 import 'dotenv/config';
@@ -15,11 +15,10 @@ import { getEfiToken } from './efiAuth.js';
 const {
     EFI_PIX_KEY,
     // EFI_SANDBOX não é mais necessário
-    SETUP_SECRET
+    // SETUP_SECRET não é mais necessário
 } = process.env;
 
 // URL de OPERAÇÕES PIX de PRODUÇÃO da Efí.
-// (Esta é a correção final. Não há 'api-pix' em produção.)
 const EFI_PIX_URL = `https://api.efipay.com.br`;
 
 // Validação de configuração
@@ -124,69 +123,6 @@ app.post('/webhook', (req, res) => {
         }
     }
     res.status(200).send('OK');
-});
-
-// ===================================================================
-// !! ENDPOINT DE CONFIGURAÇÃO !!
-// ===================================================================
-app.get('/configure-webhook/:secret', async (req, res) => {
-    const { secret } = req.params;
-
-    // 1. Validar a senha
-    if (!SETUP_SECRET || secret !== SETUP_SECRET) {
-        console.warn('Tentativa de configurar o webhook com senha errada!');
-        return res.status(401).send('Acesso não autorizado.');
-    }
-
-    console.log('Iniciando configuração do Webhook via endpoint secreto...');
-    // Usando seu link do Render diretamente
-    const WEBHOOK_URL_COMPLETA = `https://criadordeanuncio.onrender.com/webhook`;
-
-    try {
-        // 2. Obter token (isso vai usar api.efipay.com.br)
-        const token = await getEfiToken();
-
-        // 3. Definir o payload e a URL
-        const payload = {
-            webhookUrl: WEBHOOK_URL_COMPLETA
-        };
-        const url = `${EFI_PIX_URL}/v2/webhook/${EFI_PIX_KEY}`; // Usa a URL do PIX
-
-        console.log(`Registrando Webhook para a chave ${EFI_PIX_KEY}...`);
-        console.log(`URL: ${WEBHOOK_URL_COMPLETA}`);
-
-        // 4. Fazer a chamada POST para registrar o webhook (CORREÇÃO AQUI)
-        await axios({
-            method: 'POST', // <-- CORRIGIDO DE 'PUT' PARA 'POST'
-            url: url,
-            httpsAgent: apiAgent,
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
-                'x-skip-mtls-checking': 'true' // Pula o mTLS
-            },
-            data: payload
-        });
-
-        const successMessage = '✅ SUCESSO! Webhook configurado com sucesso na Efí.';
-        console.log(successMessage);
-        res.status(200).send(successMessage);
-
-    } catch (error) {
-        console.error('\n❌ ERRO AO CONFIGURAR O WEBHOOK:');
-        const errorMessage = error.response?.data || error.message || 'Erro desconhecido';
-        
-        if (error.message && error.message.includes('Falha na autenticação')) {
-             console.error('Detalhe: Falha na autenticação com a Efí. Verifique as credenciais no Render.');
-        } else if (error.response) {
-            console.error('Status:', error.response.status);
-            console.error('Detalhes:', JSON.stringify(error.response.data, null, 2));
-        } else {
-             console.error('Detalhe:', errorMessage);
-        }
-        
-        res.status(500).json({ error: 'Falha ao configurar o webhook.', details: errorMessage });
-    }
 });
 
 

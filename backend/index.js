@@ -1,24 +1,24 @@
 // ===================================================================
 // SERVIDOR BACKEND (PARA DEPLOY NO RENDER)
 // ===================================================================
-// Arquivo: index.js (VERSÃO COMPLETA E CORRIGIDA)
+// Arquivo: index.js (VERSÃO COMPLETA + CONFIGURADOR DE WEBHOOK)
 // ===================================================================
 
-import 'dotenv/config'; // Carrega variáveis de .env
+import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import https from 'https';
 import axios from 'axios';
-import { getEfiToken } from './efiAuth.js'; // Importa a função de auth
+import { getEfiToken } from './efiAuth.js';
 
 // --- Configuração das Variáveis de Ambiente ---
 const {
-    EFI_PIX_KEY, // Sua chave PIX (CPF, CNPJ, e-mail, etc.) cadastrada na Efí
-    EFI_SANDBOX // 'true' para testes, 'false' para produção
+    EFI_PIX_KEY,
+    EFI_SANDBOX,
+    SETUP_SECRET // Nova variável para o setup
 } = process.env;
 
 const EFI_ENV = EFI_SANDBOX === 'true' ? 'sandbox' : 'producao';
-// CORREÇÃO: Domínio correto 'efi.com.br'
 const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efi.com.br`;
 
 // Validação de configuração
@@ -32,36 +32,27 @@ const apiAgent = new https.Agent({
     rejectUnauthorized: false
 });
 
-
-// --- Armazenamento Simples de Pagamentos ---
-// Em produção, use um banco de dados (Redis, Firestore, etc.)
-// Aqui, usamos um Map em memória (só funciona se o Render não dormir)
+// Armazenamento Simples de Pagamentos
 const paymentStatus = new Map();
 
 // --- Configuração do Servidor Express ---
 const app = express();
-app.use(cors()); // Permite requisições do seu frontend
-app.use(express.json()); // Habilita o parsing de JSON no body
+app.use(cors());
+app.use(express.json());
 
 // --- Endpoint 1: Criar Cobrança PIX ---
 app.post('/create-charge', async (req, res) => {
     console.log('Recebida requisição para /create-charge');
     try {
-        const token = await getEfiToken(); // Usa a função importada
+        const token = await getEfiToken();
 
-        // 1. Criar a cobrança (COB)
         const cobPayload = {
-            calendario: {
-                expiracao: 300 // 5 minutos (300 segundos)
-            },
-            valor: {
-                original: "1.00" // O valor da cobrança
-            },
-            chave: EFI_PIX_KEY, // Sua chave PIX
+            calendario: { expiracao: 300 },
+            valor: { original: "1.00" },
+            chave: EFI_PIX_KEY,
             solicitacaoPagador: "Download Anúncio de Veículo"
         };
         
-        // Usamos POST para que a Efí gere o TXID
         const cobResponse = await axios({
             method: 'POST',
             url: `${EFI_BASE_URL}/v2/cob`,
@@ -78,7 +69,6 @@ app.post('/create-charge', async (req, res) => {
         const locId = loc.id;
         console.log(`Cobrança criada, TXID: ${txid}, LOC ID: ${locId}`);
 
-        // 2. Obter o QR Code
         const qrResponse = await axios({
             method: 'GET',
             url: `${EFI_BASE_URL}/v2/loc/${locId}/qrcode`,
@@ -89,15 +79,12 @@ app.post('/create-charge', async (req, res) => {
         });
 
         const qrData = qrResponse.data;
-
-        // Armazena o status do pagamento
         paymentStatus.set(txid, 'PENDING');
 
-        // Retorna os dados para o frontend
         res.json({
             txid: txid,
-            pixCopiaECola: qrData.qrcode, // Este é o "Copia e Cola"
-            imagemQrcode: qrData.imagemQrcode, // Este é o Data URL da imagem
+            pixCopiaECola: qrData.qrcode,
+            imagemQrcode: qrData.imagemQrcode,
         });
 
     } catch (error) {
@@ -113,18 +100,14 @@ app.get('/check-payment/:txid', (req, res) => {
 
     if (status === 'PAID') {
         console.log(`Status /check-payment/${txid}: PAID`);
-        paymentStatus.delete(txid); // Limpa o status após a confirmação
+        paymentStatus.delete(txid);
     }
-
     res.json({ status });
 });
 
 // --- Endpoint 3: Webhook da Efí ---
-// ESTA É A URL QUE VAMOS REGISTRAR COM O SCRIPT
 app.post('/webhook', (req, res) => {
     console.log('Webhook da Efí recebido!');
-    
-    // A Efí envia um array de notificações
     const notifications = req.body?.pix;
 
     if (!notifications || !Array.isArray(notifications)) {
@@ -136,20 +119,70 @@ app.post('/webhook', (req, res) => {
         const txid = pix.txid;
         if (txid) {
             console.log(`Webhook: Pagamento recebido para o TXID: ${txid}`);
-            // Atualiza o status no nosso "banco" em memória
             paymentStatus.set(txid, 'PAID');
         }
     }
-
-    // Responde 200 OK IMEDIATAMENTE para a Efí
     res.status(200).send('OK');
 });
+
+// ===================================================================
+// !! NOVO ENDPOINT DE CONFIGURAÇÃO !!
+// ===================================================================
+app.get('/configure-webhook/:secret', async (req, res) => {
+    const { secret } = req.params;
+
+    // 1. Validar a senha
+    if (!SETUP_SECRET || secret !== SETUP_SECRET) {
+        console.warn('Tentativa de configurar o webhook com senha errada!');
+        return res.status(401).send('Acesso não autorizado.');
+    }
+
+    console.log('Iniciando configuração do Webhook via endpoint secreto...');
+    const WEBHOOK_URL_COMPLETA = `https://criadordeanuncio.onrender.com/webhook`;
+
+    try {
+        // 2. Obter token (a mesma lógica do script)
+        const token = await getEfiToken();
+
+        // 3. Definir o payload e a URL
+        const payload = {
+            webhookUrl: WEBHOOK_URL_COMPLETA
+        };
+        const url = `${EFI_BASE_URL}/v2/webhook/${EFI_PIX_KEY}`;
+
+        console.log(`Registrando Webhook para a chave ${EFI_PIX_KEY}...`);
+        console.log(`URL: ${WEBHOOK_URL_COMPLETA}`);
+
+        // 4. Fazer a chamada PUT para registrar o webhook
+        await axios({
+            method: 'PUT',
+            url: url,
+            httpsAgent: apiAgent,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+                'x-skip-mtls-checking': 'true' // Pula o mTLS
+            },
+            data: payload
+        });
+
+        const successMessage = '✅ SUCESSO! Webhook configurado com sucesso na Efí.';
+        console.log(successMessage);
+        res.status(200).send(successMessage);
+
+    } catch (error) {
+        console.error('\n❌ ERRO AO CONFIGURAR O WEBHOOK:');
+        const errorMessage = error.response?.data || error.message || 'Erro desconhecido';
+        console.error(errorMessage);
+        res.status(500).json({ error: 'Falha ao configurar o webhook.', details: errorMessage });
+    }
+});
+
 
 // --- Iniciar o Servidor ---
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
     console.log(`Servidor backend rodando na porta ${PORT}`);
-    console.log(`Webhook URL esperada: /webhook`);
     console.log(`Modo Efí: ${EFI_ENV}`);
 });
 

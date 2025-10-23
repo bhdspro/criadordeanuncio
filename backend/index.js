@@ -1,13 +1,13 @@
 // ===================================================================
 // SERVIDOR BACKEND (PARA DEPLOY NO RENDER)
 // ===================================================================
-// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - LIMPA - COM MELHOR LOG)
+// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - LIMPA - REMOVENDO HTTPS AGENT)
 // ===================================================================
 
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
-import https from 'https';
+// import https from 'https'; // Não precisamos mais do https agent aqui
 import axios from 'axios';
 import { getEfiToken } from './efiAuth.js';
 
@@ -18,7 +18,7 @@ const {
 
 // URL de OPERAÇÕES PIX de PRODUÇÃO da Efí.
 const EFI_PIX_URL = `https://api.efipay.com.br`;
-console.log(`URL Base da API PIX: ${EFI_PIX_URL}`); // Adiciona log para confirmar URL
+console.log(`URL Base da API PIX: ${EFI_PIX_URL}`);
 
 // Validação de configuração
 if (!EFI_PIX_KEY) {
@@ -26,10 +26,10 @@ if (!EFI_PIX_KEY) {
     process.exit(1);
 }
 
-// Agente para as chamadas de API
-const apiAgent = new https.Agent({
-    rejectUnauthorized: false
-});
+// // Agente para as chamadas de API - REMOVIDO PARA TESTE
+// const apiAgent = new https.Agent({
+//     rejectUnauthorized: false
+// });
 
 // Armazenamento Simples de Pagamentos
 const paymentStatus = new Map();
@@ -52,12 +52,12 @@ app.post('/create-charge', async (req, res) => {
             solicitacaoPagador: "Download Anúncio de Veículo"
         };
 
-        console.log('Enviando payload para Efí /v2/cob:', JSON.stringify(cobPayload)); // Log do payload enviado
+        console.log('Enviando payload para Efí /v2/cob:', JSON.stringify(cobPayload));
 
         const cobResponse = await axios({
             method: 'POST',
             url: `${EFI_PIX_URL}/v2/cob`,
-            https: apiAgent,
+            // https: apiAgent, // REMOVIDO PARA TESTE
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
@@ -67,7 +67,6 @@ app.post('/create-charge', async (req, res) => {
 
         const cobData = cobResponse.data;
 
-        // VERIFICAÇÃO ADICIONADA: Checa se 'loc' existe antes de usá-lo
         if (!cobData || !cobData.loc || !cobData.loc.id) {
             console.error('Erro em /create-charge: Resposta da Efí não contém loc.id esperado.');
             console.error('Resposta recebida:', JSON.stringify(cobData, null, 2));
@@ -81,7 +80,7 @@ app.post('/create-charge', async (req, res) => {
         const qrResponse = await axios({
             method: 'GET',
             url: `${EFI_PIX_URL}/v2/loc/${locId}/qrcode`,
-            https: apiAgent,
+            // https: apiAgent, // REMOVIDO PARA TESTE
             headers: {
                 'Authorization': `Bearer ${token}`
             }
@@ -97,22 +96,18 @@ app.post('/create-charge', async (req, res) => {
         });
 
     } catch (error) {
-        // LOG MELHORADO: Imprime detalhes do erro da Efí se disponíveis
         console.error('Erro detalhado em /create-charge:');
         if (error.response) {
-            // O request foi feito e o servidor respondeu com status code fora do range 2xx
             console.error('Status:', error.response.status);
             console.error('Headers:', JSON.stringify(error.response.headers, null, 2));
-            console.error('Data:', JSON.stringify(error.response.data, null, 2)); // <-- A RESPOSTA DA EFÍ ESTARÁ AQUI!
+            console.error('Data:', JSON.stringify(error.response.data, null, 2));
         } else if (error.request) {
-            // O request foi feito mas nenhuma resposta foi recebida
             console.error('Request:', error.request);
             console.error('Nenhuma resposta recebida da Efí.');
         } else {
-            // Algo aconteceu ao configurar o request que acionou um erro
             console.error('Erro ao configurar request:', error.message);
         }
-        console.error('Erro original:', error.message); // Mantém o log original
+        console.error('Erro original:', error.message);
 
         res.status(500).json({ error: 'Não foi possível gerar a cobrança PIX.' });
     }

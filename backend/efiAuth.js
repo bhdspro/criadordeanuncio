@@ -27,9 +27,9 @@ if (!EFI_CLIENT_ID || !EFI_CLIENT_SECRET) {
     console.error('ERRO: Variáveis de ambiente da Efí (CLIENT_ID, CLIENT_SECRET) não estão definidas!');
     throw new Error('Credenciais da Efí não encontradas.');
 }
-// Valida se os caminhos dos certificados foram definidos
 if (!EFI_CERT_PATH || !EFI_KEY_PATH) {
-     console.warn('AVISO: Caminhos dos certificados Efí (EFI_CERT_PATH, EFI_KEY_PATH) não definidos. Tentando sem mTLS.');
+     console.warn('AVISO: Caminhos dos certificados Efí (EFI_CERT_PATH, EFI_KEY_PATH) não definidos. Tentando sem mTLS (pode falhar em operações PIX).');
+     // Não lançamos erro aqui, mas as operações PIX provavelmente falharão.
 }
 
 // Carrega os certificados (se os caminhos foram fornecidos)
@@ -39,24 +39,31 @@ try {
         certOptions = {
             cert: fs.readFileSync(EFI_CERT_PATH),
             key: fs.readFileSync(EFI_KEY_PATH),
-            passphrase: EFI_CERT_PASSPHRASE // Será undefined se não estiver no .env
+            passphrase: EFI_CERT_PASSPHRASE
         };
          console.log('Certificados Efí carregados com sucesso.');
     } else if (EFI_CERT_PATH || EFI_KEY_PATH) {
-         console.error(`ERRO: Um ou ambos os arquivos de certificado não foram encontrados nos caminhos: CERT='${EFI_CERT_PATH}', KEY='${EFI_KEY_PATH}'`);
-         // Considerar lançar um erro aqui dependendo da sua política
+         console.error(`ERRO: Um ou ambos os arquivos de certificado não foram encontrados nos caminhos: CERT='${EFI_CERT_PATH}', KEY='${EFI_KEY_PATH}'. Verifique as variáveis de ambiente no Render.`);
+         // Poderia lançar erro, mas vamos deixar o axios falhar para dar mais detalhes.
     }
 } catch (err) {
     console.error('ERRO ao carregar os certificados Efí:', err.message);
-    // Considerar lançar um erro aqui
+    // Poderia lançar erro.
 }
 
 
-// Agente para autenticação (Basic Auth + Certificados)
+// Agente SOMENTE para autenticação (/oauth/token) - Pode precisar ignorar validação
 const authAgent = new https.Agent({
-    ...certOptions, // Adiciona os certificados lidos
-    rejectUnauthorized: false // Mantido, pode ser necessário dependendo da cadeia de certificados da Efí
+    ...certOptions, // Inclui certificados aqui também, pode ser necessário
+    rejectUnauthorized: false // Mantido como false especificamente para /oauth/token, se necessário
 });
+
+// Agente para chamadas PIX (/v2/cob, /v2/loc, etc.) - DEVE validar (mTLS)
+export const apiAgentWithCerts = new https.Agent({
+    ...certOptions,
+    rejectUnauthorized: true // ALTERADO PARA TRUE: Força a validação mútua
+});
+
 
 // Cache do token de acesso
 let efiAccessToken = null;
@@ -77,11 +84,11 @@ export async function getEfiToken() {
         const response = await axios({
             method: 'POST',
             url: `${EFI_AUTH_URL}/oauth/token`,
-            httpsAgent: authAgent, // Usa o agente configurado com certificados
+            httpsAgent: authAgent, // Usa o agente específico para auth
             headers: {
                 'Authorization': `Basic ${credentials}`,
                 'Content-Type': 'application/json',
-                'Accept': 'application/json' // Boa prática
+                'Accept': 'application/json'
             },
             data: {
                 grant_type: 'client_credentials'
@@ -105,9 +112,5 @@ export async function getEfiToken() {
     }
 }
 
-// Exporta o agente configurado para ser usado em outras chamadas API
-export const apiAgentWithCerts = new https.Agent({
-    ...certOptions,
-    rejectUnauthorized: false
-});
+// Não exportamos mais o authAgent, apenas o apiAgentWithCerts
 

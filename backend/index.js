@@ -1,7 +1,7 @@
 // ===================================================================
 // SERVIDOR BACKEND (PARA DEPLOY NO RENDER)
 // ===================================================================
-// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - LIMPA - SIMPLIFICADO PAYLOAD)
+// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - LIMPA - DIAGNÓSTICO AVANÇADO 2)
 // ===================================================================
 
 import 'dotenv/config';
@@ -46,23 +46,22 @@ app.post('/create-charge', async (req, res) => {
     try {
         const token = await getEfiToken();
 
-        // Payload Simplificado: Removemos solicitacaoPagador
         const cobPayload = {
             calendario: { expiracao: 300 }, // 5 minutos
             valor: { original: "1.00" },
             chave: EFI_PIX_KEY
-            // removido: solicitacaoPagador: "Download Anúncio de Veículo"
         };
 
-        console.log(`Enviando payload SIMPLIFICADO para Efí (${createChargeUrl}):`, JSON.stringify(cobPayload));
+        console.log(`Enviando payload para Efí (${createChargeUrl}):`, JSON.stringify(cobPayload));
 
         const cobResponse = await axios({
             method: 'POST',
             url: createChargeUrl,
-            httpsAgent: apiAgent, // Mantido, pois parece necessário
+            httpsAgent: apiAgent,
             headers: {
                 'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json' // Adicionado: Indica que esperamos JSON
             },
             data: cobPayload
         });
@@ -72,8 +71,13 @@ app.post('/create-charge', async (req, res) => {
         // Verifica se a resposta é um objeto JSON esperado e contém loc.id
         if (typeof cobData !== 'object' || cobData === null || !cobData.loc || !cobData.loc.id) {
              console.error('Erro em /create-charge: Resposta da Efí não contém loc.id esperado.');
-             const responsePreview = typeof cobData === 'string' ? cobData.substring(0, 500) + '...' : JSON.stringify(cobData);
+             // Aumentado o tamanho do preview da resposta
+             const responsePreview = typeof cobData === 'string' ? cobData.substring(0, 2000) + '...' : JSON.stringify(cobData, null, 2);
              console.error('Preview da Resposta recebida:', responsePreview);
+             // Loga também os cabeçalhos da resposta, pode dar pistas
+             if (cobResponse && cobResponse.headers) {
+                console.error('Cabeçalhos da Resposta Recebida:', JSON.stringify(cobResponse.headers, null, 2));
+             }
              throw new Error('Resposta inválida da API Efí ao criar cobrança.');
         }
 
@@ -87,13 +91,21 @@ app.post('/create-charge', async (req, res) => {
         const qrResponse = await axios({
             method: 'GET',
             url: qrUrl,
-            httpsAgent: apiAgent, // Mantido aqui também
+            httpsAgent: apiAgent,
             headers: {
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json' // Adicionado aqui também por consistência
             }
         });
 
+        // Verifica se a resposta do QR Code é válida
         const qrData = qrResponse.data;
+        if (typeof qrData !== 'object' || qrData === null || !qrData.qrcode || !qrData.imagemQrcode) {
+             console.error('Erro em /create-charge: Resposta da Efí ao buscar QR Code inválida.');
+             console.error('Preview da Resposta QR Code:', JSON.stringify(qrData, null, 2));
+             throw new Error('Resposta inválida da API Efí ao buscar QR Code.');
+        }
+
         paymentStatus.set(txid, 'PENDING');
 
         res.json({
@@ -106,10 +118,12 @@ app.post('/create-charge', async (req, res) => {
         console.error('Erro detalhado em /create-charge:');
         if (error.response) {
             console.error('Status:', error.response.status);
+            // Aumentado o tamanho do preview da resposta de erro
              const responseDataPreview = typeof error.response.data === 'string'
-                ? error.response.data.substring(0, 500) + '...'
+                ? error.response.data.substring(0, 2000) + '...'
                 : JSON.stringify(error.response.data, null, 2);
             console.error('Data:', responseDataPreview);
+            console.error('Cabeçalhos da Resposta de Erro:', JSON.stringify(error.response.headers, null, 2)); // Loga cabeçalhos do erro
             console.error('URL da requisição com erro:', error.config?.url);
         } else if (error.request) {
             console.error('Nenhuma resposta recebida da Efí.');

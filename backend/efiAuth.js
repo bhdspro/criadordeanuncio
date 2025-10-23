@@ -15,7 +15,8 @@ const {
 } = process.env;
 
 const EFI_ENV = EFI_SANDBOX === 'true' ? 'sandbox' : 'producao';
-const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.eﬁ.com.br`;
+// CORREÇÃO: Trocado 'eﬁ.com.br' (com caractere especial) por 'efi.com.br' (letras normais)
+const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efi.com.br`;
 
 // Agente para autenticação (Basic Auth)
 const authAgent = new https.Agent({
@@ -69,3 +70,4 @@ export async function getEfiToken() {
         throw new Error('Falha na autenticação com a Efí.');
     }
 }
+

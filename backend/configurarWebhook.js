@@ -79,9 +79,11 @@ async function configurarWebhook() {
         } else {
             console.error(error.message);
         }
-        console.log('\nVerifique se suas credenciais (CLIENT_ID, CLIENT_SECRET, EFI_PIX_KEY) estão corretas no arquivo .env e se o escopo "Alterar Webhooks" (cob.write) está ativo na sua Aplicação Efí.');
+        // Mensagem de ajuda corrigida (webhook.write)
+        console.log('\nVerifique se suas credenciais (CLIENT_ID, CLIENT_SECRET, EFI_PIX_KEY) estão corretas no arquivo .env e se o escopo "Alterar Webhooks" (webhook.write) está ativo na sua Aplicação Efí.');
     }
 }
 
 // Executa a função
 configurarWebhook();
+

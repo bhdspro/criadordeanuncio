@@ -1,168 +1,163 @@
 // ===================================================================
-// BACKEND PRODUÇÃO - EFÍ PIX API
+// SERVIDOR BACKEND (PARA DEPLOY NO RENDER)
 // ===================================================================
-// Arquivo: index.js
-// Ambiente: PRODUÇÃO (https://api.efipay.com.br)
-// Totalmente compatível com Render
+// Arquivo: index.js (VERSÃO PRODUÇÃO-ONLY - LIMPA - SIMPLIFICADO PAYLOAD)
 // ===================================================================
 
-import express from "express";
-import cors from "cors";
-import axios from "axios";
-import https from "https";
-import { getEfiToken } from "./efiAuth.js";
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import https from 'https';
+import axios from 'axios';
+import { getEfiToken } from './efiAuth.js';
 
-// ===================================================================
-// ⚙️ CONFIGURAÇÕES PRINCIPAIS
-// ===================================================================
-const { EFI_PIX_KEY } = process.env;
+// --- Configuração das Variáveis de Ambiente ---
+const {
+    EFI_PIX_KEY
+} = process.env;
 
+// URL de OPERAÇÕES PIX de PRODUÇÃO da Efí.
+const EFI_PIX_URL = `https://api.efipay.com.br`;
+console.log(`URL Base da API PIX: ${EFI_PIX_URL}`);
+
+// Validação de configuração
 if (!EFI_PIX_KEY) {
-  console.error("❌ ERRO: Variável de ambiente EFI_PIX_KEY não está definida!");
-  process.exit(1);
+    console.error('ERRO: Variável de ambiente EFI_PIX_KEY não está definida!');
+    process.exit(1);
 }
 
-const EFI_PIX_URL = "https://api.efipay.com.br";
-console.log(`🌐 Ambiente de Produção ativo | Base URL: ${EFI_PIX_URL}`);
-
-// HTTPS Agent (necessário para API Efí)
+// Agente para as chamadas de API (Necessário para certificados da Efí)
 const apiAgent = new https.Agent({
-  rejectUnauthorized: false,
+    rejectUnauthorized: false
 });
 
-// ===================================================================
-// 💾 ARMAZENAMENTO TEMPORÁRIO DE STATUS
-// ===================================================================
+// Armazenamento Simples de Pagamentos
 const paymentStatus = new Map();
 
-// ===================================================================
-// 🚀 INICIALIZAÇÃO DO SERVIDOR EXPRESS
-// ===================================================================
+// --- Configuração do Servidor Express ---
 const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ===================================================================
-// 💳 ENDPOINT: CRIAR COBRANÇA PIX
-// ===================================================================
-app.post("/create-charge", async (req, res) => {
-  console.log("📩 Requisição recebida em /create-charge");
+// --- Endpoint 1: Criar Cobrança PIX ---
+app.post('/create-charge', async (req, res) => {
+    console.log('Recebida requisição para /create-charge');
+    const createChargeUrl = `${EFI_PIX_URL}/v2/cob`;
+    try {
+        const token = await getEfiToken();
 
-  try {
-    const { valor, descricao } = req.body;
+        // Payload Simplificado: Removemos solicitacaoPagador
+        const cobPayload = {
+            calendario: { expiracao: 300 }, // 5 minutos
+            valor: { original: "1.00" },
+            chave: EFI_PIX_KEY
+            // removido: solicitacaoPagador: "Download Anúncio de Veículo"
+        };
 
-    if (!valor) {
-      return res.status(400).json({ erro: "O campo 'valor' é obrigatório." });
+        console.log(`Enviando payload SIMPLIFICADO para Efí (${createChargeUrl}):`, JSON.stringify(cobPayload));
+
+        const cobResponse = await axios({
+            method: 'POST',
+            url: createChargeUrl,
+            httpsAgent: apiAgent, // Mantido, pois parece necessário
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            data: cobPayload
+        });
+
+        const cobData = cobResponse.data;
+
+        // Verifica se a resposta é um objeto JSON esperado e contém loc.id
+        if (typeof cobData !== 'object' || cobData === null || !cobData.loc || !cobData.loc.id) {
+             console.error('Erro em /create-charge: Resposta da Efí não contém loc.id esperado.');
+             const responsePreview = typeof cobData === 'string' ? cobData.substring(0, 500) + '...' : JSON.stringify(cobData);
+             console.error('Preview da Resposta recebida:', responsePreview);
+             throw new Error('Resposta inválida da API Efí ao criar cobrança.');
+        }
+
+        const { txid, loc } = cobData;
+        const locId = loc.id;
+        console.log(`Cobrança criada, TXID: ${txid}, LOC ID: ${locId}`);
+
+        // Buscar QR Code
+        const qrUrl = `${EFI_PIX_URL}/v2/loc/${locId}/qrcode`;
+        console.log(`Buscando QR Code em: ${qrUrl}`);
+        const qrResponse = await axios({
+            method: 'GET',
+            url: qrUrl,
+            httpsAgent: apiAgent, // Mantido aqui também
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const qrData = qrResponse.data;
+        paymentStatus.set(txid, 'PENDING');
+
+        res.json({
+            txid: txid,
+            pixCopiaECola: qrData.qrcode,
+            imagemQrcode: qrData.imagemQrcode,
+        });
+
+    } catch (error) {
+        console.error('Erro detalhado em /create-charge:');
+        if (error.response) {
+            console.error('Status:', error.response.status);
+             const responseDataPreview = typeof error.response.data === 'string'
+                ? error.response.data.substring(0, 500) + '...'
+                : JSON.stringify(error.response.data, null, 2);
+            console.error('Data:', responseDataPreview);
+            console.error('URL da requisição com erro:', error.config?.url);
+        } else if (error.request) {
+            console.error('Nenhuma resposta recebida da Efí.');
+            console.error('URL da requisição sem resposta:', error.config?.url);
+        } else {
+            console.error('Erro ao configurar request:', error.message);
+        }
+        res.status(500).json({ error: 'Não foi possível gerar a cobrança PIX.' });
     }
-
-    console.log("🔐 Gerando token Efí...");
-    const token = await getEfiToken();
-
-    const payload = {
-      calendario: { expiracao: 300 },
-      valor: { original: valor },
-      chave: EFI_PIX_KEY,
-      solicitacaoPagador: descricao || "Pagamento via PIX Efí",
-    };
-
-    console.log("📤 Enviando payload para Efí (produção) /v2/cob...");
-
-    const cobResponse = await axios.post(`${EFI_PIX_URL}/v2/cob`, payload, {
-      httpsAgent: apiAgent,
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    const cobData = cobResponse.data;
-
-    if (!cobData?.loc?.id) {
-      console.error("❌ Resposta inválida da Efí ao criar cobrança:", cobData);
-      throw new Error("Resposta inválida da API Efí.");
-    }
-
-    const { txid, loc } = cobData;
-    console.log(`✅ Cobrança criada com sucesso | TXID: ${txid} | LOC ID: ${loc.id}`);
-
-    // Gera QR Code para o pagamento
-    const qrResponse = await axios.get(`${EFI_PIX_URL}/v2/loc/${loc.id}/qrcode`, {
-      httpsAgent: apiAgent,
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    const qrData = qrResponse.data;
-    paymentStatus.set(txid, "PENDING");
-
-    res.json({
-      sucesso: true,
-      txid,
-      pixCopiaECola: qrData.qrcode,
-      imagemQrcode: qrData.imagemQrcode,
-      location: loc.location,
-    });
-  } catch (erro) {
-    // ===================================================================
-    // 🧠 LOG DETALHADO DE ERRO EFÍ
-    // ===================================================================
-    console.error("❌ Erro ao criar cobrança Efí:");
-    if (erro.response) {
-      console.error("Status:", erro.response.status);
-      console.error("Headers:", JSON.stringify(erro.response.headers, null, 2));
-      console.error("Data:", JSON.stringify(erro.response.data, null, 2));
-    } else if (erro.request) {
-      console.error("Nenhuma resposta da Efí. Request:", erro.request);
-    } else {
-      console.error("Mensagem:", erro.message);
-    }
-
-    res.status(500).json({
-      erro: "Falha ao criar cobrança Efí. Verifique logs para detalhes.",
-    });
-  }
 });
 
-// ===================================================================
-// 🔄 ENDPOINT: VERIFICAR STATUS DO PAGAMENTO
-// ===================================================================
-app.get("/check-payment/:txid", (req, res) => {
-  const { txid } = req.params;
-  const status = paymentStatus.get(txid) || "NOT_FOUND";
+// --- Endpoint 2: Verificar Status do Pagamento (Polling) ---
+app.get('/check-payment/:txid', (req, res) => {
+    const { txid } = req.params;
+    const status = paymentStatus.get(txid) || 'NOT_FOUND';
 
-  if (status === "PAID") {
-    paymentStatus.delete(txid);
-  }
-
-  res.json({ status });
-});
-
-// ===================================================================
-// 📬 ENDPOINT: WEBHOOK DA EFÍ
-// ===================================================================
-app.post("/webhook", (req, res) => {
-  console.log("📥 Webhook Efí recebido!");
-  const { pix } = req.body;
-
-  if (!pix || !Array.isArray(pix)) {
-    return res.status(400).send("Formato inválido.");
-  }
-
-  for (const transacao of pix) {
-    if (transacao.txid) {
-      console.log(`💰 Pagamento confirmado | TXID: ${transacao.txid}`);
-      paymentStatus.set(transacao.txid, "PAID");
+    if (status === 'PAID') {
+        console.log(`Status /check-payment/${txid}: PAID`);
+        paymentStatus.delete(txid);
     }
-  }
-
-  res.status(200).send("OK");
+    res.json({ status });
 });
 
-// ===================================================================
-// 🧭 INICIAR SERVIDOR
-// ===================================================================
-const PORT = process.env.PORT || 10000;
+// --- Endpoint 3: Webhook da Efí ---
+app.post('/webhook', (req, res) => {
+    console.log('Webhook da Efí recebido!');
+    const notifications = req.body?.pix;
+
+    if (!notifications || !Array.isArray(notifications)) {
+        console.warn('Webhook recebido, mas sem dados "pix" válidos.');
+        return res.status(400).send('Formato inválido.');
+    }
+
+    for (const pix of notifications) {
+        const txid = pix.txid;
+        if (txid) {
+            console.log(`Webhook: Pagamento recebido para o TXID: ${txid}`);
+            paymentStatus.set(txid, 'PAID');
+        }
+    }
+    res.status(200).send('OK');
+});
+
+// --- Iniciar o Servidor ---
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Servidor rodando em PRODUÇÃO na porta ${PORT}`);
+    console.log(`Servidor backend rodando na porta ${PORT}`);
+    console.log(`Modo Efí: producao`);
+    console.log(`URL Base da API PIX: ${EFI_PIX_URL}`);
 });
+

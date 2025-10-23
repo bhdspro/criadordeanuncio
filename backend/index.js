@@ -19,7 +19,8 @@ const {
 } = process.env;
 
 const EFI_ENV = EFI_SANDBOX === 'true' ? 'sandbox' : 'producao';
-const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efi.com.br`;
+// CORREÇÃO: O domínio correto é efipay.com.br
+const EFI_BASE_URL = `https://api-pix.${EFI_ENV}.efipay.com.br`;
 
 // Validação de configuração
 if (!EFI_PIX_KEY) {

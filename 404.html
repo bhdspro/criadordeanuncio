@@ -3,41 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Criador de Anúncio de Veículo | Anúncios Profissionais</title>
-    <meta name="description" content="Crie anúncios de veículos profissionais em segundos. Carregue as fotos, preencha os dados e baixe a imagem de venda gratuitamente. Ideal para concessionárias e vendedores.">
-    <meta name="keywords" content="criador de anúncio, anúncio de veículo, gerador de anúncio, venda de carro, anúncio profissional, marketing automotivo">
+    <title>Criador de Anúncio de Veículo | Gerador Gratuito para Lojas</title>
+    <meta name="description" content="Crie anúncios de veículos profissionais em segundos. Carregue as fotos, preencha os dados (integrado com FIPE) e baixe a imagem de venda pronta. Ideal para lojistas e repassadores.">
+    <meta name="keywords" content="criador de anúncio de veículo, gerador de banner para carros, anúncio profissional, marketing automotivo, vender carro rápido, template anúncio carro">
+    <meta name="author" content="Criador de Anúncio">
+    <meta name="robots" content="index, follow">
+    
     <link rel="canonical" href="https://criadordeanuncio.com/">
-    <link rel="icon" type="image/png" href="https://criadordeanuncio.com/images/favicon.png">
+    
+    <!-- Favicon Emoji 🧲 -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🧲</text></svg>">
 
     <!-- Open Graph / Facebook / WhatsApp -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://criadordeanuncio.com/">
-    <meta property="og:title" content="Criador de Anúncio de Veículo">
-    <meta property="og:description" content="Transforme fotos comuns em anúncios de veículos profissionais e atraentes em segundos.">
+    <meta property="og:title" content="Criador de Anúncio de Veículo | Profissionalize suas Vendas">
+    <meta property="og:description" content="Transforme fotos comuns em anúncios de veículos profissionais e atraentes em segundos. Ferramenta gratuita.">
     <meta property="og:image" content="https://criadordeanuncio.com/images/logo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:url" content="https://criadordeanuncio.com/">
     <meta property="twitter:title" content="Criador de Anúncio de Veículo">
-    <meta property="twitter:description" content="Transforme fotos comuns em anúncios de veículos profissionais e atraentes em segundos.">
+    <meta property="twitter:description" content="Transforme fotos comuns em anúncios de veículos profissionais e atraentes em segundos. Ferramenta gratuita.">
     <meta property="twitter:image" content="https://criadordeanuncio.com/images/logo.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@400;500;700;900&family=Open+Sans:wght@400;700;800&family=Poppins:wght@400;700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <!-- Geração de QR Code Local -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-        .peer:checked ~ .peer-checked\:after\:translate-x-full::after {
-            transform: translateX(100%);
-        }
-        .peer:checked ~ .peer-checked\:bg-red-600 {
-            background-color: #DC2626;
-        }
+        body { font-family: 'Montserrat', sans-serif; }
+        .peer:checked ~ .peer-checked\:after\:translate-x-full::after { transform: translateX(100%); }
+        .peer:checked ~ .peer-checked\:bg-red-600 { background-color: #DC2626; }
         input[type="file"]::file-selector-button {
             @apply bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg cursor-pointer transition-colors duration-300;
         }
@@ -53,20 +55,35 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #374151; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #4B5563; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #6B7280; }
     </style>
-     <!-- Schema Markup - JSON-LD -->
+
+    <!-- Schema Markup SEO Avançado - JSON-LD -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
+      "@type": "WebApplication",
       "name": "Criador de Anúncio de Veículo",
-      "applicationCategory": "DesignApplication",
-      "operatingSystem": "Any",
-      "description": "Ferramenta online gratuita para criar anúncios de veículos profissionais a partir de fotos. Os usuários podem adicionar informações como marca, modelo, preço e contato para gerar uma imagem de venda personalizada.",
+      "url": "https://criadordeanuncio.com/",
+      "image": "https://criadordeanuncio.com/images/logo.png",
+      "applicationCategory": "DesignApplication, BusinessApplication",
+      "operatingSystem": "All",
+      "browserRequirements": "Requires JavaScript. Requires HTML5 Canvas.",
+      "description": "Ferramenta online gratuita para criar anúncios profissionais de carros, motos e caminhões. Integração com Tabela FIPE, personalização de cores e fontes, e exportação em alta qualidade.",
       "offers": {
         "@type": "Offer",
-        "price": "0"
-      }
+        "price": "0",
+        "priceCurrency": "BRL"
+      },
+      "featureList": [
+        "Integração automática com Tabela FIPE",
+        "Personalização de Cores e Fontes",
+        "Download em Lote (ZIP)",
+        "Formatação otimizada para Instagram e WhatsApp"
+      ]
     }
     </script>
 </head>
@@ -79,110 +96,280 @@
         </header>
 
         <main class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <!-- Formulário -->
             <div class="bg-gray-800 p-6 rounded-xl shadow-2xl">
                 <form id="vehicleForm" class="space-y-6">
+                    <!-- Seção 1: Imagens -->
                     <div>
                         <label for="vehiclePhoto" class="block text-lg font-semibold text-gray-200 mb-2">1. Fotos do Veículo</label>
-                        <input type="file" id="vehiclePhoto" accept="image/*" required multiple class="block w-full text-sm text-gray-400 file:mr-4 file:border-0 rounded-lg">
+                        <input type="file" id="vehiclePhoto" accept="image/png, image/jpeg, image/jpg, image/webp" required multiple class="block w-full text-sm text-gray-400 file:mr-4 file:border-0 rounded-lg disabled:opacity-50 disabled:cursor-not-allowed outline-none focus:ring-2 focus:ring-red-500">
                         <div id="thumbnails" class="mt-4 flex flex-wrap gap-4"></div>
-                        <div class="mt-6 text-center">
-                            <a href="https://api.whatsapp.com/send?phone=5543991228540&text=Ol%C3%A1%2C%20quero%20usar%20minha%20logo%20e%20meu%20endere%C3%A7o%20no%20Criador%20de%20An%C3%BAncio%20de%20Ve%C3%ADculo" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 text-amber-400 hover:text-amber-500 text-sm font-medium transition-colors group">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <div class="mt-6 flex justify-center">
+                            <button type="button" id="openPixModalBtn" class="inline-flex flex-col sm:flex-row items-center justify-center gap-2 text-amber-400 hover:text-amber-500 text-sm sm:text-base font-medium transition-colors group text-center w-full sm:w-auto p-2 rounded-lg hover:bg-gray-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                                     <path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
                                 </svg>
-                                <span>Quer adicionar sua logo e seu endereço? <span class="underline group-hover:no-underline">Clique aqui para personalizar</span>.</span>
-                            </a>
+                                <span class="underline group-hover:no-underline text-center">Quer usar sua logo e endereço no anúncio?</span>
+                            </button>
                         </div>
                     </div>
                     
                     <hr class="border-gray-600">
                     <h2 class="text-lg font-semibold text-gray-200 !mt-4">2. Detalhes do Anúncio</h2>
 
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- INTEGRAÇÃO FIPE: Tipo e Marca -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div>
-                            <label for="marca" class="block text-sm font-medium text-gray-300">Marca</label>
-                            <input type="text" id="marca" placeholder="Ex: Hyundai" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white">
+                            <label for="tipoVeiculo" class="block text-sm font-medium text-gray-300">Veículo</label>
+                            <select id="tipoVeiculo" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors outline-none">
+                                <option value="carros">Carro</option>
+                                <option value="motos">Moto</option>
+                                <option value="caminhoes">Caminhão</option>
+                            </select>
                         </div>
-                        <div>
-                            <label for="modelo" class="block text-sm font-medium text-gray-300">Modelo</label>
-                            <input type="text" id="modelo" placeholder="Ex: HB20 Comfort" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white">
+                        <div class="md:col-span-2">
+                            <label for="marcaSelect" class="block text-sm font-medium text-gray-300">Marca</label>
+                            <select id="marcaSelect" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors outline-none">
+                                <option value="">Carregando FIPE...</option>
+                            </select>
+                            <input type="text" id="marcaCustom" placeholder="Digite a Marca..." class="hidden mt-2 block w-full bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 outline-none">
                         </div>
                     </div>
                     
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
-                            <label for="ano" class="block text-sm font-medium text-gray-300">Ano</label>
-                            <input type="text" id="ano" placeholder="Ex: 2022" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white">
+                    <!-- INTEGRAÇÃO FIPE: Modelo e Ano -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="md:col-span-2">
+                            <label for="modeloSelect" class="block text-sm font-medium text-gray-300">Modelo</label>
+                            <select id="modeloSelect" disabled class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed outline-none">
+                                <option value="">Aguardando Marca...</option>
+                            </select>
+                            <input type="text" id="modeloCustom" disabled placeholder="Digite o Modelo..." class="hidden mt-1 block w-full bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 outline-none">
                         </div>
+                        <div>
+                            <label for="anoSelect" class="block text-sm font-medium text-gray-300">Ano</label>
+                            <select id="anoSelect" disabled class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed outline-none">
+                                <option value="">Aguardando Modelo...</option>
+                            </select>
+                            <input type="text" id="anoCustom" disabled maxlength="9" placeholder="Ex: 2023/2024" class="hidden mt-1 block w-full bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Informações Técnicas -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                         <div>
                             <label for="km" class="block text-sm font-medium text-gray-300">Kilometragem</label>
-                            <input type="text" id="km" placeholder="Ex: 50000" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white">
+                            <input type="text" id="km" placeholder="Ex: 50.000" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors outline-none">
+                        </div>
+                        <div>
+                            <label for="cilindrada" class="block text-sm font-medium text-gray-300">Motor / Cilindrada</label>
+                            <input type="text" id="cilindrada" placeholder="Ex: 1.0 ou 600cc" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors outline-none">
+                        </div>
+                        
+                        <div>
+                            <label for="cambio" class="block text-sm font-medium text-gray-300">Câmbio</label>
+                            <div class="mt-1 flex items-center justify-between px-3 w-full bg-gray-700 border border-gray-600 rounded-md h-[46px] shadow-sm overflow-hidden">
+                                <span class="text-sm font-medium text-gray-400 select-none">Manual</span>
+                                <label class="relative inline-flex items-center cursor-pointer flex-shrink-0">
+                                    <input type="checkbox" id="cambio" class="sr-only peer">
+                                    <div class="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
+                                </label>
+                                <span class="text-sm font-medium text-gray-400 select-none whitespace-nowrap">Auto</span>
+                            </div>
                         </div>
                     </div>
 
-                    <div>
-                        <label for="cilindrada" class="block text-sm font-medium text-gray-300">Motor</label>
-                        <input type="text" id="cilindrada" placeholder="Ex: 1.0" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white">
-                    </div>
-                    
-                    <div class="flex items-center justify-between">
-                         <label for="cambio" class="block text-sm font-medium text-gray-300">Câmbio</label>
-                        <div class="flex items-center space-x-3">
-                            <span class="text-sm font-medium text-gray-400">Manual</span>
-                            <label class="relative inline-flex items-center cursor-pointer">
-                                <input type="checkbox" id="cambio" class="sr-only peer">
-                                <div class="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
-                            </label>
-                             <span class="text-sm font-medium text-gray-400">Automático</span>
-                        </div>
-                    </div>
-
+                    <!-- Observação e Design -->
                     <div>
                         <label for="observacao" class="block text-sm font-medium text-gray-300">Observação</label>
-                        <input type="text" id="observacao" placeholder="Ex: Completo, único dono, todas as revisões feitas" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white">
+                        <input type="text" id="observacao" placeholder="Ex: Completo, único dono, todas as revisões feitas" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors outline-none">
                     </div>
 
-                     <div>
-                        <label for="preco" class="block text-sm font-medium text-gray-300">Preço</label>
-                        <input type="text" id="preco" placeholder="Ex: 59900" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="preco" class="block text-sm font-medium text-gray-300">Preço</label>
+                            <div class="relative mt-1">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <span class="text-gray-400 sm:text-sm">R$</span>
+                                </div>
+                                <input type="text" id="preco" placeholder="59.900" class="block w-full pl-9 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label for="fonteSelect" class="block text-sm font-medium text-gray-300">Fonte do Texto</label>
+                            <select id="fonteSelect" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors outline-none">
+                                <option value="Montserrat" style="font-family: 'Montserrat'">Montserrat</option>
+                                <option value="Roboto" style="font-family: 'Roboto'">Roboto</option>
+                                <option value="Open Sans" style="font-family: 'Open Sans'">Open Sans</option>
+                                <option value="Lato" style="font-family: 'Lato'">Lato</option>
+                                <option value="Poppins" style="font-family: 'Poppins'">Poppins</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mt-2">
+                        <div>
+                            <label for="corTexto" class="block text-sm font-medium text-gray-300">Cor do Texto</label>
+                            <div class="mt-1 flex items-center gap-2 bg-gray-700 border border-gray-600 rounded-md p-1.5 shadow-sm">
+                                <input type="color" id="corTexto" value="#ffffff" class="h-8 w-10 bg-transparent border-0 rounded cursor-pointer p-0">
+                                <span class="text-xs text-gray-400">Textos/Ícones</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="corDestaque" class="block text-sm font-medium text-gray-300">Cor de Destaque</label>
+                            <div class="mt-1 flex items-center gap-2 bg-gray-700 border border-gray-600 rounded-md p-1.5 shadow-sm">
+                                <input type="color" id="corDestaque" value="#ce191f" class="h-8 w-10 bg-transparent border-0 rounded cursor-pointer p-0">
+                                <span class="text-xs text-gray-400">Faixa principal</span>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="corFundo" class="block text-sm font-medium text-gray-300">Cor de Fundo</label>
+                            <div class="mt-1 flex items-center gap-2 bg-gray-700 border border-gray-600 rounded-md p-1.5 shadow-sm">
+                                <input type="color" id="corFundo" value="#000000" class="h-8 w-10 bg-transparent border-0 rounded cursor-pointer p-0">
+                                <span class="text-xs text-gray-400">Base/Rodapé</span>
+                            </div>
+                        </div>
                     </div>
 
                     <hr class="border-gray-600">
                     <h2 class="text-lg font-semibold text-gray-200 !mt-4">3. Contato</h2>
                     <div>
                         <label for="telefone" class="block text-sm font-medium text-gray-300">Telefone para WhatsApp</label>
-                        <input type="tel" id="telefone" maxlength="15" placeholder="(00) 90000-0000" class="mt-1 block w-full bg-gray-700 border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white">
+                        <input type="tel" id="telefone" maxlength="15" placeholder="(00) 90000-0000" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors outline-none">
                     </div>
                 </form>
             </div>
 
+            <!-- Preview e Download -->
             <div class="bg-gray-800 p-6 rounded-xl shadow-2xl flex flex-col items-center justify-center min-h-[400px]">
                 <div class="w-full relative">
-                    <div id="previewArea" class="w-full aspect-video bg-gray-700 rounded-md flex items-center justify-center text-gray-500 border-2 border-dashed border-gray-600 transition-all duration-300">
-                        <span id="previewPlaceholder" class="text-center">A prévia da imagem aparecerá aqui<br>após carregar uma foto.</span>
+                    <div id="previewArea" class="w-full aspect-video bg-gray-700 rounded-md flex items-center justify-center text-gray-500 border-2 border-dashed border-gray-600 transition-all duration-300 overflow-hidden">
+                        <span id="previewPlaceholder" class="text-center text-sm px-4">A prévia da imagem aparecerá aqui<br>após carregar uma foto.</span>
                     </div>
-                    <button id="prevButton" class="hidden absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-900 bg-opacity-60 hover:bg-opacity-80 text-white rounded-full w-10 h-10 flex items-center justify-center transition-opacity focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed z-10">
+                    <button id="prevButton" aria-label="Imagem Anterior" class="hidden absolute top-1/2 left-2 transform -translate-y-1/2 bg-gray-900 bg-opacity-60 hover:bg-opacity-80 text-white rounded-full w-10 h-10 flex items-center justify-center transition-opacity focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed z-10">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                     </button>
-                    <button id="nextButton" class="hidden absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-900 bg-opacity-60 hover:bg-opacity-80 text-white rounded-full w-10 h-10 flex items-center justify-center transition-opacity focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed z-10">
+                    <button id="nextButton" aria-label="Próxima Imagem" class="hidden absolute top-1/2 right-2 transform -translate-y-1/2 bg-gray-900 bg-opacity-60 hover:bg-opacity-80 text-white rounded-full w-10 h-10 flex items-center justify-center transition-opacity focus:outline-none disabled:opacity-30 disabled:cursor-not-allowed z-10">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
                     </button>
                 </div>
                 <div id="imageCounter" class="text-gray-400 mt-2 text-sm font-medium hidden"></div>
-                <button id="downloadButton" class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors text-lg flex items-center gap-3">
+                <button id="downloadButton" class="hidden mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-lg transition-colors text-lg flex items-center justify-center gap-3 w-full sm:w-auto">
                 </button>
             </div>
         </main>
     </div>
 
+    <!-- Modal Pix / Planos -->
+    <div id="pixModal" class="fixed inset-0 z-50 hidden flex items-center justify-center bg-black bg-opacity-80 p-4 transition-opacity">
+        <div class="bg-gray-800 rounded-xl shadow-2xl max-w-md w-full mx-auto overflow-hidden border border-gray-700 flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center p-4 sm:p-5 border-b border-gray-700 shrink-0">
+                <h3 class="text-lg sm:text-xl font-bold text-white">Personalize com sua logo e endereço</h3>
+                <button id="closePixModalBtn" class="text-gray-400 hover:text-white transition-colors" aria-label="Fechar Modal">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="p-4 sm:p-5 space-y-5 sm:space-y-6 overflow-y-auto custom-scrollbar">
+                <!-- Seleção de Planos -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-3">Escolha seu plano:</label>
+                    <div class="space-y-3">
+                        <label class="flex items-center p-3 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors border border-gray-600 has-[:checked]:border-red-500 has-[:checked]:bg-gray-700">
+                            <input type="radio" name="pixPlan" value="5" class="w-4 h-4 text-red-600 bg-gray-800 border-gray-500 focus:ring-red-500 focus:ring-2" checked>
+                            <div class="ml-3">
+                                <span class="block text-white font-medium">Personalizar e usar uma vez</span>
+                                <span class="block text-sm text-gray-400">R$ 5,30</span>
+                            </div>
+                        </label>
+                        <label class="flex items-center p-3 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors border border-gray-600 has-[:checked]:border-red-500 has-[:checked]:bg-gray-700">
+                            <input type="radio" name="pixPlan" value="26" class="w-4 h-4 text-red-600 bg-gray-800 border-gray-500 focus:ring-red-500 focus:ring-2">
+                            <div class="ml-3">
+                                <span class="block text-white font-medium">Personalizar e usar sempre</span>
+                                <span class="block text-sm text-gray-400">R$ 26,00</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Input de WhatsApp -->
+                <div>
+                    <label for="pixWhatsapp" class="block text-sm font-medium text-gray-300">Seu número de WhatsApp</label>
+                    <input type="tel" id="pixWhatsapp" maxlength="15" placeholder="(00) 90000-0000" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-3 transition-colors outline-none">
+                    <p class="text-xs text-gray-400 mt-1">Para identificarmos seu pagamento.</p>
+                </div>
+
+                <button id="generatePixBtn" class="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2">
+                    <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm14 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"></path></svg>
+                    Gerar Pix Copia e Cola
+                </button>
+
+                <!-- Área do Resultado -->
+                <div id="pixResultArea" class="hidden flex-col items-center space-y-4 pt-4 border-t border-gray-700 pb-2">
+                    <div class="bg-amber-900/40 border border-amber-600/50 rounded-lg p-4 w-full text-center">
+                        <p class="text-sm text-amber-400 font-bold tracking-wide">Digite seu WhatsApp corretamente para liberar sua personalização!</p>
+                        <p id="pixDisplayText" class="hidden"></p>
+                    </div>
+                    
+                    <div class="bg-white p-3 rounded-xl shadow-inner flex items-center justify-center mx-auto w-[220px] h-[220px] max-w-full">
+                        <div id="pixQrCode" class="flex items-center justify-center"></div>
+                    </div>
+                    
+                    <div class="w-full relative mt-2 flex items-center">
+                        <input type="text" id="pixCopiaCola" readonly class="block w-full bg-gray-900 border border-gray-600 rounded-lg text-gray-400 p-3 pr-12 text-xs font-mono outline-none">
+                        <button id="copyPixBtn" class="absolute right-1 w-10 h-10 flex items-center justify-center text-gray-400 hover:text-white transition-colors rounded-md hover:bg-gray-800" title="Copiar código">
+                            <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+                        </button>
+                    </div>
+
+                    <!-- Botão de Suporte WhatsApp -->
+                    <a href="https://api.whatsapp.com/send?phone=5543991228540&text=Ol%C3%A1%2C%20voc%C3%AA%20pode%20me%20ajudar%20com%20o%20Criador%20de%20An%C3%BAncio%20Veicular%3F" target="_blank" rel="noopener noreferrer" class="w-full mt-2 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition-colors flex justify-center items-center gap-2 shadow-lg text-sm sm:text-base text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+                        </svg>
+                        DÚVIDAS? CHAME NO WHATSAPP
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
-        window.addEventListener('load', function() {
+        window.addEventListener('load', async function() {
+            // Preload Fontes
+            await document.fonts.ready;
+            const fontesDisponiveis = ['Montserrat', 'Roboto', 'Open Sans', 'Lato', 'Poppins'];
+            for (const f of fontesDisponiveis) {
+                try {
+                    await document.fonts.load(`700 16px "${f}"`);
+                    await document.fonts.load(`900 16px "${f}"`);
+                } catch (e) {
+                    console.warn(`Aviso ao carregar fonte ${f}:`, e);
+                }
+            }
+
             const form = document.getElementById('vehicleForm');
             const fileInput = document.getElementById('vehiclePhoto');
             const thumbnailsContainer = document.getElementById('thumbnails');
+            
+            // FIPE e Campos
+            const tipoVeiculo = document.getElementById('tipoVeiculo');
+            const marcaSelect = document.getElementById('marcaSelect');
+            const marcaCustom = document.getElementById('marcaCustom');
+            const modeloSelect = document.getElementById('modeloSelect');
+            const modeloCustom = document.getElementById('modeloCustom');
+            const anoSelect = document.getElementById('anoSelect');
+            const anoCustom = document.getElementById('anoCustom');
+            
+            const cilindradaInput = document.getElementById('cilindrada');
+            const cambioInput = document.getElementById('cambio');
+            const observacaoInput = document.getElementById('observacao');
             const telefoneInput = document.getElementById('telefone');
             const precoInput = document.getElementById('preco');
             const kmInput = document.getElementById('km');
+            const fonteSelect = document.getElementById('fonteSelect');
+            const corTextoInput = document.getElementById('corTexto');
+            const corDestaqueInput = document.getElementById('corDestaque');
+            const corFundoInput = document.getElementById('corFundo');
             const previewArea = document.getElementById('previewArea');
             const previewPlaceholder = document.getElementById('previewPlaceholder');
             const downloadButton = document.getElementById('downloadButton');
@@ -193,8 +380,8 @@
             let uploadedImages = [];
             let currentPreviewIndex = 0;
             let isProcessing = false;
-            const adColor = '#ce191f';
-            const fixedAddress = "Av. Joubert de Carvalho";
+            let previewUpdateId = 0; 
+            const fixedAddress = "CRIADORDEANUNCIO.COM";
             
             const fixedLogo = new Image();
             fixedLogo.src = "https://criadordeanuncio.com/images/logo.png";
@@ -212,19 +399,390 @@
             toolsIcon.src = "https://criadordeanuncio.com/images/logo-tools.png";
             toolsIcon.crossOrigin = "Anonymous";
 
-            function saveData() {
-                localStorage.setItem('savedTelefone', telefoneInput.value);
+            // --- Lógica do Popup PIX ---
+            const openPixModalBtn = document.getElementById('openPixModalBtn');
+            const closePixModalBtn = document.getElementById('closePixModalBtn');
+            const pixModal = document.getElementById('pixModal');
+            const pixWhatsapp = document.getElementById('pixWhatsapp');
+            const generatePixBtn = document.getElementById('generatePixBtn');
+            const pixResultArea = document.getElementById('pixResultArea');
+            const pixDisplayText = document.getElementById('pixDisplayText');
+            const pixQrCode = document.getElementById('pixQrCode');
+            const pixCopiaCola = document.getElementById('pixCopiaCola');
+            const copyPixBtn = document.getElementById('copyPixBtn');
+            const planRadios = document.getElementsByName('pixPlan');
+
+            function generateDynamicPix(whatsapp, plan) {
+                const amount = plan === '5' ? "5.30" : "26.00";
+                const descText = `CRIADOR DE ANUNCIO VCL${plan === '5' ? '05' : '26'} - ${whatsapp.replace(/\D/g, '')}`;
+
+                const f = (id, val) => id + ("00" + val.length).slice(-2) + val;
+
+                const gui = f("00", "br.gov.bcb.pix");
+                const key = f("01", "financeiro@grupobhds.com");
+                const desc = f("02", descText);
+                const accInfo = f("26", gui + key + desc);
+
+                const mcc = f("52", "0000");
+                const currency = f("53", "986");
+                const amt = f("54", amount);
+                const country = f("58", "BR");
+                const name = f("59", "BRUNO H DOS SANTOS");
+                const city = f("60", "LONDRINA");
+                const additional = f("62", f("05", "***"));
+
+                const payload = "000201" + "010211" + accInfo + mcc + currency + amt + country + name + city + additional + "6304";
+
+                let crc = 0xFFFF;
+                for (let i = 0; i < payload.length; i++) {
+                    crc ^= (payload.charCodeAt(i) << 8);
+                    for (let j = 0; j < 8; j++) {
+                        if ((crc & 0x8000) !== 0) crc = (crc << 1) ^ 0x1021;
+                        else crc = crc << 1;
+                    }
+                }
+                const crcStr = ("0000" + (crc & 0xFFFF).toString(16).toUpperCase()).slice(-4);
+                return payload + crcStr;
             }
 
-            function loadSavedData() {
-                telefoneInput.value = localStorage.getItem('savedTelefone') || '';
-                if (telefoneInput.value) telefoneInput.value = maskPhone(telefoneInput.value);
+            openPixModalBtn.addEventListener('click', () => {
+                const currentPhone = telefoneInput.value;
+                if (currentPhone) pixWhatsapp.value = currentPhone;
+                pixModal.classList.remove('hidden');
+                pixResultArea.classList.add('hidden');
+            });
+
+            closePixModalBtn.addEventListener('click', () => {
+                pixModal.classList.add('hidden');
+            });
+
+            pixWhatsapp.addEventListener('input', (e) => {
+                e.target.value = maskPhone(e.target.value);
+                pixResultArea.classList.add('hidden');
+            });
+
+            planRadios.forEach(radio => {
+                radio.addEventListener('change', () => {
+                    pixResultArea.classList.add('hidden');
+                });
+            });
+
+            generatePixBtn.addEventListener('click', () => {
+                const wp = pixWhatsapp.value.trim();
+                if (wp.length < 14) {
+                    alert('Por favor, informe um número de WhatsApp válido com DDD.');
+                    return;
+                }
+
+                let selectedPlan = '5';
+                planRadios.forEach(r => { if(r.checked) selectedPlan = r.value; });
+
+                const pixString = generateDynamicPix(wp, selectedPlan);
+                const displayText = `CRIADOR DE ANÚNCIO VCL${selectedPlan === '5' ? '05' : '26'} - ${wp}`;
+
+                pixCopiaCola.value = pixString;
+                
+                if (pixDisplayText) {
+                    pixDisplayText.textContent = displayText;
+                }
+                
+                pixQrCode.innerHTML = '';
+                new QRCode(pixQrCode, {
+                    text: pixString,
+                    width: 196,
+                    height: 196,
+                    colorDark : "#000000",
+                    colorLight : "#ffffff",
+                    correctLevel : QRCode.CorrectLevel.M
+                });
+                
+                pixResultArea.classList.remove('hidden');
+                
+                setTimeout(() => {
+                    pixResultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                }, 100);
+            });
+
+            copyPixBtn.addEventListener('click', async () => {
+                try {
+                    await navigator.clipboard.writeText(pixCopiaCola.value);
+                } catch (err) {
+                    pixCopiaCola.select();
+                    document.execCommand('copy');
+                }
+                const originalHTML = copyPixBtn.innerHTML;
+                copyPixBtn.innerHTML = '<svg class="w-5 h-5 flex-shrink-0 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                setTimeout(() => { copyPixBtn.innerHTML = originalHTML; }, 2000);
+            });
+
+
+            // --- Lógica da API FIPE e Buscas ---
+            const getFipeApiUrl = () => `https://parallelum.com.br/fipe/api/v1/${tipoVeiculo.value}`;
+
+            function setFieldEnabled(element, isEnabled) {
+                element.disabled = !isEnabled;
+                if (!isEnabled) element.value = '';
+            }
+
+            // O parâmetro addOutro define se a opção de digitar manualmente será exibida
+            function populateSelect(selectEl, data, isAno = false, defaultText = 'Selecione...', addOutro = false) {
+                selectEl.innerHTML = `<option value="">${defaultText}</option>`;
+                if(data && data.length) {
+                    data.forEach(item => {
+                        const opt = document.createElement('option');
+                        opt.value = item.codigo;
+                        let text = item.nome;
+                        if (isAno) {
+                            text = text.split(' ')[0];
+                            if (text === '32000') text = 'Zero KM';
+                        }
+                        opt.text = text;
+                        selectEl.appendChild(opt);
+                    });
+                }
+                if (addOutro) {
+                    const outroOpt = document.createElement('option');
+                    outroOpt.value = 'outro';
+                    outroOpt.text = 'Quero digitar manualmente';
+                    selectEl.appendChild(outroOpt);
+                }
+            }
+
+            async function loadFipeMarcas() {
+                try {
+                    const res = await fetch(`${getFipeApiUrl()}/marcas`);
+                    if(!res.ok) throw new Error("Erro API");
+                    const data = await res.json();
+                    populateSelect(marcaSelect, data, false, 'Selecione a Marca...', true); // Permite "Outro" apenas na Marca
+                } catch (e) {
+                    populateSelect(marcaSelect, [], false, 'Erro ao carregar (Use Outro)', true);
+                    console.error("Erro FIPE:", e);
+                }
+            }
+
+            async function loadFipeModelos(marcaId) {
+                modeloSelect.innerHTML = '<option value="">Carregando modelos...</option>';
+                try {
+                    const res = await fetch(`${getFipeApiUrl()}/marcas/${marcaId}/modelos`);
+                    const data = await res.json();
+                    populateSelect(modeloSelect, data.modelos, false, 'Selecione o Modelo...', false); // Sem opção "Outro"
+                } catch (e) {
+                    populateSelect(modeloSelect, [], false, 'Erro ao carregar...', false);
+                }
+            }
+
+            async function loadFipeAnos(marcaId, modeloId) {
+                anoSelect.innerHTML = '<option value="">Carregando anos...</option>';
+                try {
+                    const res = await fetch(`${getFipeApiUrl()}/marcas/${marcaId}/modelos/${modeloId}/anos`);
+                    const data = await res.json();
+                    populateSelect(anoSelect, data, true, 'Selecione o Ano...', false); // Sem opção "Outro"
+                } catch (e) {
+                    populateSelect(anoSelect, [], false, 'Erro ao carregar...', false);
+                }
+            }
+
+            tipoVeiculo.addEventListener('change', async () => {
+                marcaSelect.innerHTML = '<option value="">Carregando FIPE...</option>';
+                modeloSelect.innerHTML = '<option value="">Aguardando Marca...</option>';
+                anoSelect.innerHTML = '<option value="">Aguardando Modelo...</option>';
+                
+                setFieldEnabled(modeloSelect, false);
+                setFieldEnabled(anoSelect, false);
+                
+                marcaCustom.classList.add('hidden');
+                modeloCustom.classList.add('hidden');
+                anoCustom.classList.add('hidden');
+                
+                marcaSelect.classList.remove('hidden');
+                modeloSelect.classList.remove('hidden');
+                anoSelect.classList.remove('hidden');
+                
+                await loadFipeMarcas();
+                saveData();
+            });
+
+            // Lógica Central: Se selecionar "Outro" na Marca, abre campos textuais para Marca, Modelo e Ano.
+            marcaSelect.addEventListener('change', async (e) => {
+                const val = e.target.value;
+                
+                if (val === 'outro') {
+                    // Esconde os selects e mostra os inputs manuais desbloqueados
+                    marcaCustom.classList.remove('hidden');
+                    modeloSelect.classList.add('hidden');
+                    modeloCustom.classList.remove('hidden');
+                    anoSelect.classList.add('hidden');
+                    anoCustom.classList.remove('hidden');
+
+                    setFieldEnabled(marcaCustom, true);
+                    setFieldEnabled(modeloCustom, true);
+                    setFieldEnabled(anoCustom, true);
+                    
+                    marcaCustom.focus();
+                } else {
+                    // Retorna para o fluxo FIPE normal
+                    marcaCustom.classList.add('hidden');
+                    modeloSelect.classList.remove('hidden');
+                    modeloCustom.classList.add('hidden');
+                    anoSelect.classList.remove('hidden');
+                    anoCustom.classList.add('hidden');
+
+                    setFieldEnabled(modeloSelect, false);
+                    setFieldEnabled(anoSelect, false);
+
+                    if (val) {
+                        await loadFipeModelos(val);
+                        setFieldEnabled(modeloSelect, true);
+                    } else {
+                        modeloSelect.innerHTML = '<option value="">Aguardando Marca...</option>';
+                        anoSelect.innerHTML = '<option value="">Aguardando Modelo...</option>';
+                    }
+                }
+            });
+
+            function autoFillModelDetails(modelText) {
+                if (!modelText) return;
+                
+                // Extrai Cilindrada (ex: 1.0, 1.6, 2.0, 3.2)
+                const cilMatch = modelText.match(/\b([1-9]\.[0-9])\b/);
+                if (cilMatch) {
+                    cilindradaInput.value = cilMatch[1];
+                }
+                
+                // Extrai Câmbio (MEC/AUT)
+                const isAuto = /\b(AUT|AUTO|AUTOM[AÁ]TICO|CVT)\b/i.test(modelText);
+                const isManual = /\b(MEC|MANUAL|MAN)\b/i.test(modelText);
+                
+                if (isAuto) {
+                    cambioInput.checked = true;
+                } else if (isManual) {
+                    cambioInput.checked = false;
+                }
+            }
+
+            modeloSelect.addEventListener('change', async (e) => {
+                const val = e.target.value;
+                anoSelect.innerHTML = '<option value="">Carregando...</option>';
+                setFieldEnabled(anoSelect, false);
+                
+                if (val) {
+                    // Preenche automático os campos extraindo do texto FIPE
+                    const selectedText = modeloSelect.options[modeloSelect.selectedIndex].text;
+                    autoFillModelDetails(selectedText);
+                    
+                    // Salva e atualiza o preview logo em seguida
+                    saveData();
+                    updatePreviewUI();
+
+                    const marcaId = marcaSelect.value;
+                    await loadFipeAnos(marcaId, val);
+                    setFieldEnabled(anoSelect, true);
+                }
+            });
+
+            // --- Salvamento ---
+            function saveData() {
+                const formData = {
+                    tipoVeiculo: tipoVeiculo.value,
+                    marcaSelect: marcaSelect.value,
+                    marcaCustom: marcaCustom.value,
+                    modeloSelect: modeloSelect.value,
+                    modeloCustom: modeloCustom.value,
+                    anoSelect: anoSelect.value,
+                    anoCustom: anoCustom.value,
+                    km: kmInput.value,
+                    cilindrada: cilindradaInput.value,
+                    cambio: cambioInput.checked,
+                    observacao: observacaoInput.value,
+                    preco: precoInput.value,
+                    telefone: telefoneInput.value,
+                    fonte: fonteSelect.value,
+                    corTexto: corTextoInput.value,
+                    corDestaque: corDestaqueInput.value,
+                    corFundo: corFundoInput.value
+                };
+                localStorage.setItem('vehicleAdDraft', JSON.stringify(formData));
+            }
+
+            async function loadSavedData() {
+                const savedData = localStorage.getItem('vehicleAdDraft');
+                if (savedData) {
+                    try {
+                        const data = JSON.parse(savedData);
+                        if (data.tipoVeiculo) tipoVeiculo.value = data.tipoVeiculo;
+                        
+                        await loadFipeMarcas();
+                        
+                        if (data.marcaSelect) {
+                            marcaSelect.value = data.marcaSelect;
+                            
+                            // Fluxo se foi salvo como "Outro"
+                            if (data.marcaSelect === 'outro') {
+                                marcaCustom.classList.remove('hidden');
+                                modeloSelect.classList.add('hidden');
+                                modeloCustom.classList.remove('hidden');
+                                anoSelect.classList.add('hidden');
+                                anoCustom.classList.remove('hidden');
+
+                                setFieldEnabled(marcaCustom, true);
+                                setFieldEnabled(modeloCustom, true);
+                                setFieldEnabled(anoCustom, true);
+                                
+                                marcaCustom.value = data.marcaCustom || '';
+                                modeloCustom.value = data.modeloCustom || '';
+                                anoCustom.value = data.anoCustom || '';
+                            } else {
+                                // Fluxo normal FIPE
+                                await loadFipeModelos(data.marcaSelect);
+                                setFieldEnabled(modeloSelect, true);
+                                
+                                if (data.modeloSelect) {
+                                    modeloSelect.value = data.modeloSelect;
+                                    await loadFipeAnos(data.marcaSelect, data.modeloSelect);
+                                    setFieldEnabled(anoSelect, true);
+                                    
+                                    if (data.anoSelect) {
+                                        anoSelect.value = data.anoSelect;
+                                    }
+                                }
+                            }
+                        }
+
+                        kmInput.value = data.km || '';
+                        cilindradaInput.value = data.cilindrada || '';
+                        cambioInput.checked = data.cambio || false;
+                        observacaoInput.value = data.observacao || '';
+                        precoInput.value = data.preco || '';
+                        telefoneInput.value = data.telefone || '';
+                        if (data.fonte) fonteSelect.value = data.fonte;
+                        if (data.corTexto) corTextoInput.value = data.corTexto;
+                        if (data.corDestaque) corDestaqueInput.value = data.corDestaque;
+                        if (data.corFundo) corFundoInput.value = data.corFundo;
+                        
+                        if (telefoneInput.value) telefoneInput.value = maskPhone(telefoneInput.value);
+                        if (precoInput.value) precoInput.value = maskInteger(precoInput.value);
+                        if (kmInput.value) kmInput.value = maskInteger(kmInput.value);
+
+                        updatePreviewUI();
+                    } catch(e) {
+                        console.error("Erro ao carregar rascunho salvo:", e);
+                        await loadFipeMarcas();
+                    }
+                } else {
+                    await loadFipeMarcas();
+                }
             }
             
             loadSavedData();
 
-            fileInput.addEventListener('change', handleImageUpload);
-            form.addEventListener('input', () => setTimeout(updatePreviewUI, 50));
+            form.addEventListener('input', (e) => {
+                if (e.target.type === 'file') return; 
+                if (['pixPlan', 'pixWhatsapp', 'pixCopiaCola'].includes(e.target.name || e.target.id)) return;
+
+                saveData();
+                setTimeout(updatePreviewUI, 50);
+            });
+            
             downloadButton.addEventListener('click', handleDownload);
             prevButton.addEventListener('click', () => {
                 if (currentPreviewIndex > 0) {
@@ -238,16 +796,10 @@
                     updatePreviewUI();
                 }
             });
-            telefoneInput.addEventListener('input', () => {
-                telefoneInput.value = maskPhone(telefoneInput.value);
-                saveData();
-            });
-            precoInput.addEventListener('input', (e) => {
-                e.target.value = formatNumericInput(e.target.value);
-            });
-             kmInput.addEventListener('input', (e) => {
-                e.target.value = formatNumericInput(e.target.value);
-            });
+            
+            telefoneInput.addEventListener('input', (e) => { e.target.value = maskPhone(e.target.value); });
+            precoInput.addEventListener('input', (e) => { e.target.value = maskInteger(e.target.value); });
+            kmInput.addEventListener('input', (e) => { e.target.value = maskInteger(e.target.value); });
 
             function maskPhone(value) {
                 value = value.replace(/\D/g, '');
@@ -256,18 +808,24 @@
                 return value;
             }
             
-            function formatNumericInput(value) {
-                return value.replace(/\D/g, '');
+            function maskInteger(value) {
+                let num = value.replace(/\D/g, '');
+                if (num === '') return '';
+                return parseInt(num, 10).toLocaleString('pt-BR');
             }
+            
+            function getRawNumber(value) { return value.replace(/\./g, ''); }
 
-            function formatPriceDisplay(price) {
-                const number = parseFloat(price);
+            function formatPriceDisplay(priceStr) {
+                const rawStr = getRawNumber(priceStr);
+                const number = parseFloat(rawStr);
                 if (isNaN(number)) return "";
                 return number.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
             }
 
-            function formatKmDisplay(km) {
-                const number = parseInt(km, 10);
+            function formatKmDisplay(kmStr) {
+                const rawStr = getRawNumber(kmStr);
+                const number = parseInt(rawStr, 10);
                 if (isNaN(number)) return "";
                 return `${number.toLocaleString('pt-BR')} KM`;
             }
@@ -309,59 +867,78 @@
                 updatePreviewUI();
             }
 
-            function handleImageUpload(e) {
+            fileInput.addEventListener('change', (e) => {
                 const files = e.target.files;
-                uploadedImages = [];
-                currentPreviewIndex = 0;
+                if (files.length === 0) return;
 
-                if (files.length === 0) {
-                    renderThumbnails();
-                    updatePreviewUI();
-                    return;
-                }
+                const isFirstUpload = uploadedImages.length === 0;
 
-                const filePromises = Array.from(files).map(file => {
-                    return new Promise((resolve, reject) => {
+                const filePromises = Array.from(files).map((file, index) => {
+                    return new Promise((resolve) => {
                         if (file.type.startsWith('image/')) {
                             const reader = new FileReader();
                             reader.onload = (event) => {
                                 const img = new Image();
-                                img.onload = () => {
-                                    uploadedImages.push(img);
-                                    resolve();
+                                img.onload = () => resolve({ img, index });
+                                img.onerror = () => {
+                                    console.error("Imagem corrompida ignorada.");
+                                    resolve(null);
                                 };
-                                img.onerror = reject;
                                 img.src = event.target.result;
                             };
-                            reader.onerror = reject;
+                            reader.onerror = () => resolve(null);
                             reader.readAsDataURL(file);
                         } else {
-                            resolve();
+                            resolve(null);
                         }
                     });
                 });
 
-                Promise.all(filePromises).then(() => {
-                    renderThumbnails();
-                    updatePreviewUI();
+                Promise.all(filePromises).then((results) => {
+                    const validImages = results
+                        .filter(r => r !== null)
+                        .sort((a, b) => a.index - b.index)
+                        .map(r => r.img);
+                        
+                    if (validImages.length > 0) {
+                        uploadedImages.push(...validImages);
+                        if (isFirstUpload) currentPreviewIndex = 0;
+                        renderThumbnails();
+                        updatePreviewUI();
+                    }
+                    e.target.value = '';
                 });
-            }
+            });
             
             async function updatePreviewUI() {
-                previewArea.innerHTML = '';
+                const myUpdateId = ++previewUpdateId; 
 
                 if (uploadedImages.length === 0) {
+                    previewArea.innerHTML = '';
                     previewArea.appendChild(previewPlaceholder);
                     downloadButton.classList.add('hidden');
                     prevButton.classList.add('hidden');
                     nextButton.classList.add('hidden');
                     imageCounter.classList.add('hidden');
+                    
+                    previewArea.classList.add('aspect-video');
+                    previewArea.classList.add('border-dashed');
+                    previewArea.classList.remove('p-2');
                     return;
                 }
                 
                 const currentImage = uploadedImages[currentPreviewIndex];
                 const canvas = await createAdCanvas(currentImage);
-                canvas.className = "rounded-md shadow-lg w-full h-auto";
+                
+                if (myUpdateId !== previewUpdateId) return;
+
+                previewArea.innerHTML = '';
+                
+                previewArea.classList.remove('aspect-video');
+                previewArea.classList.remove('border-dashed');
+                previewArea.classList.add('p-2');
+
+                canvas.className = "rounded-md shadow-lg max-w-full max-h-[60vh] object-contain mx-auto transition-opacity duration-300";
                 previewArea.appendChild(canvas);
 
                 if (uploadedImages.length === 1) {
@@ -375,11 +952,8 @@
                     prevButton.classList.remove('hidden');
                     nextButton.classList.remove('hidden');
                     imageCounter.classList.remove('hidden');
-
                     imageCounter.textContent = `Imagem ${currentPreviewIndex + 1} de ${uploadedImages.length}`;
-
                     prevButton.disabled = currentPreviewIndex === 0;
-                    
                     nextButton.disabled = currentPreviewIndex === uploadedImages.length - 1;
                 } else {
                     prevButton.classList.add('hidden');
@@ -388,28 +962,55 @@
                 }
             }
             
+            function getFieldValue(selectEl, customEl) {
+                if (marcaSelect.value === 'outro') return customEl.value.trim();
+                if (selectEl.selectedIndex > 0) return selectEl.options[selectEl.selectedIndex].text;
+                return '';
+            }
+
             function getFormData() {
+                let rawModelo = getFieldValue(modeloSelect, modeloCustom).toUpperCase();
+                let cilindrada = document.getElementById('cilindrada').value.trim();
+                
+                // Remove a cilindrada (ex: "1.0") do nome do modelo
+                if (cilindrada) {
+                    const escapedCil = cilindrada.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`\\s*\\b${escapedCil}\\b\\s*`, 'ig');
+                    rawModelo = rawModelo.replace(regex, ' ');
+                }
+
+                // Remove termos de câmbio da FIPE (ex: MEC., AUT.) para não duplicar no visual
+                const cambioRegex = /\b(MEC|MANUAL|MAN|AUT|AUTO|AUTOM[AÁ]TICO|CVT)\b\.?/ig;
+                rawModelo = rawModelo.replace(cambioRegex, ' ');
+
+                // Limpa espaços duplos e resquícios
+                rawModelo = rawModelo.replace(/\s{2,}/g, ' ').trim();
+
                 return {
-                    marca: document.getElementById('marca').value.trim(),
-                    modelo: document.getElementById('modelo').value.trim(),
-                    ano: document.getElementById('ano').value.trim(),
+                    marca: getFieldValue(marcaSelect, marcaCustom).toUpperCase(),
+                    modelo: rawModelo,
+                    ano: getFieldValue(anoSelect, anoCustom),
                     km: document.getElementById('km').value.trim(),
                     preco: document.getElementById('preco').value.trim(),
-                    cilindrada: document.getElementById('cilindrada').value.trim(),
+                    cilindrada: cilindrada,
                     cambio: document.getElementById('cambio').checked ? 'Automático' : 'Manual',
                     observacao: document.getElementById('observacao').value.trim(),
                     telefone: document.getElementById('telefone').value.trim(),
+                    fonte: document.getElementById('fonteSelect').value || 'Montserrat',
+                    corTexto: document.getElementById('corTexto').value || '#ffffff',
+                    corDestaque: document.getElementById('corDestaque').value || '#ce191f',
+                    corFundo: document.getElementById('corFundo').value || '#000000',
                     endereco: fixedAddress,
                 };
             }
 
-            const adjustTextToFit = (ctx, text, icon, iconSize, iconGap, availableWidth, initialFontSize) => {
+            const adjustTextToFit = (ctx, text, icon, iconSize, iconGap, availableWidth, initialFontSize, fontFamily) => {
                 let fontSize = initialFontSize;
                 let textMetrics;
                 let totalWidth;
                 
                 do {
-                    ctx.font = `700 ${fontSize}px 'Inter'`;
+                    ctx.font = `700 ${fontSize}px '${fontFamily}'`;
                     textMetrics = ctx.measureText(text);
                     totalWidth = (icon ? iconSize + iconGap : 0) + textMetrics.width;
                     if (totalWidth > availableWidth) {
@@ -424,55 +1025,67 @@
                 const canvas = document.createElement('canvas');
                 const ctx = canvas.getContext('2d');
                 const data = getFormData();
-                const padding = image.width * 0.03;
                 
-                const headerHeight = image.height * 0.15;
-                let baseFooterHeight = image.height * 0.18;
-                let obsBarHeight = 0;
-                let hasExtraObsBar = false;
-
-                if (data.observacao && fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
-                    const tempCanvas = document.createElement('canvas');
-                    const tempCtx = tempCanvas.getContext('2d');
-                    const logoMaxHeight = baseFooterHeight * 1.1;
-                    const logoMaxWidth = image.width * 0.4;
-                    const scale = Math.min(logoMaxWidth / fixedLogo.width, logoMaxHeight / fixedLogo.height);
-                    const logoW = fixedLogo.width * scale;
-                    const logoRightBoundary = padding + logoW;
-                    const availableInfoWidth = image.width - logoRightBoundary - padding * 2;
-
-                    const infoTextWithObs = `${data.cambio.toUpperCase()}   |   ${data.cilindrada}   |   ${formatKmDisplay(data.km)}   |   ${data.observacao.toUpperCase()}`;
-                    const tempFontSize = (baseFooterHeight * 0.4) * 0.5;
-                    tempCtx.font = `700 ${tempFontSize}px 'Inter'`;
-                    const textMetrics = tempCtx.measureText(infoTextWithObs);
-
-                    if (textMetrics.width > availableInfoWidth) {
-                        hasExtraObsBar = true;
-                        obsBarHeight = baseFooterHeight * 0.4;
-                    }
-                }
+                // Dimensões exatas fixas: 1080x1350
+                const TARGET_WIDTH = 1080; 
+                const TARGET_IMG_HEIGHT = 1080;
+                const TARGET_TOTAL_HEIGHT = 1350;
                 
-                const footerHeight = baseFooterHeight + obsBarHeight;
+                const headerHeight = 123;
+                const footerHeight = TARGET_TOTAL_HEIGHT - TARGET_IMG_HEIGHT - headerHeight; // 147 pixels
 
-                canvas.width = image.width;
-                canvas.height = image.height + headerHeight + footerHeight;
+                canvas.width = TARGET_WIDTH;
+                canvas.height = TARGET_TOTAL_HEIGHT;
                 
-                ctx.fillStyle = 'black';
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'high';
+                
+                // Preenche o fundo
+                ctx.fillStyle = data.corFundo;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(image, 0, headerHeight, image.width, image.height);
 
-                drawOverlays(ctx, canvas.width, image.height, headerHeight, footerHeight, data, hasExtraObsBar, obsBarHeight);
+                // Lógica de recorte central (Center Crop Quadrado 1:1)
+                const sourceSize = Math.min(image.width, image.height);
+                const sourceX = (image.width - sourceSize) / 2;
+                const sourceY = (image.height - sourceSize) / 2;
+
+                // Desenha a imagem cortada no meio exato para ter 1080x1080
+                ctx.drawImage(image, sourceX, sourceY, sourceSize, sourceSize, 0, headerHeight, TARGET_WIDTH, TARGET_IMG_HEIGHT);
+
+                drawOverlays(ctx, TARGET_WIDTH, TARGET_IMG_HEIGHT, headerHeight, footerHeight, data);
                 return canvas;
             }
 
-            function drawOverlays(ctx, width, imgHeight, headerHeight, footerHeight, data, hasExtraObsBar, obsBarHeight) {
+            function hexToRgba(hex, alpha) {
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+            }
+
+            function drawTintedIcon(ctx, img, x, y, w, h, color) {
+                if (!img.complete || img.naturalWidth === 0) return;
+                const offscreen = document.createElement('canvas');
+                offscreen.width = w;
+                offscreen.height = h;
+                const oCtx = offscreen.getContext('2d');
+                oCtx.drawImage(img, 0, 0, w, h);
+                oCtx.globalCompositeOperation = 'source-in';
+                oCtx.fillStyle = color;
+                oCtx.fillRect(0, 0, w, h);
+                ctx.drawImage(offscreen, x, y, w, h);
+            }
+
+            function drawOverlays(ctx, width, imgHeight, headerHeight, footerHeight, data) {
                 const padding = width * 0.03;
                 
-                ctx.fillStyle = 'rgba(0, 0, 0, 0.6)';
+                // Header Background Overlay (sobre o espaço designado no canvas)
+                ctx.fillStyle = hexToRgba(data.corFundo, 0.6);
                 ctx.fillRect(0, 0, width, headerHeight);
 
+                // Preço
                 ctx.textAlign = 'right';
-                ctx.font = `900 ${headerHeight * 0.4}px 'Inter'`;
+                ctx.font = `900 ${headerHeight * 0.4}px '${data.fonte}'`;
                 const priceText = formatPriceDisplay(data.preco);
                 const priceMetrics = ctx.measureText(priceText);
                 const priceBoxPadding = headerHeight * 0.2;
@@ -483,7 +1096,7 @@
 
                 const priceShapeStartX = width - priceBoxWidth;
 
-                ctx.fillStyle = adColor;
+                ctx.fillStyle = data.corDestaque;
                 ctx.beginPath();
                 ctx.moveTo(priceShapeStartX - (headerHeight*0.25), 0);
                 ctx.lineTo(width, 0);
@@ -492,36 +1105,95 @@
                 ctx.closePath();
                 ctx.fill();
 
-                ctx.fillStyle = 'white';
+                ctx.fillStyle = data.corTexto;
                 ctx.textBaseline = 'middle';
                 ctx.fillText(priceText, width - padding, headerHeight / 2);
 
-
+                // Marca
                 ctx.textAlign = 'left';
                 const marcaY = headerHeight * 0.3;
-                ctx.font = `900 ${headerHeight * 0.3}px 'Inter'`;
-                ctx.fillText(data.marca.toUpperCase(), padding, marcaY);
+                ctx.font = `900 ${headerHeight * 0.3}px '${data.fonte}'`;
+                ctx.fillText(data.marca, padding, marcaY);
                 
+                // Lógica de Redução Automática da Fonte do Modelo
+                let modeloFontSize = headerHeight * 0.23;
+                const anoFontSize = headerHeight * 0.18;
+                
+                // Pre-calcula tamanho do Ano para saber quanto espaço temos
+                ctx.font = `700 ${anoFontSize}px '${data.fonte}'`;
+                const anoBoxWidth = ctx.measureText(data.ano).width + 10;
+                
+                // Espaço máximo disponível para o texto do Modelo
+                // Subtrai: Posição do ribbon de Preço - padding esquerdo - padding box Ano - margem de folga
+                const maxModeloWidth = priceShapeStartX - padding - anoBoxWidth - 30;
+
+                // Reduz fonte do Modelo enquanto ele for maior que o espaço permitido
+                do {
+                    ctx.font = `700 ${modeloFontSize}px '${data.fonte}'`;
+                    if (ctx.measureText(data.modelo).width > maxModeloWidth) {
+                        modeloFontSize -= 1;
+                    } else {
+                        break;
+                    }
+                } while (modeloFontSize > 10); // Limite mínimo de legibilidade
+
                 const modeloY = headerHeight * 0.65;
-                ctx.font = `700 ${headerHeight * 0.23}px 'Inter'`;
-                ctx.fillText(data.modelo.toUpperCase(), padding, modeloY);
+                ctx.fillText(data.modelo, padding, modeloY);
                 
-                const modeloMetrics = ctx.measureText(data.modelo.toUpperCase());
-                const anoX = padding + modeloMetrics.width + width * 0.02;
+                const finalModeloMetrics = ctx.measureText(data.modelo);
+                const anoX = padding + finalModeloMetrics.width + 15;
                 
-                ctx.font = `700 ${headerHeight * 0.18}px 'Inter'`;
-                const anoMetrics = ctx.measureText(data.ano);
+                ctx.fillStyle = data.corDestaque;
+                ctx.fillRect(anoX - 5, modeloY - (anoFontSize/2) - 5, anoBoxWidth, anoFontSize + 10);
                 
-                ctx.fillStyle = adColor;
-                ctx.fillRect(anoX - 5, modeloY - (headerHeight * 0.18)/2 - 5, anoMetrics.width + 10, headerHeight * 0.22 + 5);
-                
-                ctx.fillStyle = 'white';
+                ctx.fillStyle = data.corTexto;
+                ctx.font = `700 ${anoFontSize}px '${data.fonte}'`;
                 ctx.fillText(data.ano, anoX, modeloY);
 
+                // Footer
                 const footerStartY = imgHeight + headerHeight;
-                const infoBarHeight = (footerHeight - obsBarHeight) * 0.4;
+                
+                // Verifica necessidade de quebra da barra de observação
+                let hasExtraObsBar = false;
+                if (data.observacao && fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
+                    const tempCanvas = document.createElement('canvas');
+                    const tempCtx = tempCanvas.getContext('2d');
+                    const logoMaxWidth = width * 0.4;
+                    const logoMaxHeight = footerHeight * 1.1;
+                    const scale = Math.min(logoMaxWidth / fixedLogo.width, logoMaxHeight / fixedLogo.height);
+                    const logoW = fixedLogo.width * scale;
+                    const availableInfoWidth = width - (padding + logoW) - padding * 2;
+
+                    // Cria os textos da barra principal de forma dinâmica para não deixar "buracos"
+                    let centralParts = [];
+                    if (data.cambio) centralParts.push(data.cambio.toUpperCase());
+                    if (data.cilindrada) centralParts.push(data.cilindrada);
+                    const fKm = formatKmDisplay(data.km);
+                    if (fKm) centralParts.push(fKm);
+                    if (data.observacao) centralParts.push(data.observacao.toUpperCase());
+                    
+                    const infoTextWithObs = centralParts.join("   |   ");
+                    
+                    tempCtx.font = `700 ${(footerHeight * 0.3) * 0.5}px '${data.fonte}'`;
+                    
+                    if (tempCtx.measureText(infoTextWithObs).width > availableInfoWidth) {
+                        hasExtraObsBar = true;
+                    }
+                }
+
+                // Ajusta proporções fixas do Footer dependendo se precisa dividir a observação
+                let infoBarHeight, obsBarHeight, contactBarHeight;
+                if (hasExtraObsBar) {
+                    infoBarHeight = footerHeight * 0.33;
+                    obsBarHeight = footerHeight * 0.27;
+                    contactBarHeight = footerHeight * 0.40;
+                } else {
+                    infoBarHeight = footerHeight * 0.45;
+                    obsBarHeight = 0;
+                    contactBarHeight = footerHeight * 0.55;
+                }
+
                 const contactBarStartY = footerStartY + infoBarHeight + obsBarHeight;
-                const contactBarHeight = footerHeight - infoBarHeight - obsBarHeight;
                 
                 let logoW = 0;
                 if (fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
@@ -532,45 +1204,56 @@
                 }
                 const logoRightBoundary = padding + logoW;
 
-                ctx.fillStyle = adColor;
+                // Barra central superior do footer
+                ctx.fillStyle = data.corDestaque;
                 ctx.fillRect(0, footerStartY, width, infoBarHeight);
 
-                let centralText = `${data.cambio.toUpperCase()}   |   ${data.cilindrada}   |   ${formatKmDisplay(data.km)}`;
+                // Constrói o texto do meio de forma segura ignorando os campos que estiverem em branco
+                let centralParts = [];
+                if (data.cambio) centralParts.push(data.cambio.toUpperCase());
+                if (data.cilindrada) centralParts.push(data.cilindrada);
+                const fKm = formatKmDisplay(data.km);
+                if (fKm) centralParts.push(fKm);
+                
                 if (!hasExtraObsBar && data.observacao) {
-                    centralText += `   |   ${data.observacao.toUpperCase()}`;
+                    centralParts.push(data.observacao.toUpperCase());
                 }
+
+                let centralText = centralParts.join("   |   ");
 
                 const centralY = footerStartY + infoBarHeight / 2;
                 const availableCentralWidth = width - padding - logoRightBoundary - padding;
                 
-                const vehicleInfoFit = adjustTextToFit(ctx, centralText, toolsIcon, infoBarHeight * 0.5, infoBarHeight * 0.2, availableCentralWidth, infoBarHeight * 0.5);
-                ctx.font = `700 ${vehicleInfoFit.fontSize}px 'Inter'`;
+                const vehicleInfoFit = adjustTextToFit(ctx, centralText, toolsIcon, infoBarHeight * 0.5, infoBarHeight * 0.2, availableCentralWidth, infoBarHeight * 0.5, data.fonte);
+                ctx.font = `700 ${vehicleInfoFit.fontSize}px '${data.fonte}'`;
                 const centralIconSize = infoBarHeight * 0.5 * (vehicleInfoFit.fontSize / (infoBarHeight * 0.5));
                 const centralIconGap = infoBarHeight * 0.2 * (vehicleInfoFit.fontSize / (infoBarHeight * 0.5));
                 
                 const centralStartX = width - padding - vehicleInfoFit.totalWidth;
-                ctx.fillStyle = 'white';
+                ctx.fillStyle = data.corTexto;
                 ctx.textAlign = 'left';
                 if (toolsIcon.complete && toolsIcon.naturalWidth !== 0) {
-                    ctx.drawImage(toolsIcon, centralStartX, centralY - centralIconSize / 2, centralIconSize, centralIconSize);
+                    drawTintedIcon(ctx, toolsIcon, centralStartX, centralY - centralIconSize / 2, centralIconSize, centralIconSize, data.corTexto);
                 }
                 ctx.fillText(centralText, centralStartX + centralIconSize + centralIconGap, centralY);
 
+                // Barra de observação adicional
                 if (hasExtraObsBar) {
                     const obsBarStartY = footerStartY + infoBarHeight;
-                    ctx.fillStyle = adColor;
+                    ctx.fillStyle = data.corDestaque;
                     ctx.fillRect(0, obsBarStartY, width, obsBarHeight);
                     const obsY = obsBarStartY + obsBarHeight / 2;
                     const availableObsWidth = width - padding - logoRightBoundary - padding;
                     
-                    const obsFit = adjustTextToFit(ctx, data.observacao.toUpperCase(), null, 0, 0, availableObsWidth, infoBarHeight * 0.5);
-                    ctx.fillStyle = 'white';
+                    const obsFit = adjustTextToFit(ctx, data.observacao.toUpperCase(), null, 0, 0, availableObsWidth, obsBarHeight * 0.6, data.fonte);
+                    ctx.fillStyle = data.corTexto;
                     ctx.textAlign = 'right';
-                    ctx.font = `700 ${obsFit.fontSize}px 'Inter'`;
+                    ctx.font = `700 ${obsFit.fontSize}px '${data.fonte}'`;
                     ctx.fillText(data.observacao.toUpperCase(), width - padding, obsY);
                 }
                 
-                ctx.fillStyle = 'rgba(10, 10, 10, 0.85)';
+                // Barra de contatos
+                ctx.fillStyle = hexToRgba(data.corFundo, 0.85);
                 ctx.fillRect(0, contactBarStartY, width, contactBarHeight);
 
                 const items = [
@@ -587,7 +1270,7 @@
                 let totalContactWidth;
                 
                 do {
-                    ctx.font = `700 ${contactFontSize}px 'Inter'`;
+                    ctx.font = `700 ${contactFontSize}px '${data.fonte}'`;
                     const iconSize = contactBarHeight * 0.5 * (contactFontSize / initialContactFontSize);
                     const textIconGap = iconSize * 0.4;
                     totalContactWidth = items.reduce((acc, item) => {
@@ -604,12 +1287,12 @@
                 const textIconGap = iconSize * 0.4;
                 let currentX = logoRightBoundary + itemGap + (contactAreaWidth - totalContactWidth) / 2;
                 
-                ctx.fillStyle = 'white';
+                ctx.fillStyle = data.corTexto;
                 ctx.textAlign = 'left';
                 items.forEach((item) => {
                     const itemWidth = iconSize + textIconGap + ctx.measureText(item.text.toUpperCase()).width;
                     if (item.icon.complete && item.icon.naturalWidth !== 0) {
-                        ctx.drawImage(item.icon, currentX, contactY - iconSize / 2, iconSize, iconSize);
+                        drawTintedIcon(ctx, item.icon, currentX, contactY - iconSize / 2, iconSize, iconSize, data.corTexto);
                     }
                     ctx.fillText(item.text.toUpperCase(), currentX + iconSize + textIconGap, contactY);
                     currentX += itemWidth + itemGap;
@@ -665,4 +1348,3 @@
     </script>
 </body>
 </html>
-

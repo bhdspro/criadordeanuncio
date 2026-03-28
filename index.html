@@ -33,7 +33,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700;900&family=Montserrat:wght@400;500;700;900&family=Open+Sans:wght@400;700;800&family=Poppins:wght@400;700;900&family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-    <!-- Geração de QR Code Local (À prova de falhas) -->
+    <!-- Geração de QR Code Local -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     
     <style>
@@ -91,7 +91,7 @@
 
     <div class="container mx-auto p-4 md:p-8 max-w-6xl">
         <header class="text-center mb-8">
-            <h1 class="text-4xl md:text-5xl font-bold text-red-500">Criador de Anúncio Veicular</h1>
+            <h1 class="text-4xl md:text-5xl font-bold text-red-500">Criador de Anúncio de Veículo</h1>
             <p class="text-gray-400 mt-2">Preencha os dados, anexe uma ou mais fotos e crie suas imagens de venda.</p>
         </header>
 
@@ -132,7 +132,7 @@
                             <select id="marcaSelect" class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors outline-none">
                                 <option value="">Carregando FIPE...</option>
                             </select>
-                            <input type="text" id="marcaCustom" placeholder="Ex: Hyundai" class="hidden mt-2 block w-full bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 outline-none">
+                            <input type="text" id="marcaCustom" placeholder="Digite a Marca..." class="hidden mt-2 block w-full bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 outline-none">
                         </div>
                     </div>
                     
@@ -141,16 +141,16 @@
                         <div class="md:col-span-2">
                             <label for="modeloSelect" class="block text-sm font-medium text-gray-300">Modelo</label>
                             <select id="modeloSelect" disabled class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed outline-none">
-                                <option value="">Selecione a Marca primeiro...</option>
+                                <option value="">Aguardando Marca...</option>
                             </select>
-                            <input type="text" id="modeloCustom" disabled placeholder="Ex: HB20 Comfort" class="hidden mt-2 block w-full bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 outline-none">
+                            <input type="text" id="modeloCustom" disabled placeholder="Digite o Modelo..." class="hidden mt-1 block w-full bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 outline-none">
                         </div>
                         <div>
                             <label for="anoSelect" class="block text-sm font-medium text-gray-300">Ano</label>
                             <select id="anoSelect" disabled class="mt-1 block w-full bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed outline-none">
-                                <option value="">Aguardando...</option>
+                                <option value="">Aguardando Modelo...</option>
                             </select>
-                            <input type="text" id="anoCustom" disabled maxlength="9" placeholder="Ex: 2022/2023" class="hidden mt-2 block w-full bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 outline-none">
+                            <input type="text" id="anoCustom" disabled maxlength="9" placeholder="Ex: 2023/2024" class="hidden mt-1 block w-full bg-gray-600 border border-gray-500 rounded-md shadow-sm focus:ring-red-500 focus:border-red-500 text-white p-2.5 transition-colors disabled:opacity-50 outline-none">
                         </div>
                     </div>
 
@@ -173,7 +173,7 @@
                                     <input type="checkbox" id="cambio" class="sr-only peer">
                                     <div class="w-11 h-6 bg-gray-600 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-red-600"></div>
                                 </label>
-                                <span class="text-sm font-medium text-gray-400 select-none whitespace-nowrap">Automático</span>
+                                <span class="text-sm font-medium text-gray-400 select-none whitespace-nowrap">Auto</span>
                             </div>
                         </div>
                     </div>
@@ -412,7 +412,6 @@
             const copyPixBtn = document.getElementById('copyPixBtn');
             const planRadios = document.getElementsByName('pixPlan');
 
-            // Gerador de Payload EMV PIX
             function generateDynamicPix(whatsapp, plan) {
                 const amount = plan === '5' ? "5.30" : "26.00";
                 const descText = `CRIADOR DE ANUNCIO VCL${plan === '5' ? '05' : '26'} - ${whatsapp.replace(/\D/g, '')}`;
@@ -459,11 +458,9 @@
 
             pixWhatsapp.addEventListener('input', (e) => {
                 e.target.value = maskPhone(e.target.value);
-                // Esconde o QR Code atual se o usuário alterar o WhatsApp
                 pixResultArea.classList.add('hidden');
             });
 
-            // Esconde o QR Code atual se o usuário trocar de plano
             planRadios.forEach(radio => {
                 radio.addEventListener('change', () => {
                     pixResultArea.classList.add('hidden');
@@ -489,7 +486,7 @@
                     pixDisplayText.textContent = displayText;
                 }
                 
-                pixQrCode.innerHTML = ''; // Limpa QR Code anterior
+                pixQrCode.innerHTML = '';
                 new QRCode(pixQrCode, {
                     text: pixString,
                     width: 196,
@@ -501,7 +498,6 @@
                 
                 pixResultArea.classList.remove('hidden');
                 
-                // Rolar suavemente para baixo em dispositivos móveis
                 setTimeout(() => {
                     pixResultArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
                 }, 100);
@@ -520,29 +516,16 @@
             });
 
 
-            // --- Lógica da API FIPE e Buscas Inteligentes ---
+            // --- Lógica da API FIPE e Buscas ---
             const getFipeApiUrl = () => `https://parallelum.com.br/fipe/api/v1/${tipoVeiculo.value}`;
-            let globalFipeMarcas = [];
-            let globalFipeModelos = [];
-
-            function normalizeStr(str) {
-                return str ? str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().trim() : '';
-            }
-
-            function debounce(func, wait) {
-                let timeout;
-                return function(...args) {
-                    clearTimeout(timeout);
-                    timeout = setTimeout(() => func.apply(this, args), wait);
-                };
-            }
 
             function setFieldEnabled(element, isEnabled) {
                 element.disabled = !isEnabled;
                 if (!isEnabled) element.value = '';
             }
 
-            function populateSelect(selectEl, data, isAno = false, defaultText = 'Selecione...') {
+            // O parâmetro addOutro define se a opção de digitar manualmente será exibida
+            function populateSelect(selectEl, data, isAno = false, defaultText = 'Selecione...', addOutro = false) {
                 selectEl.innerHTML = `<option value="">${defaultText}</option>`;
                 if(data && data.length) {
                     data.forEach(item => {
@@ -557,17 +540,11 @@
                         selectEl.appendChild(opt);
                     });
                 }
-                const outroOpt = document.createElement('option');
-                outroOpt.value = 'outro';
-                outroOpt.text = 'Outro (Digitar manualmente)';
-                selectEl.appendChild(outroOpt);
-            }
-
-            function toggleCustomInput(selectEl, inputEl) {
-                if (selectEl.value === 'outro') {
-                    inputEl.classList.remove('hidden');
-                } else {
-                    inputEl.classList.add('hidden');
+                if (addOutro) {
+                    const outroOpt = document.createElement('option');
+                    outroOpt.value = 'outro';
+                    outroOpt.text = 'Quero digitar manualmente';
+                    selectEl.appendChild(outroOpt);
                 }
             }
 
@@ -576,10 +553,9 @@
                     const res = await fetch(`${getFipeApiUrl()}/marcas`);
                     if(!res.ok) throw new Error("Erro API");
                     const data = await res.json();
-                    globalFipeMarcas = data;
-                    populateSelect(marcaSelect, data, false, 'Selecione a Marca...');
+                    populateSelect(marcaSelect, data, false, 'Selecione a Marca...', true); // Permite "Outro" apenas na Marca
                 } catch (e) {
-                    populateSelect(marcaSelect, [], false, 'Erro ao carregar (Use Outro)');
+                    populateSelect(marcaSelect, [], false, 'Erro ao carregar (Use Outro)', true);
                     console.error("Erro FIPE:", e);
                 }
             }
@@ -589,10 +565,9 @@
                 try {
                     const res = await fetch(`${getFipeApiUrl()}/marcas/${marcaId}/modelos`);
                     const data = await res.json();
-                    globalFipeModelos = data.modelos;
-                    populateSelect(modeloSelect, data.modelos, false, 'Selecione o Modelo...');
+                    populateSelect(modeloSelect, data.modelos, false, 'Selecione o Modelo...', false); // Sem opção "Outro"
                 } catch (e) {
-                    populateSelect(modeloSelect, [], false, 'Erro ao carregar (Use Outro)');
+                    populateSelect(modeloSelect, [], false, 'Erro ao carregar...', false);
                 }
             }
 
@@ -601,21 +576,24 @@
                 try {
                     const res = await fetch(`${getFipeApiUrl()}/marcas/${marcaId}/modelos/${modeloId}/anos`);
                     const data = await res.json();
-                    populateSelect(anoSelect, data, true, 'Selecione o Ano...');
+                    populateSelect(anoSelect, data, true, 'Selecione o Ano...', false); // Sem opção "Outro"
                 } catch (e) {
-                    populateSelect(anoSelect, [], false, 'Erro ao carregar (Use Outro)');
+                    populateSelect(anoSelect, [], false, 'Erro ao carregar...', false);
                 }
             }
 
             tipoVeiculo.addEventListener('change', async () => {
                 marcaSelect.innerHTML = '<option value="">Carregando FIPE...</option>';
-                modeloSelect.innerHTML = '<option value="">Selecione a Marca primeiro...</option>';
-                anoSelect.innerHTML = '<option value="">Selecione o Modelo primeiro...</option>';
+                modeloSelect.innerHTML = '<option value="">Aguardando Marca...</option>';
+                anoSelect.innerHTML = '<option value="">Aguardando Modelo...</option>';
+                
                 setFieldEnabled(modeloSelect, false);
                 setFieldEnabled(anoSelect, false);
+                
                 marcaCustom.classList.add('hidden');
                 modeloCustom.classList.add('hidden');
                 anoCustom.classList.add('hidden');
+                
                 marcaSelect.classList.remove('hidden');
                 modeloSelect.classList.remove('hidden');
                 anoSelect.classList.remove('hidden');
@@ -624,127 +602,82 @@
                 saveData();
             });
 
+            // Lógica Central: Se selecionar "Outro" na Marca, abre campos textuais para Marca, Modelo e Ano.
             marcaSelect.addEventListener('change', async (e) => {
                 const val = e.target.value;
-                toggleCustomInput(marcaSelect, marcaCustom);
-                
-                modeloSelect.innerHTML = '<option value="">Selecione a Marca primeiro...</option>';
-                anoSelect.innerHTML = '<option value="">Selecione o Modelo primeiro...</option>';
-                setFieldEnabled(modeloSelect, false);
-                setFieldEnabled(modeloCustom, false);
-                setFieldEnabled(anoSelect, false);
-                setFieldEnabled(anoCustom, false);
-                modeloSelect.classList.remove('hidden');
-                modeloCustom.classList.add('hidden');
-                anoSelect.classList.remove('hidden');
-                anoCustom.classList.add('hidden');
                 
                 if (val === 'outro') {
+                    // Esconde os selects e mostra os inputs manuais desbloqueados
+                    marcaCustom.classList.remove('hidden');
+                    modeloSelect.classList.add('hidden');
+                    modeloCustom.classList.remove('hidden');
+                    anoSelect.classList.add('hidden');
+                    anoCustom.classList.remove('hidden');
+
                     setFieldEnabled(marcaCustom, true);
+                    setFieldEnabled(modeloCustom, true);
+                    setFieldEnabled(anoCustom, true);
+                    
                     marcaCustom.focus();
-                } else if (val) {
-                    await loadFipeModelos(val);
-                    setFieldEnabled(modeloSelect, true);
+                } else {
+                    // Retorna para o fluxo FIPE normal
+                    marcaCustom.classList.add('hidden');
+                    modeloSelect.classList.remove('hidden');
+                    modeloCustom.classList.add('hidden');
+                    anoSelect.classList.remove('hidden');
+                    anoCustom.classList.add('hidden');
+
+                    setFieldEnabled(modeloSelect, false);
+                    setFieldEnabled(anoSelect, false);
+
+                    if (val) {
+                        await loadFipeModelos(val);
+                        setFieldEnabled(modeloSelect, true);
+                    } else {
+                        modeloSelect.innerHTML = '<option value="">Aguardando Marca...</option>';
+                        anoSelect.innerHTML = '<option value="">Aguardando Modelo...</option>';
+                    }
                 }
             });
 
-            marcaCustom.addEventListener('input', debounce(async (e) => {
-                const typed = normalizeStr(e.target.value);
-                if (!typed) {
-                    setFieldEnabled(modeloSelect, false);
-                    setFieldEnabled(modeloCustom, false);
-                    return;
+            function autoFillModelDetails(modelText) {
+                if (!modelText) return;
+                
+                // Extrai Cilindrada (ex: 1.0, 1.6, 2.0, 3.2)
+                const cilMatch = modelText.match(/\b([1-9]\.[0-9])\b/);
+                if (cilMatch) {
+                    cilindradaInput.value = cilMatch[1];
                 }
-
-                const match = globalFipeMarcas.find(m => normalizeStr(m.nome) === typed);
-
-                if (match) {
-                    await loadFipeModelos(match.codigo);
-                    modeloSelect.classList.remove('hidden');
-                    modeloCustom.classList.add('hidden');
-                    setFieldEnabled(modeloSelect, true);
-                    modeloSelect.value = '';
-                } else {
-                    modeloSelect.classList.add('hidden');
-                    modeloCustom.classList.remove('hidden');
-                    modeloSelect.value = 'outro';
-                    setFieldEnabled(modeloCustom, true);
+                
+                // Extrai Câmbio (MEC/AUT)
+                const isAuto = /\b(AUT|AUTO|AUTOM[AÁ]TICO|CVT)\b/i.test(modelText);
+                const isManual = /\b(MEC|MANUAL|MAN)\b/i.test(modelText);
+                
+                if (isAuto) {
+                    cambioInput.checked = true;
+                } else if (isManual) {
+                    cambioInput.checked = false;
                 }
-
-                anoSelect.innerHTML = '<option value="">Selecione o Modelo primeiro...</option>';
-                anoSelect.classList.remove('hidden');
-                anoCustom.classList.add('hidden');
-                setFieldEnabled(anoSelect, false);
-                setFieldEnabled(anoCustom, false);
-            }, 600));
+            }
 
             modeloSelect.addEventListener('change', async (e) => {
                 const val = e.target.value;
-                toggleCustomInput(modeloSelect, modeloCustom);
-                
-                anoSelect.innerHTML = '<option value="">Selecione o Modelo primeiro...</option>';
-                anoSelect.classList.remove('hidden');
-                anoCustom.classList.add('hidden');
+                anoSelect.innerHTML = '<option value="">Carregando...</option>';
                 setFieldEnabled(anoSelect, false);
-                setFieldEnabled(anoCustom, false);
+                
+                if (val) {
+                    // Preenche automático os campos extraindo do texto FIPE
+                    const selectedText = modeloSelect.options[modeloSelect.selectedIndex].text;
+                    autoFillModelDetails(selectedText);
+                    
+                    // Salva e atualiza o preview logo em seguida
+                    saveData();
+                    updatePreviewUI();
 
-                if (val === 'outro') {
-                    anoSelect.classList.add('hidden');
-                    anoCustom.classList.remove('hidden');
-                    anoSelect.value = 'outro';
-                    setFieldEnabled(anoCustom, true);
-                    modeloCustom.focus();
-                } else if (val) {
-                    let currentMarcaId = marcaSelect.value;
-                    if (currentMarcaId === 'outro') {
-                        const mMatch = globalFipeMarcas.find(m => normalizeStr(m.nome) === normalizeStr(marcaCustom.value));
-                        if (mMatch) currentMarcaId = mMatch.codigo;
-                    }
-
-                    if (currentMarcaId) {
-                        await loadFipeAnos(currentMarcaId, val);
-                        setFieldEnabled(anoSelect, true);
-                    }
-                }
-            });
-
-            modeloCustom.addEventListener('input', debounce(async (e) => {
-                const typed = normalizeStr(e.target.value);
-                if (!typed) {
-                    setFieldEnabled(anoSelect, false);
-                    setFieldEnabled(anoCustom, false);
-                    return;
-                }
-
-                let currentMarcaId = marcaSelect.value;
-                if (currentMarcaId === 'outro') {
-                    const mMatch = globalFipeMarcas.find(m => normalizeStr(m.nome) === normalizeStr(marcaCustom.value));
-                    if (mMatch) currentMarcaId = mMatch.codigo;
-                }
-
-                let match = null;
-                if (currentMarcaId && globalFipeModelos.length > 0) {
-                    match = globalFipeModelos.find(m => normalizeStr(m.nome) === typed) || 
-                            globalFipeModelos.find(m => normalizeStr(m.nome).includes(typed));
-                }
-
-                if (match && currentMarcaId) {
-                    await loadFipeAnos(currentMarcaId, match.codigo);
-                    anoSelect.classList.remove('hidden');
-                    anoCustom.classList.add('hidden');
+                    const marcaId = marcaSelect.value;
+                    await loadFipeAnos(marcaId, val);
                     setFieldEnabled(anoSelect, true);
-                    anoSelect.value = '';
-                } else {
-                    anoSelect.classList.add('hidden');
-                    anoCustom.classList.remove('hidden');
-                    anoSelect.value = 'outro';
-                    setFieldEnabled(anoCustom, true);
                 }
-            }, 600));
-
-            anoSelect.addEventListener('change', () => {
-                toggleCustomInput(anoSelect, anoCustom);
-                if(anoSelect.value === 'outro') anoCustom.focus();
             });
 
             // --- Salvamento ---
@@ -776,75 +709,42 @@
                 if (savedData) {
                     try {
                         const data = JSON.parse(savedData);
-                        
                         if (data.tipoVeiculo) tipoVeiculo.value = data.tipoVeiculo;
                         
                         await loadFipeMarcas();
                         
                         if (data.marcaSelect) {
                             marcaSelect.value = data.marcaSelect;
-                            toggleCustomInput(marcaSelect, marcaCustom);
                             
-                            let resolvedMarcaId = null;
-                            if (data.marcaSelect !== 'outro') {
-                                resolvedMarcaId = data.marcaSelect;
-                            } else if (data.marcaCustom) {
-                                marcaCustom.value = data.marcaCustom;
-                                setFieldEnabled(marcaCustom, true);
-                                const match = globalFipeMarcas.find(m => normalizeStr(m.nome) === normalizeStr(data.marcaCustom));
-                                if (match) resolvedMarcaId = match.codigo;
-                            }
+                            // Fluxo se foi salvo como "Outro"
+                            if (data.marcaSelect === 'outro') {
+                                marcaCustom.classList.remove('hidden');
+                                modeloSelect.classList.add('hidden');
+                                modeloCustom.classList.remove('hidden');
+                                anoSelect.classList.add('hidden');
+                                anoCustom.classList.remove('hidden');
 
-                            if (resolvedMarcaId) {
-                                await loadFipeModelos(resolvedMarcaId);
+                                setFieldEnabled(marcaCustom, true);
+                                setFieldEnabled(modeloCustom, true);
+                                setFieldEnabled(anoCustom, true);
+                                
+                                marcaCustom.value = data.marcaCustom || '';
+                                modeloCustom.value = data.modeloCustom || '';
+                                anoCustom.value = data.anoCustom || '';
+                            } else {
+                                // Fluxo normal FIPE
+                                await loadFipeModelos(data.marcaSelect);
                                 setFieldEnabled(modeloSelect, true);
                                 
                                 if (data.modeloSelect) {
                                     modeloSelect.value = data.modeloSelect;
-                                    toggleCustomInput(modeloSelect, modeloCustom);
+                                    await loadFipeAnos(data.marcaSelect, data.modeloSelect);
+                                    setFieldEnabled(anoSelect, true);
                                     
-                                    let resolvedModeloId = null;
-                                    if (data.modeloSelect !== 'outro') {
-                                        resolvedModeloId = data.modeloSelect;
-                                    } else if (data.modeloCustom) {
-                                        modeloCustom.value = data.modeloCustom;
-                                        setFieldEnabled(modeloCustom, true);
-                                        const matchMod = globalFipeModelos.find(m => normalizeStr(m.nome) === normalizeStr(data.modeloCustom) || normalizeStr(m.nome).includes(normalizeStr(data.modeloCustom)));
-                                        if (matchMod) resolvedModeloId = matchMod.codigo;
-                                    }
-
-                                    if (resolvedModeloId) {
-                                        await loadFipeAnos(resolvedMarcaId, resolvedModeloId);
-                                        setFieldEnabled(anoSelect, true);
-
-                                        if (data.anoSelect) {
-                                            anoSelect.value = data.anoSelect;
-                                            toggleCustomInput(anoSelect, anoCustom);
-                                            if (data.anoSelect === 'outro' && data.anoCustom) {
-                                                anoCustom.value = data.anoCustom;
-                                                setFieldEnabled(anoCustom, true);
-                                            }
-                                        }
-                                    } else {
-                                        anoSelect.classList.add('hidden');
-                                        anoCustom.classList.remove('hidden');
-                                        anoSelect.value = 'outro';
-                                        setFieldEnabled(anoCustom, true);
-                                        if(data.anoCustom) anoCustom.value = data.anoCustom;
+                                    if (data.anoSelect) {
+                                        anoSelect.value = data.anoSelect;
                                     }
                                 }
-                            } else {
-                                modeloSelect.classList.add('hidden');
-                                modeloCustom.classList.remove('hidden');
-                                modeloSelect.value = 'outro';
-                                setFieldEnabled(modeloCustom, true);
-                                if (data.modeloCustom) modeloCustom.value = data.modeloCustom;
-
-                                anoSelect.classList.add('hidden');
-                                anoCustom.classList.remove('hidden');
-                                anoSelect.value = 'outro';
-                                setFieldEnabled(anoCustom, true);
-                                if (data.anoCustom) anoCustom.value = data.anoCustom;
                             }
                         }
 
@@ -1063,19 +963,36 @@
             }
             
             function getFieldValue(selectEl, customEl) {
-                if (selectEl.value === 'outro') return customEl.value.trim();
+                if (marcaSelect.value === 'outro') return customEl.value.trim();
                 if (selectEl.selectedIndex > 0) return selectEl.options[selectEl.selectedIndex].text;
                 return '';
             }
 
             function getFormData() {
+                let rawModelo = getFieldValue(modeloSelect, modeloCustom).toUpperCase();
+                let cilindrada = document.getElementById('cilindrada').value.trim();
+                
+                // Remove a cilindrada (ex: "1.0") do nome do modelo
+                if (cilindrada) {
+                    const escapedCil = cilindrada.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    const regex = new RegExp(`\\s*\\b${escapedCil}\\b\\s*`, 'ig');
+                    rawModelo = rawModelo.replace(regex, ' ');
+                }
+
+                // Remove termos de câmbio da FIPE (ex: MEC., AUT.) para não duplicar no visual
+                const cambioRegex = /\b(MEC|MANUAL|MAN|AUT|AUTO|AUTOM[AÁ]TICO|CVT)\b\.?/ig;
+                rawModelo = rawModelo.replace(cambioRegex, ' ');
+
+                // Limpa espaços duplos e resquícios
+                rawModelo = rawModelo.replace(/\s{2,}/g, ' ').trim();
+
                 return {
                     marca: getFieldValue(marcaSelect, marcaCustom).toUpperCase(),
-                    modelo: getFieldValue(modeloSelect, modeloCustom).toUpperCase(),
+                    modelo: rawModelo,
                     ano: getFieldValue(anoSelect, anoCustom),
                     km: document.getElementById('km').value.trim(),
                     preco: document.getElementById('preco').value.trim(),
-                    cilindrada: document.getElementById('cilindrada').value.trim(),
+                    cilindrada: cilindrada,
                     cambio: document.getElementById('cambio').checked ? 'Automático' : 'Manual',
                     observacao: document.getElementById('observacao').value.trim(),
                     telefone: document.getElementById('telefone').value.trim(),
@@ -1109,52 +1026,33 @@
                 const ctx = canvas.getContext('2d');
                 const data = getFormData();
                 
+                // Dimensões exatas fixas: 1080x1350
                 const TARGET_WIDTH = 1080; 
-                const scaleFactor = TARGET_WIDTH / image.width;
+                const TARGET_IMG_HEIGHT = 1080;
+                const TARGET_TOTAL_HEIGHT = 1350;
                 
-                const canvasImgWidth = TARGET_WIDTH;
-                const canvasImgHeight = image.height * scaleFactor;
+                const headerHeight = 123;
+                const footerHeight = TARGET_TOTAL_HEIGHT - TARGET_IMG_HEIGHT - headerHeight; // 147 pixels
 
-                const padding = canvasImgWidth * 0.03;
-                const headerHeight = canvasImgHeight * 0.15;
-                let baseFooterHeight = canvasImgHeight * 0.18;
-                let obsBarHeight = 0;
-                let hasExtraObsBar = false;
-
-                if (data.observacao && fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
-                    const tempCanvas = document.createElement('canvas');
-                    const tempCtx = tempCanvas.getContext('2d');
-                    const logoMaxHeight = baseFooterHeight * 1.1;
-                    const logoMaxWidth = canvasImgWidth * 0.4;
-                    const scale = Math.min(logoMaxWidth / fixedLogo.width, logoMaxHeight / fixedLogo.height);
-                    const logoW = fixedLogo.width * scale;
-                    const logoRightBoundary = padding + logoW;
-                    const availableInfoWidth = canvasImgWidth - logoRightBoundary - padding * 2;
-
-                    const infoTextWithObs = `${data.cambio.toUpperCase()}   |   ${data.cilindrada}   |   ${formatKmDisplay(data.km)}   |   ${data.observacao.toUpperCase()}`;
-                    const tempFontSize = (baseFooterHeight * 0.4) * 0.5;
-                    tempCtx.font = `700 ${tempFontSize}px '${data.fonte}'`;
-                    const textMetrics = tempCtx.measureText(infoTextWithObs);
-
-                    if (textMetrics.width > availableInfoWidth) {
-                        hasExtraObsBar = true;
-                        obsBarHeight = baseFooterHeight * 0.4;
-                    }
-                }
-                
-                const footerHeight = baseFooterHeight + obsBarHeight;
-
-                canvas.width = canvasImgWidth;
-                canvas.height = canvasImgHeight + headerHeight + footerHeight;
+                canvas.width = TARGET_WIDTH;
+                canvas.height = TARGET_TOTAL_HEIGHT;
                 
                 ctx.imageSmoothingEnabled = true;
                 ctx.imageSmoothingQuality = 'high';
                 
+                // Preenche o fundo
                 ctx.fillStyle = data.corFundo;
                 ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.drawImage(image, 0, headerHeight, canvasImgWidth, canvasImgHeight);
 
-                drawOverlays(ctx, canvas.width, canvasImgHeight, headerHeight, footerHeight, data, hasExtraObsBar, obsBarHeight);
+                // Lógica de recorte central (Center Crop Quadrado 1:1)
+                const sourceSize = Math.min(image.width, image.height);
+                const sourceX = (image.width - sourceSize) / 2;
+                const sourceY = (image.height - sourceSize) / 2;
+
+                // Desenha a imagem cortada no meio exato para ter 1080x1080
+                ctx.drawImage(image, sourceX, sourceY, sourceSize, sourceSize, 0, headerHeight, TARGET_WIDTH, TARGET_IMG_HEIGHT);
+
+                drawOverlays(ctx, TARGET_WIDTH, TARGET_IMG_HEIGHT, headerHeight, footerHeight, data);
                 return canvas;
             }
 
@@ -1178,12 +1076,14 @@
                 ctx.drawImage(offscreen, x, y, w, h);
             }
 
-            function drawOverlays(ctx, width, imgHeight, headerHeight, footerHeight, data, hasExtraObsBar, obsBarHeight) {
+            function drawOverlays(ctx, width, imgHeight, headerHeight, footerHeight, data) {
                 const padding = width * 0.03;
                 
+                // Header Background Overlay (sobre o espaço designado no canvas)
                 ctx.fillStyle = hexToRgba(data.corFundo, 0.6);
                 ctx.fillRect(0, 0, width, headerHeight);
 
+                // Preço
                 ctx.textAlign = 'right';
                 ctx.font = `900 ${headerHeight * 0.4}px '${data.fonte}'`;
                 const priceText = formatPriceDisplay(data.preco);
@@ -1209,32 +1109,91 @@
                 ctx.textBaseline = 'middle';
                 ctx.fillText(priceText, width - padding, headerHeight / 2);
 
-
+                // Marca
                 ctx.textAlign = 'left';
                 const marcaY = headerHeight * 0.3;
                 ctx.font = `900 ${headerHeight * 0.3}px '${data.fonte}'`;
                 ctx.fillText(data.marca, padding, marcaY);
                 
+                // Lógica de Redução Automática da Fonte do Modelo
+                let modeloFontSize = headerHeight * 0.23;
+                const anoFontSize = headerHeight * 0.18;
+                
+                // Pre-calcula tamanho do Ano para saber quanto espaço temos
+                ctx.font = `700 ${anoFontSize}px '${data.fonte}'`;
+                const anoBoxWidth = ctx.measureText(data.ano).width + 10;
+                
+                // Espaço máximo disponível para o texto do Modelo
+                // Subtrai: Posição do ribbon de Preço - padding esquerdo - padding box Ano - margem de folga
+                const maxModeloWidth = priceShapeStartX - padding - anoBoxWidth - 30;
+
+                // Reduz fonte do Modelo enquanto ele for maior que o espaço permitido
+                do {
+                    ctx.font = `700 ${modeloFontSize}px '${data.fonte}'`;
+                    if (ctx.measureText(data.modelo).width > maxModeloWidth) {
+                        modeloFontSize -= 1;
+                    } else {
+                        break;
+                    }
+                } while (modeloFontSize > 10); // Limite mínimo de legibilidade
+
                 const modeloY = headerHeight * 0.65;
-                ctx.font = `700 ${headerHeight * 0.23}px '${data.fonte}'`;
                 ctx.fillText(data.modelo, padding, modeloY);
                 
-                const modeloMetrics = ctx.measureText(data.modelo);
-                const anoX = padding + modeloMetrics.width + width * 0.02;
-                
-                ctx.font = `700 ${headerHeight * 0.18}px '${data.fonte}'`;
-                const anoMetrics = ctx.measureText(data.ano);
+                const finalModeloMetrics = ctx.measureText(data.modelo);
+                const anoX = padding + finalModeloMetrics.width + 15;
                 
                 ctx.fillStyle = data.corDestaque;
-                ctx.fillRect(anoX - 5, modeloY - (headerHeight * 0.18)/2 - 5, anoMetrics.width + 10, headerHeight * 0.22 + 5);
+                ctx.fillRect(anoX - 5, modeloY - (anoFontSize/2) - 5, anoBoxWidth, anoFontSize + 10);
                 
                 ctx.fillStyle = data.corTexto;
+                ctx.font = `700 ${anoFontSize}px '${data.fonte}'`;
                 ctx.fillText(data.ano, anoX, modeloY);
 
+                // Footer
                 const footerStartY = imgHeight + headerHeight;
-                const infoBarHeight = (footerHeight - obsBarHeight) * 0.4;
+                
+                // Verifica necessidade de quebra da barra de observação
+                let hasExtraObsBar = false;
+                if (data.observacao && fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
+                    const tempCanvas = document.createElement('canvas');
+                    const tempCtx = tempCanvas.getContext('2d');
+                    const logoMaxWidth = width * 0.4;
+                    const logoMaxHeight = footerHeight * 1.1;
+                    const scale = Math.min(logoMaxWidth / fixedLogo.width, logoMaxHeight / fixedLogo.height);
+                    const logoW = fixedLogo.width * scale;
+                    const availableInfoWidth = width - (padding + logoW) - padding * 2;
+
+                    // Cria os textos da barra principal de forma dinâmica para não deixar "buracos"
+                    let centralParts = [];
+                    if (data.cambio) centralParts.push(data.cambio.toUpperCase());
+                    if (data.cilindrada) centralParts.push(data.cilindrada);
+                    const fKm = formatKmDisplay(data.km);
+                    if (fKm) centralParts.push(fKm);
+                    if (data.observacao) centralParts.push(data.observacao.toUpperCase());
+                    
+                    const infoTextWithObs = centralParts.join("   |   ");
+                    
+                    tempCtx.font = `700 ${(footerHeight * 0.3) * 0.5}px '${data.fonte}'`;
+                    
+                    if (tempCtx.measureText(infoTextWithObs).width > availableInfoWidth) {
+                        hasExtraObsBar = true;
+                    }
+                }
+
+                // Ajusta proporções fixas do Footer dependendo se precisa dividir a observação
+                let infoBarHeight, obsBarHeight, contactBarHeight;
+                if (hasExtraObsBar) {
+                    infoBarHeight = footerHeight * 0.33;
+                    obsBarHeight = footerHeight * 0.27;
+                    contactBarHeight = footerHeight * 0.40;
+                } else {
+                    infoBarHeight = footerHeight * 0.45;
+                    obsBarHeight = 0;
+                    contactBarHeight = footerHeight * 0.55;
+                }
+
                 const contactBarStartY = footerStartY + infoBarHeight + obsBarHeight;
-                const contactBarHeight = footerHeight - infoBarHeight - obsBarHeight;
                 
                 let logoW = 0;
                 if (fixedLogo.complete && fixedLogo.naturalWidth !== 0) {
@@ -1245,13 +1204,22 @@
                 }
                 const logoRightBoundary = padding + logoW;
 
+                // Barra central superior do footer
                 ctx.fillStyle = data.corDestaque;
                 ctx.fillRect(0, footerStartY, width, infoBarHeight);
 
-                let centralText = `${data.cambio.toUpperCase()}   |   ${data.cilindrada}   |   ${formatKmDisplay(data.km)}`;
+                // Constrói o texto do meio de forma segura ignorando os campos que estiverem em branco
+                let centralParts = [];
+                if (data.cambio) centralParts.push(data.cambio.toUpperCase());
+                if (data.cilindrada) centralParts.push(data.cilindrada);
+                const fKm = formatKmDisplay(data.km);
+                if (fKm) centralParts.push(fKm);
+                
                 if (!hasExtraObsBar && data.observacao) {
-                    centralText += `   |   ${data.observacao.toUpperCase()}`;
+                    centralParts.push(data.observacao.toUpperCase());
                 }
+
+                let centralText = centralParts.join("   |   ");
 
                 const centralY = footerStartY + infoBarHeight / 2;
                 const availableCentralWidth = width - padding - logoRightBoundary - padding;
@@ -1269,6 +1237,7 @@
                 }
                 ctx.fillText(centralText, centralStartX + centralIconSize + centralIconGap, centralY);
 
+                // Barra de observação adicional
                 if (hasExtraObsBar) {
                     const obsBarStartY = footerStartY + infoBarHeight;
                     ctx.fillStyle = data.corDestaque;
@@ -1276,13 +1245,14 @@
                     const obsY = obsBarStartY + obsBarHeight / 2;
                     const availableObsWidth = width - padding - logoRightBoundary - padding;
                     
-                    const obsFit = adjustTextToFit(ctx, data.observacao.toUpperCase(), null, 0, 0, availableObsWidth, infoBarHeight * 0.5, data.fonte);
+                    const obsFit = adjustTextToFit(ctx, data.observacao.toUpperCase(), null, 0, 0, availableObsWidth, obsBarHeight * 0.6, data.fonte);
                     ctx.fillStyle = data.corTexto;
                     ctx.textAlign = 'right';
                     ctx.font = `700 ${obsFit.fontSize}px '${data.fonte}'`;
                     ctx.fillText(data.observacao.toUpperCase(), width - padding, obsY);
                 }
                 
+                // Barra de contatos
                 ctx.fillStyle = hexToRgba(data.corFundo, 0.85);
                 ctx.fillRect(0, contactBarStartY, width, contactBarHeight);
 

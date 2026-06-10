@@ -275,16 +275,16 @@
                     <label class="block text-sm font-medium text-gray-300 mb-3">Escolha seu plano:</label>
                     <div class="space-y-3">
                         <label class="flex items-center p-3 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors border border-gray-600 has-[:checked]:border-red-500 has-[:checked]:bg-gray-700">
-                            <input type="radio" name="pixPlan" value="5" class="w-4 h-4 text-red-600 bg-gray-800 border-gray-500 focus:ring-red-500 focus:ring-2" checked>
+                            <input type="radio" name="pixPlan" value="9.80" class="w-4 h-4 text-red-600 bg-gray-800 border-gray-500 focus:ring-red-500 focus:ring-2" checked>
                             <div class="ml-3">
-                                <span class="block text-white font-medium">Personalizar e usar uma vez</span>
-                                <span class="block text-sm text-gray-400">R$ 5,30</span>
+                                <span class="block text-white font-medium">Pagar agora e usar apenas uma vez</span>
+                                <span class="block text-sm text-gray-400">R$ 9,80</span>
                             </div>
                         </label>
                         <label class="flex items-center p-3 bg-gray-700 rounded-lg cursor-pointer hover:bg-gray-600 transition-colors border border-gray-600 has-[:checked]:border-red-500 has-[:checked]:bg-gray-700">
-                            <input type="radio" name="pixPlan" value="26" class="w-4 h-4 text-red-600 bg-gray-800 border-gray-500 focus:ring-red-500 focus:ring-2">
+                            <input type="radio" name="pixPlan" value="98.90" class="w-4 h-4 text-red-600 bg-gray-800 border-gray-500 focus:ring-red-500 focus:ring-2">
                             <div class="ml-3">
-                                <span class="block text-white font-medium">Personalizar e usar sempre</span>
+                                <span class="block text-white font-medium">Pagar uma vez e usar para sempre</span>
                                 <span class="block text-sm text-gray-400">R$ 98,90</span>
                             </div>
                         </label>
@@ -413,8 +413,8 @@
             const planRadios = document.getElementsByName('pixPlan');
 
             function generateDynamicPix(whatsapp, plan) {
-                const amount = plan === '5' ? "5.30" : "26.00";
-                const descText = `CRIADOR DE ANUNCIO VCL${plan === '5' ? '05' : '26'} - ${whatsapp.replace(/\D/g, '')}`;
+                const amount = plan === '9.80' ? "9.80" : "98.90";
+                const descText = `CRIADOR DE ANUNCIO VCL${plan === '9.80' ? '09' : '98'} - ${whatsapp.replace(/\D/g, '')}`;
 
                 const f = (id, val) => id + ("00" + val.length).slice(-2) + val;
 
@@ -474,11 +474,11 @@
                     return;
                 }
 
-                let selectedPlan = '5';
+                let selectedPlan = '9.80';
                 planRadios.forEach(r => { if(r.checked) selectedPlan = r.value; });
 
                 const pixString = generateDynamicPix(wp, selectedPlan);
-                const displayText = `CRIADOR DE ANÚNCIO VCL${selectedPlan === '5' ? '05' : '26'} - ${wp}`;
+                const displayText = `CRIADOR DE ANÚNCIO VCL${selectedPlan === '9.80' ? '09' : '98'} - ${wp}`;
 
                 pixCopiaCola.value = pixString;
                 
@@ -514,7 +514,6 @@
                 copyPixBtn.innerHTML = '<svg class="w-5 h-5 flex-shrink-0 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
                 setTimeout(() => { copyPixBtn.innerHTML = originalHTML; }, 2000);
             });
-
 
             // --- Lógica da API FIPE e Buscas ---
             const getFipeApiUrl = () => `https://parallelum.com.br/fipe/api/v1/${tipoVeiculo.value}`;
